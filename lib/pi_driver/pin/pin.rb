@@ -1,17 +1,11 @@
 require 'pi_driver/pin/board'
 require 'pi_driver/pin/direction'
+require 'pi_driver/pin/directory'
 require 'pi_driver/pin/edge'
 require 'pi_driver/pin/value'
 
 module PiDriver
   class Pin
-    # delete this and below
-    DIR_BASE = File.expand_path '~/pi/gpio/sys/class'
-    # # uncomment below, delete this
-    # DIR_BASE = '/sys/class'
-
-    DIR_GPIO = "#{DIR_BASE}/gpio"
-
     attr_reader :gpio_number
 
     def initialize(gpio_number, options = {})
@@ -95,10 +89,6 @@ module PiDriver
       raise ArgumentError, message unless valid_options.include?(arg)
     end
 
-    def dir_pin
-      "#{DIR_GPIO}/gpio#{@gpio_number}"
-    end
-
     def interrupted?(new_value, last_value)
       rising_edge = new_value == Value::HIGH && last_value == Value::LOW
       falling_edge = new_value == Value::LOW && last_value == Value::HIGH
@@ -113,40 +103,28 @@ module PiDriver
       end
     end
 
-    def path_direction
-      "#{dir_pin}/direction"
-    end
-
-    def path_export
-      "#{DIR_GPIO}/export"
-    end
-
-    def path_value
-      "#{dir_pin}/value"
-    end
-
     def read_direction
-      @direction = File.read(path_direction).to_sym
+      @direction = File.read(Directory.path_direction(@gpio_number)).to_sym
     end
 
     def read_value
-      @value = File.read(path_value).to_i
+      @value = File.read(Directory.path_value(@gpio_number)).to_i
     end
 
     def write_direction(direction)
       check_arg(:direction, direction, Direction::VALID_DIRECTIONS)
       @direction = direction
-      File.write(path_direction, @direction)
+      File.write(Directory.path_direction(@gpio_number), @direction)
     end
 
     def write_export
-      File.write(path_export, @gpio_number)
+      File.write(Directory::PATH_EXPORT, @gpio_number)
     end
 
     def write_value(value)
       check_arg(:value, value, Value::VALID_VALUES)
       @value = value
-      File.write(path_value, @value)
+      File.write(Directory.path_value(@gpio_number), @value)
     end
   end
 end
