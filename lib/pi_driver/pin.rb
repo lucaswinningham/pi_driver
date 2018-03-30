@@ -1,9 +1,9 @@
-require 'pi_driver/pin/argument_helper'
-require 'pi_driver/pin/board'
-require 'pi_driver/pin/direction'
-require 'pi_driver/pin/edge'
-require 'pi_driver/pin/file_helper'
-require 'pi_driver/pin/value'
+require_relative 'pin/argument_helper'
+require_relative 'pin/board'
+require_relative 'pin/direction'
+require_relative 'pin/edge'
+require_relative 'pin/file_helper'
+require_relative 'pin/value'
 
 module PiDriver
   class Pin

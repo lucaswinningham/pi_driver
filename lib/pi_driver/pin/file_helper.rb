@@ -1,4 +1,4 @@
-require 'pi_driver/pin/directory_helper'
+require_relative 'directory_helper'
 
 module PiDriver
   class Pin
