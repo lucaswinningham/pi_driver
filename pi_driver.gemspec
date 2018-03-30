@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'pi_driver'
-  s.version     = '0.0.0'
+  s.version     = '0.0.1'
   s.date        = '2018-03-15'
   s.summary     = "Ruby driver for Raspberry Pi"
   s.description = "Ruby driver for Raspberry Pi"
