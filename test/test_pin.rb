@@ -93,7 +93,7 @@ class PinTest < TestCase
 
   def test_output_clear_aliases
     pin = PiDriver::Pin.new @pin_number
-    pin.method(:clear) == pin.method(:off)
+    assert_equal pin.method(:clear), pin.method(:off)
   end
 
   def test_output_set
@@ -104,7 +104,7 @@ class PinTest < TestCase
 
   def test_output_set_aliases
     pin = PiDriver::Pin.new @pin_number
-    pin.method(:set) == pin.method(:on)
+    assert_equal pin.method(:set), pin.method(:on)
   end
 
   def test_output_is_clear
@@ -116,7 +116,7 @@ class PinTest < TestCase
 
   def test_output_is_clear_aliases
     pin = PiDriver::Pin.new @pin_number
-    pin.method(:clear?) == pin.method(:off?)
+    assert_equal pin.method(:clear?), pin.method(:off?)
   end
 
   def test_output_is_set
@@ -128,7 +128,7 @@ class PinTest < TestCase
 
   def test_output_is_set_aliases
     pin = PiDriver::Pin.new @pin_number
-    pin.method(:set?) == pin.method(:on?)
+    assert_equal pin.method(:set?), pin.method(:on?)
   end
 
   def test_interrupt
@@ -224,10 +224,6 @@ class PinTest < TestCase
   end
 
   def test_error_gpio_number
-    assert_raises ArgumentError do
-      PiDriver::Pin.new -1
-    end
-
     assert_raises ArgumentError do
       PiDriver::Pin.new 17
     end

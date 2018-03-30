@@ -16,6 +16,10 @@ class I2CMasterTest < TestCase
     @i2c_master.start
   end
 
+  def test_start_aliases
+    assert_equal @i2c_master.method(:start), @i2c_master.method(:restart)
+  end
+
   def test_write
     @sequence = sequence('write')
     expect_bit_write 1

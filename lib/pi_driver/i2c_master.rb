@@ -19,6 +19,8 @@ module PiDriver
       drive_clock_pin
     end
 
+    alias_method :restart, :start
+
     def write(byte)
       send_data byte
       byte
