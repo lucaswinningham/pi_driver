@@ -91,10 +91,20 @@ class PinTest < TestCase
     pin.clear
   end
 
+  def test_output_clear_aliases
+    pin = PiDriver::Pin.new @pin_number
+    pin.method(:clear) == pin.method(:off)
+  end
+
   def test_output_set
     pin = PiDriver::Pin.new @pin_number, direction: :out
     expect_value_write(1)
     pin.set
+  end
+
+  def test_output_set_aliases
+    pin = PiDriver::Pin.new @pin_number
+    pin.method(:set) == pin.method(:on)
   end
 
   def test_output_is_clear
@@ -104,11 +114,21 @@ class PinTest < TestCase
     refute pin.set?
   end
 
+  def test_output_is_clear_aliases
+    pin = PiDriver::Pin.new @pin_number
+    pin.method(:clear?) == pin.method(:off?)
+  end
+
   def test_output_is_set
     pin = PiDriver::Pin.new @pin_number, direction: :out, value: 1
     expect_value_read(0).never
     refute pin.clear?
     assert pin.set?
+  end
+
+  def test_output_is_set_aliases
+    pin = PiDriver::Pin.new @pin_number
+    pin.method(:set?) == pin.method(:on?)
   end
 
   def test_interrupt

@@ -55,9 +55,13 @@ module PiDriver
       @value
     end
 
+    alias_method :off, :clear
+
     def clear?
       value == Value::LOW
     end
+
+    alias_method :off?, :clear?
 
     def set
       return unless output?
@@ -66,9 +70,13 @@ module PiDriver
       @value
     end
 
+    alias_method :on, :set
+
     def set?
       value == Value::HIGH
     end
+
+    alias_method :on?, :set?
 
     def value
       input? ? @file_helper.read_value : @value
