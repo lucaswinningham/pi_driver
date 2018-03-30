@@ -69,15 +69,18 @@ class PinTest < TestCase
 
   def test_output_low
     pin = PiDriver::Pin.new @pin_number, direction: :out
+    expect_direction_write(:out)
     expect_value_write(0)
     pin.output
 
+    expect_direction_write(:out)
     expect_value_write(0)
     pin.output 0
   end
 
   def test_output_high
     pin = PiDriver::Pin.new @pin_number, direction: :out
+    expect_direction_write(:out)
     expect_value_write(1)
     pin.output 1
   end
@@ -86,17 +89,11 @@ class PinTest < TestCase
     pin = PiDriver::Pin.new @pin_number, direction: :out, value: 1
     expect_value_write(0)
     pin.clear
-
-    expect_value_write(0).never
-    pin.clear
   end
 
   def test_output_set
     pin = PiDriver::Pin.new @pin_number, direction: :out
     expect_value_write(1)
-    pin.set
-
-    expect_value_write(1).never
     pin.set
   end
 
@@ -209,7 +206,7 @@ class PinTest < TestCase
   private
 
   def make_pin_dir
-    @dir_pin = "#{PiDriver::Pin::DIR_GPIO}/gpio#{@pin_number}"
+    @dir_pin = "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/gpio#{@pin_number}"
     Dir.mkdir(@dir_pin) unless File.directory?(@dir_pin)
   end
 
@@ -238,14 +235,14 @@ class PinTest < TestCase
   end
 
   def path_export
-    "#{PiDriver::Pin::DIR_GPIO}/export"
+    "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/export"
   end
 
   def path_pin_direction
-    "#{PiDriver::Pin::DIR_GPIO}/gpio#{@pin_number}/direction"
+    "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/gpio#{@pin_number}/direction"
   end
 
   def path_pin_value
-    "#{PiDriver::Pin::DIR_GPIO}/gpio#{@pin_number}/value"
+    "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/gpio#{@pin_number}/value"
   end
 end
