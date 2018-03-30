@@ -10,22 +10,20 @@ module PiDriver
     attr_reader :gpio_number
 
     def initialize(gpio_number, options = {})
-      @gpio_number = gpio_number
+      @argument_helper = ArgumentHelper.new gpio_number
 
-      @argument_helper = ArgumentHelper.new @gpio_number
-      @argument_helper.check(:gpio_number, gpio_number, Board::VALID_NUMBERS)
+      @gpio_number = gpio_number
+      @argument_helper.check(:gpio_number, @gpio_number, Board::VALID_NUMBERS)
 
       @direction = options[:direction] || Direction::INPUT
+      @argument_helper.check(:direction, @direction, Direction::VALID_DIRECTIONS)
+
       @value = options[:value] || Value::LOW
+      @argument_helper.check(:value, @value, Value::VALID_VALUES)
 
       @file_helper = FileHelper.new @gpio_number
-
       @file_helper.write_export
-
-      @argument_helper.check(:direction, @direction, Direction::VALID_DIRECTIONS)
       @file_helper.write_direction(@direction)
-
-      @argument_helper.check(:value, @value, Value::VALID_VALUES)
       input? ? @file_helper.read_value : @file_helper.write_value(@value)
     end
 
