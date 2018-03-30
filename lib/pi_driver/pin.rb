@@ -40,9 +40,10 @@ module PiDriver
 
     def output(value = Value::LOW)
       @argument_helper.check(:value, value, Value::VALID_VALUES)
+      @value = value
       @direction = Direction::OUTPUT
       @file_helper.write_direction(@direction)
-      @file_helper.write_value(value)
+      @file_helper.write_value(@value)
     end
 
     def output?
@@ -77,7 +78,6 @@ module PiDriver
 
     def interrupt(edge = Edge::RISING)
       @argument_helper.check(:edge, edge, Edge::VALID_EDGES)
-
       @edge = edge
 
       @interrupt_thread = Thread.new do
