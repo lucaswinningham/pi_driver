@@ -135,9 +135,7 @@ class PinTest < TestCase
     pin = PiDriver::Pin.new @pin_number
     Thread.expects(:new).twice
     pin.interrupt
-    pin.clear_interrupt
     pin.interrupt { 'test block' }
-    pin.clear_interrupt
   end
 
   def test_clear_interrupt
