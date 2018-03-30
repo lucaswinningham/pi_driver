@@ -94,8 +94,13 @@ module PiDriver
     end
 
     def observe_clock_stretch
-      # 1ms timeout typical
-      loop { break if @clock_pin.set?}
+      clock_stretch_began_at = Time.now
+      one_millisecond = 0.001
+      loop do
+        elapsed_time = Time.now - clock_stretch_began_at
+        timed_out = elapsed_time > one_millisecond
+        break if @clock_pin.set? || timed_out
+      end
     end
 
     def observe_speed_requirement

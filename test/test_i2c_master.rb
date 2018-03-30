@@ -67,27 +67,39 @@ class I2CMasterTest < TestCase
     refute @i2c_master.ack
   end
 
-  def test_queue
-    @sequence = sequence('queue')
+  def test_clock_stretch
+    @sequence = sequence('clock stretch')
+    @clock_pin.expects(:input).with(nil).in_sequence(@sequence)
+    @clock_pin.expects(:set?).with(nil).returns(false).times(3).in_sequence(@sequence)
+    @clock_pin.expects(:set?).with(nil).returns(true).in_sequence(@sequence)
+
+    @i2c_master.send(:release_clock_pin)
   end
 
-  # def test_clockstretch
-  #   @sequence = sequence('clockstretch')
-  #   expect_sequence_clockstretch
+  def test_clock_stretch_timeout
+    @sequence = sequence('clock stretch timeout')
+    @clock_pin.expects(:input).with(nil).in_sequence(@sequence)
+    @clock_pin.expects(:set?).with(nil).returns(false).at_least_once.in_sequence(@sequence)
 
-  #   @i2c_master.send(:release_clock_pin)
-  # end
+    test_began_at = Time.now
+    @i2c_master.send(:release_clock_pin)
+    test_ended_at = Time.now
+    time_delta = test_ended_at - test_began_at
+    one_millisecond = 0.001
+    two_milliseconds = 0.002
+    assert time_delta > one_millisecond && time_delta < two_milliseconds
+  end
 
-  # def test_speed
-  #   @sequence = sequence('speed')
-  #   expect_clock_pin_to_be_released
+  def test_speed
+    @sequence = sequence('speed')
+    expect_clock_pin_to_be_released
     
-  #   test_began_at = Time.now
-  #   @i2c_master.send(:release_clock_pin)
-  #   test_ended_at = Time.now
-  #   frequency = (1.0 / (test_ended_at - test_began_at))
-  #   assert frequency < 100_000
-  # end
+    test_began_at = Time.now
+    @i2c_master.send(:release_clock_pin)
+    test_ended_at = Time.now
+    frequency = (1.0 / (test_ended_at - test_began_at))
+    assert frequency < 100_000
+  end
 
   private
 
@@ -123,12 +135,6 @@ class I2CMasterTest < TestCase
     @data_pin.expects(:clear?).with(nil).returns(success).in_sequence(@sequence)
     expect_clock_pin_to_be_driven
   end
-
-  # def expect_sequence_clockstretch
-  #   @clock_pin.expects(:input).with(nil).in_sequence(@sequence)
-  #   @clock_pin.expects(:set?).with(nil).returns(false).times(3).in_sequence(@sequence)
-  #   @clock_pin.expects(:set?).with(nil).returns(true).in_sequence(@sequence)
-  # end
 
   def expect_clock_pin_to_be_released
     @clock_pin.expects(:input).with(nil).in_sequence(@sequence)
