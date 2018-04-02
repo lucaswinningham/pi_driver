@@ -11,5 +11,5 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://rubygems.org/gems/pi_driver'
   s.license     = 'MIT'
 
-  s.add_runtime_dependency 'mocha', '1.4.0'
+  s.add_runtime_dependency 'mocha', '>= 1.4.0'
 end
