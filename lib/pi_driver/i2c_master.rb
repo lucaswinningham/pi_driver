@@ -39,13 +39,15 @@ module PiDriver
       success
     end
 
-    private
+    def self.prepare_address_for_write(address_byte)
+      address_byte << 1
+    end
 
-    # def send_address(direction = :read)
-    #   byte = @slave_address << 1
-    #   byte += Pin::Value::HIGH if direction == :read
-    #   send_data byte
-    # end
+    def self.prepare_address_for_read(address_byte)
+      (address_byte << 1) | 1
+    end
+
+    private
 
     def send_data(byte)
       bits = byte_to_bits byte

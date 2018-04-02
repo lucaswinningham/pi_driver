@@ -71,6 +71,18 @@ class I2CMasterTest < TestCase
     refute @i2c_master.ack
   end
 
+  def test_prepare_address_for_write
+    address_byte = 0b1010101
+    prepared_address = PiDriver::I2CMaster.prepare_address_for_write address_byte
+    assert_equal 0b10101010, prepared_address
+  end
+
+  def test_prepare_address_for_read
+    address_byte = 0b1010101
+    prepared_address = PiDriver::I2CMaster.prepare_address_for_read address_byte
+    assert_equal 0b10101011, prepared_address
+  end
+
   def test_clock_stretch
     @sequence = sequence('clock stretch')
     @clock_pin.expects(:input).with(nil).in_sequence(@sequence)
