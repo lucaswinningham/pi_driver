@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'pi_driver'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.date        = '2018-03-15'
   s.summary     = "Ruby driver for Raspberry Pi"
   s.description = "Ruby driver for Raspberry Pi"
@@ -11,5 +11,5 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://rubygems.org/gems/pi_driver'
   s.license     = 'MIT'
 
-  s.add_runtime_dependency 'mocha'
+  s.add_runtime_dependency 'mocha', '1.4.0'
 end
