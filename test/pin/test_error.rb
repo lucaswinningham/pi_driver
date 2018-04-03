@@ -13,11 +13,13 @@ class PinErrorTest < PinTest
     end
   end
 
-  def test_error_value
+  def test_error_value_new
     assert_raises ArgumentError do
       PiDriver::Pin.new direction: :out, value: 2
     end
+  end
 
+  def test_error_value
     pin = PiDriver::Pin.new @pin_number
     assert_raises ArgumentError do
       pin.output 2

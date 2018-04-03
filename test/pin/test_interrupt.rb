@@ -8,13 +8,6 @@ class PinInterruptTest < PinTest
     pin.interrupt { 'test block' }
   end
 
-  def test_clear_interrupt
-    pin = PiDriver::Pin.new @pin_number
-    interrupt_thread = pin.interrupt
-    interrupt_thread.expects(:kill)
-    pin.clear_interrupt
-  end
-
   def test_interrupt_rising
     pin = PiDriver::Pin.new @pin_number
     interrupted = false
