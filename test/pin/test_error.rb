@@ -1,6 +1,6 @@
-require_relative '../pin_test'
+require_relative '../pin_test_helper'
 
-class ErrorTest < PinTest
+class PinErrorTest < PinTest
   def test_error_gpio_number
     assert_raises ArgumentError do
       PiDriver::Pin.new 17

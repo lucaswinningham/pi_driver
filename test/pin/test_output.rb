@@ -1,6 +1,6 @@
-require_relative '../pin_test'
+require_relative '../pin_test_helper'
 
-class OutputTest < PinTest
+class PinOutputTest < PinTest
   def test_new_pin_output
     expect_export_write
     expect_direction_write(:out)

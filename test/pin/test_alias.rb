@@ -1,6 +1,6 @@
-require_relative '../pin_test'
+require_relative '../pin_test_helper'
 
-class AliasTest < PinTest
+class PinAliasTest < PinTest
   def test_output_clear_aliases
     pin = PiDriver::Pin.new @pin_number
     assert_equal pin.method(:clear), pin.method(:off)

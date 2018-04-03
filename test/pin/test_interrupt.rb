@@ -1,6 +1,6 @@
-require_relative '../pin_test'
+require_relative '../pin_test_helper'
 
-class InterruptTest < PinTest
+class PinInterruptTest < PinTest
   def test_interrupt
     pin = PiDriver::Pin.new @pin_number
     Thread.expects(:new).twice
