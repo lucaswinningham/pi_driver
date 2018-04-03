@@ -4,6 +4,7 @@ class I2CStopTest < I2CMasterTest
   def test_new_i2c_stop
     @sequence = sequence('stop')
     expect_sequence_stop
+    
     PiDriver::I2CMaster.new clock_pin: @clock_pin, data_pin: @data_pin
   end
 
