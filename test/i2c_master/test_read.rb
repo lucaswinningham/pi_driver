@@ -16,4 +16,12 @@ class I2CReadTest < I2CMasterTest
     byte = @i2c_master.read
     assert_equal 0b10001101, byte
   end
+
+  private
+
+  def expect_bit_read(value)
+    expect_clock_pin_to_be_released
+    @data_pin.expects(:value).with(nil).returns(value).in_sequence(@sequence)
+    expect_clock_pin_to_be_driven
+  end
 end

@@ -14,4 +14,16 @@ class I2CWriteTest < I2CMasterTest
 
     @i2c_master.write(0b10110001)
   end
+
+  private
+
+  def expect_bit_write(value)
+    if value == 0
+      expect_data_pin_to_be_driven
+    elsif value == 1
+      expect_data_pin_to_be_released
+    end
+    expect_clock_pin_to_be_released
+    expect_clock_pin_to_be_driven
+  end
 end
