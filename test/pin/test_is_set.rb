@@ -9,7 +9,7 @@ class PinIsSetTest < PinTest
   end
 
   def test_is_set_output
-    pin = PiDriver::Pin.new @pin_number, direction: :out, value: 1
+    pin = PiDriver::Pin.new @pin_number, direction: :out, state: 1
     expect_value_read('1').never
     refute pin.clear?
     assert pin.set?

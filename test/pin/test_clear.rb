@@ -8,7 +8,7 @@ class PinClearTest < PinTest
   end
 
   def test_clear_output
-    pin = PiDriver::Pin.new @pin_number, direction: :out, value: 1
+    pin = PiDriver::Pin.new @pin_number, direction: :out, state: 1
     expect_value_write(0)
     pin.clear
   end

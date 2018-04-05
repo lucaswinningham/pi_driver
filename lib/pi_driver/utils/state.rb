@@ -1,10 +1,10 @@
 module PiDriver
-  class Pin
-    class Value
+  module Utils
+    class State
       LOW = 0
       HIGH = 1
 
-      VALID_VALUES = [
+      VALID_STATES = [
         LOW,
         HIGH
       ]

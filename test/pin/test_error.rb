@@ -15,7 +15,7 @@ class PinErrorTest < PinTest
 
   def test_error_value_new
     assert_raises ArgumentError do
-      PiDriver::Pin.new direction: :out, value: 2
+      PiDriver::Pin.new direction: :out, state: 2
     end
   end
 

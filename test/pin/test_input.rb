@@ -12,7 +12,7 @@ class PinInputTest < PinTest
     expect_export_write
     expect_direction_write(:in)
     expect_value_read('0')
-    pin = PiDriver::Pin.new @pin_number, value: 1
+    pin = PiDriver::Pin.new @pin_number, state: 1
   end
 
   def test_input

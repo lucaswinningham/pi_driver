@@ -1,16 +1,14 @@
-require_relative 'pin/argument_helper'
 require_relative 'pin/board'
 require_relative 'pin/direction'
 require_relative 'pin/edge'
 require_relative 'pin/file_helper'
-require_relative 'pin/value'
 
 module PiDriver
   class Pin
     attr_reader :gpio_number
 
     def initialize(gpio_number, options = {})
-      @argument_helper = ArgumentHelper.new gpio_number
+      @argument_helper = Utils::ArgumentHelper.new prefix: "Pin ##{gpio_number}"
 
       @gpio_number = gpio_number
       @argument_helper.check(:gpio_number, @gpio_number, Board::VALID_NUMBERS)
@@ -18,13 +16,13 @@ module PiDriver
       @direction = options[:direction] || Direction::INPUT
       @argument_helper.check(:direction, @direction, Direction::VALID_DIRECTIONS)
 
-      @value = options[:value] || Value::LOW
-      @argument_helper.check(:value, @value, Value::VALID_VALUES)
+      @state = options[:state] || Utils::State::LOW
+      @argument_helper.check(:state, @state, Utils::State::VALID_STATES)
 
       @file_helper = FileHelper.new @gpio_number
       @file_helper.write_export
       @file_helper.write_direction(@direction)
-      input? ? @file_helper.read_value : @file_helper.write_value(@value)
+      input? ? @file_helper.read_value : @file_helper.write_value(@state)
     end
 
     def input
@@ -36,12 +34,12 @@ module PiDriver
       @direction == Direction::INPUT
     end
 
-    def output(value = Value::LOW)
-      @argument_helper.check(:value, value, Value::VALID_VALUES)
-      @value = value
+    def output(state = Utils::State::LOW)
+      @argument_helper.check(:state, state, Utils::State::VALID_STATES)
+      @state = state
       @direction = Direction::OUTPUT
       @file_helper.write_direction(@direction)
-      @file_helper.write_value(@value)
+      @file_helper.write_value(@state)
     end
 
     def output?
@@ -50,36 +48,36 @@ module PiDriver
 
     def clear
       return unless output?
-      @value = Value::LOW
-      @file_helper.write_value(@value)
-      @value
+      @state = Utils::State::LOW
+      @file_helper.write_value(@state)
+      @state
     end
 
     alias_method :off, :clear
 
     def clear?
-      value == Value::LOW
+      state == Utils::State::LOW
     end
 
     alias_method :off?, :clear?
 
     def set
       return unless output?
-      @value = Value::HIGH
-      @file_helper.write_value(@value)
-      @value
+      @state = Utils::State::HIGH
+      @file_helper.write_value(@state)
+      @state
     end
 
     alias_method :on, :set
 
     def set?
-      value == Value::HIGH
+      state == Utils::State::HIGH
     end
 
     alias_method :on?, :set?
 
-    def value
-      input? ? @file_helper.read_value : @value
+    def state
+      input? ? @file_helper.read_value : @state
     end
 
     def interrupt(edge = Edge::RISING)
@@ -87,11 +85,11 @@ module PiDriver
       @edge = edge
 
       @interrupt_thread = Thread.new do
-        last_value = @file_helper.read_value
+        last_state = @file_helper.read_value
         loop do
-          new_value = @file_helper.read_value
-          yield if block_given? && interrupted?(new_value, last_value)
-          last_value = new_value
+          new_state = @file_helper.read_value
+          yield if block_given? && interrupted?(new_state, last_state)
+          last_state = new_state
         end
       end
     end
@@ -102,9 +100,9 @@ module PiDriver
 
     private
 
-    def interrupted?(new_value, last_value)
-      rising_edge = new_value == Value::HIGH && last_value == Value::LOW
-      falling_edge = new_value == Value::LOW && last_value == Value::HIGH
+    def interrupted?(new_state, last_state)
+      rising_edge = new_state == Utils::State::HIGH && last_state == Utils::State::LOW
+      falling_edge = new_state == Utils::State::LOW && last_state == Utils::State::HIGH
 
       case @edge
       when :rising

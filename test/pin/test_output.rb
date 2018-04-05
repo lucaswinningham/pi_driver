@@ -12,7 +12,7 @@ class PinOutputTest < PinTest
     expect_export_write
     expect_direction_write(:out)
     expect_value_write(1)
-    PiDriver::Pin.new @pin_number, direction: :out, value: 1
+    PiDriver::Pin.new @pin_number, direction: :out, state: 1
   end
 
   def test_output_low_default

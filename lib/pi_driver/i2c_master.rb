@@ -52,7 +52,7 @@ module PiDriver
     def send_data(byte)
       bits = byte_to_bits byte
       bits.each do |bit|
-        bit == Pin::Value::HIGH ? release_data_pin : drive_data_pin
+        bit == Utils::State::HIGH ? release_data_pin : drive_data_pin
         release_clock_pin
         drive_clock_pin
       end
@@ -82,7 +82,7 @@ module PiDriver
     end
 
     def drive_data_pin
-      @data_pin.output Pin::Value::LOW
+      @data_pin.output Utils::State::LOW
       observe_speed_requirement
     end
 
@@ -93,7 +93,7 @@ module PiDriver
     end
 
     def drive_clock_pin
-      @clock_pin.output Pin::Value::LOW
+      @clock_pin.output Utils::State::LOW
       observe_speed_requirement
     end
 
