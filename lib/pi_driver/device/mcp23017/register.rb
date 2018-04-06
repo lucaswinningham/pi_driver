@@ -2,7 +2,8 @@ module PiDriver
   class Device
     class MCP23017
       class Register
-        attr_reader :address
+        attr_reader :port
+        attr_reader :bit0, :bit1, :bit2, :bit3, :bit4, :bit5, :bit6, :bit7
 
         def initialize(options = {})
           @argument_helper = Utils::ArgumentHelper.new prefix: "MCP23017::Register"
@@ -26,7 +27,6 @@ module PiDriver
           end
         end
 
-        attr_reader :bit0, :bit1, :bit2, :bit3, :bit4, :bit5, :bit6, :bit7
         bit_writer :bit0, :bit1, :bit2, :bit3, :bit4, :bit5, :bit6, :bit7
       end
     end
