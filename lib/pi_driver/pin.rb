@@ -8,10 +8,12 @@ module PiDriver
     attr_reader :gpio_number
 
     def initialize(gpio_number, options = {})
-      @argument_helper = Utils::ArgumentHelper.new prefix: "Pin ##{gpio_number}"
+      @argument_helper = Utils::ArgumentHelper.new prefix: "PiDriver::Pin"
 
       @gpio_number = gpio_number
       @argument_helper.check(:gpio_number, @gpio_number, Board::VALID_NUMBERS)
+
+      @argument_helper.prefix = "PiDriver::Pin ##{gpio_number}"
 
       @direction = options[:direction] || Direction::INPUT
       @argument_helper.check(:direction, @direction, Direction::VALID_DIRECTIONS)

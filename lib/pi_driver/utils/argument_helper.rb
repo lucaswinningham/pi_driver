@@ -1,6 +1,8 @@
 module PiDriver
   module Utils
     class ArgumentHelper
+      attr_accessor :prefix, :suffix
+
       def initialize(options = {})
         @prefix = options[:prefix]
         @suffix = options[:suffix]

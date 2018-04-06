@@ -1,4 +1,5 @@
 require_relative 'mcp23017/hardware_address'
+require_relative 'mcp23017/register'
 
 module PiDriver
   class Device

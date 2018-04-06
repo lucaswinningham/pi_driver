@@ -50,7 +50,7 @@ module PiDriver
     private
 
     def send_data(byte)
-      bits = byte_to_bits byte
+      bits = Utils::Byte.byte_to_bits(byte, @num_bits)
       bits.each do |bit|
         bit == Utils::State::HIGH ? release_data_pin : drive_data_pin
         release_clock_pin
@@ -65,15 +65,7 @@ module PiDriver
         bits << @data_pin.value
         drive_clock_pin
       end
-      bits_to_byte(bits)
-    end
-
-    def byte_to_bits(byte)
-      byte.to_s(2).rjust(@num_bits, '0').chars.map(&:to_i)
-    end
-
-    def bits_to_byte(bits)
-      bits.join.to_i(2)
+      Utils::Byte.bits_to_byte(bits)
     end
 
     def release_data_pin

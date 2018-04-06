@@ -3,10 +3,10 @@ module PiDriver
     class MCP23017
       class HardwareAddress
         def initialize
+          @argument_helper = Utils::ArgumentHelper.new prefix: "MCP23017::HardwareAddress"
           @a0 = Utils::State::LOW
           @a1 = Utils::State::LOW
           @a2 = Utils::State::LOW
-          @argument_helper = Utils::ArgumentHelper.new
         end
 
         private
