@@ -7,12 +7,6 @@ class MCP23017ErrorTest < MCP23017Test
     end
   end
 
-  def test_error_pin
-    assert_raises ArgumentError do
-      @mcp23017.gpa0.iodir = 2
-    end
-  end
-
   # def test_error_register_bit
   #   register = PiDriver::Device::MCP23017::Register.new
 

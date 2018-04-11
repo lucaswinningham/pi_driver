@@ -1,7 +1,12 @@
-# require_relative '../mcp23017_test_helper'
+require_relative '../mcp23017_test_helper'
 
-# class MCP23017RegisterTest < MCP23017Test
-#   def test_the_truth
-#     assert true
-#   end
-# end
+class MCP23017RegisterTest < MCP23017Test
+  def test_addresses_bank_low
+    assert_equal 0x00, @mcp23017.iodira.address
+    assert_equal 0x01, @mcp23017.iodirb.address
+    assert_equal 0x02, @mcp23017.ipola.address
+    assert_equal 0x03, @mcp23017.ipolb.address
+    assert_equal 0x04, @mcp23017.gpintena.address
+    assert_equal 0x05, @mcp23017.gpintenb.address
+  end
+end
