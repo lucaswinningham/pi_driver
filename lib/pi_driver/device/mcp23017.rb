@@ -6,6 +6,12 @@ require_relative 'mcp23017/register/ipol'
 require_relative 'mcp23017/register/gpinten'
 require_relative 'mcp23017/register/defval'
 require_relative 'mcp23017/register/intcon'
+# require_relative 'mcp23017/register/iocon'
+require_relative 'mcp23017/register/gppu'
+require_relative 'mcp23017/register/intf'
+require_relative 'mcp23017/register/intcap'
+require_relative 'mcp23017/register/gpio'
+require_relative 'mcp23017/register/olat'
 
 module PiDriver
   class Device
@@ -16,6 +22,13 @@ module PiDriver
       attr_reader :gpintena, :gpintenb
       attr_reader :defvala, :defvalb
       attr_reader :intcona, :intconb
+      # attr_reader :iocona, :ioconb
+      attr_reader :gppua, :gppub
+      attr_reader :intfa, :intfb
+      attr_reader :intcapa, :intcapb
+      attr_reader :gpioa, :gpiob
+      attr_reader :olata, :olatb
+
       # attr_reader :gpa0, :gpa1, :gpa2, :gpa3, :gpa4, :gpa5, :gpa6, :gpa7
       # attr_reader :gpb0, :gpb1, :gpb2, :gpb3, :gpb4, :gpb5, :gpb6, :gpb7
 
@@ -39,6 +52,18 @@ module PiDriver
         @defvalb = Defval.new port: :b
         @intcona = Intcon.new port: :a
         @intconb = Intcon.new port: :b
+        # @iocona = Iocon.new port: :a
+        # @ioconb = Iocon.new port: :b
+        @gppua = Gppu.new port: :a
+        @gppub = Gppu.new port: :b
+        @intfa = Intf.new port: :a
+        @intfb = Intf.new port: :b
+        @intcapa = Intcap.new port: :a
+        @intcapb = Intcap.new port: :b
+        @gpioa = Gpio.new port: :a
+        @gpiob = Gpio.new port: :b
+        @olata = Olat.new port: :a
+        @olatb = Olat.new port: :b
       end
     end
   end
