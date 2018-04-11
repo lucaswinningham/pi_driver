@@ -5,7 +5,6 @@ module PiDriver
       @delta_time = @frequency ** -1.0
       @clock_pin = options[:clock_pin]
       @data_pin = options[:data_pin]
-      @num_bits = 8
       stop
     end
 
@@ -50,7 +49,7 @@ module PiDriver
     private
 
     def send_data(byte)
-      bits = Utils::Byte.byte_to_bits(byte, @num_bits)
+      bits = Utils::Byte.byte_to_bits(byte)
       bits.each do |bit|
         bit == Utils::State::HIGH ? release_data_pin : drive_data_pin
         release_clock_pin
@@ -60,7 +59,7 @@ module PiDriver
 
     def read_data
       bits = []
-      @num_bits.times do
+      Utils::Byte::NUM_BITS_PER_BYTE.times do
         release_clock_pin
         bits << @data_pin.value
         drive_clock_pin
