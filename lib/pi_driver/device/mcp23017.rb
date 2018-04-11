@@ -5,6 +5,7 @@ require_relative 'mcp23017/register'
 require_relative 'mcp23017/register/iodir'
 require_relative 'mcp23017/register/ipol'
 require_relative 'mcp23017/register/gpinten'
+require_relative 'mcp23017/register/defval'
 
 module PiDriver
   class Device
@@ -13,6 +14,7 @@ module PiDriver
       attr_reader :iodira, :iodirb
       attr_reader :ipola, :ipolb
       attr_reader :gpintena, :gpintenb
+      attr_reader :defvala, :defvalb
       # attr_reader :gpa0, :gpa1, :gpa2, :gpa3, :gpa4, :gpa5, :gpa6, :gpa7
       # attr_reader :gpb0, :gpb1, :gpb2, :gpb3, :gpb4, :gpb5, :gpb6, :gpb7
 
@@ -32,6 +34,8 @@ module PiDriver
         @ipolb = Ipol.new port: :b
         @gpintena = Gpinten.new port: :a
         @gpintenb = Gpinten.new port: :b
+        @defvala = Defval.new port: :a
+        @defvalb = Defval.new port: :b
         # @ipola = Register.new address: 0x02
         # @ipolb = Register.new address: 0x03
         # @gpintena = Register.new address: 0x04

@@ -8,5 +8,7 @@ class MCP23017RegisterTest < MCP23017Test
     assert_equal 0x03, @mcp23017.ipolb.address
     assert_equal 0x04, @mcp23017.gpintena.address
     assert_equal 0x05, @mcp23017.gpintenb.address
+    assert_equal 0x06, @mcp23017.defvala.address
+    assert_equal 0x07, @mcp23017.defvalb.address
   end
 end
