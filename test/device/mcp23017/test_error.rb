@@ -7,23 +7,19 @@ class MCP23017ErrorTest < MCP23017Test
     end
   end
 
-  # def test_error_register_bit
-  #   register = PiDriver::Device::MCP23017::Register.new
+  def test_error_register_bit
+    assert_raises ArgumentError do
+      @mcp23017.iodira.bit0 = 2
+    end
+  end
 
-  #   assert_raises ArgumentError do
-  #     register.bit0 = 2
-  #   end
-  # end
+  def test_error_register_port
+    assert_raises ArgumentError do
+      @mcp23017.iodira.byte = 256
+    end
 
-  # def test_error_register_port
-  #   register = PiDriver::Device::MCP23017::Register.new
-
-  #   assert_raises ArgumentError do
-  #     register.port = 256
-  #   end
-
-  #   assert_raises ArgumentError do
-  #     register.port = -1
-  #   end
-  # end
+    assert_raises ArgumentError do
+      @mcp23017.iodira.byte = -1
+    end
+  end
 end
