@@ -1,5 +1,8 @@
 require_relative 'register/register_helper'
 
+# for class level methods
+require_relative '../../utils'
+
 module PiDriver
   class Device
     class MCP23017
@@ -34,8 +37,7 @@ module PiDriver
         private
 
         def self.bit_accessors
-          8.times do |bit_number|
-          # Utils::Byte::NUM_BITS_PER_BYTE.times do |bit_number|
+          Utils::Byte::NUM_BITS_PER_BYTE.times do |bit_number|
             string = "bit#{bit_number}"
 
             getter_symbol = string.to_sym
@@ -59,8 +61,7 @@ module PiDriver
         bit_accessors
 
         def self.mirror_bit_accessors(prefix_symbol)
-          8.times do |bit_number|
-          # Utils::Byte::NUM_BITS_PER_BYTE.times do |bit_number|
+          Utils::Byte::NUM_BITS_PER_BYTE.times do |bit_number|
             bit_string = "bit#{bit_number}"
             new_string = "#{prefix_symbol}#{bit_number}"
 
