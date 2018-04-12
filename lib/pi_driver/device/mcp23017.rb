@@ -39,6 +39,32 @@ module PiDriver
         initialize_registers
       end
 
+      def update_registers(bank)
+        @iodira.update_address bank
+        @iodirb.update_address bank
+        @ipola.update_address bank
+        @ipolb.update_address bank
+        @gpintena.update_address bank
+        @gpintenb.update_address bank
+        @defvala.update_address bank
+        @defvalb.update_address bank
+        @intcona.update_address bank
+        @intconb.update_address bank
+
+        @iocon.update_address bank
+        
+        @gppua.update_address bank
+        @gppub.update_address bank
+        @intfa.update_address bank
+        @intfb.update_address bank
+        @intcapa.update_address bank
+        @intcapb.update_address bank
+        @gpioa.update_address bank
+        @gpiob.update_address bank
+        @olata.update_address bank
+        @olatb.update_address bank
+      end
+
       private
 
       def initialize_registers
@@ -53,7 +79,7 @@ module PiDriver
         @intcona = Intcon.new port: :a
         @intconb = Intcon.new port: :b
 
-        @iocon = Iocon.new
+        @iocon = Iocon.new(self)
 
         @gppua = Gppu.new port: :a
         @gppub = Gppu.new port: :b

@@ -2,7 +2,8 @@ module PiDriver
   class Device
     class MCP23017
       class Iocon < Register
-        def initialize
+        def initialize(observer)
+          @observer = observer
           options = {}
           options[:register] = :iocon
           # IOCON is a single register with two addresses, go with PORT A
@@ -12,7 +13,7 @@ module PiDriver
 
         def bit7=(value)
           super
-          # update all other register addresses from owner of this register
+          @observer.update_registers(@bit7)
         end
 
         alias_method :bank, :bit7

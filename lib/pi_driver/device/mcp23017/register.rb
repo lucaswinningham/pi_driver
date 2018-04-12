@@ -9,6 +9,8 @@ module PiDriver
         def initialize(options)
           @argument_helper = Utils::ArgumentHelper.new prefix: "MCP23017::Register"
 
+          @register = options[:register]
+          @port = options[:port]
           options[:bank] = Utils::State::LOW
 
           @address = RegisterHelper.address options
@@ -22,6 +24,11 @@ module PiDriver
           @byte = value
           mirror_bits_from_byte
           @byte
+        end
+
+        def update_address(bank)
+          options = { register: @register, port: @port, bank: bank }
+          @address = RegisterHelper.address options
         end
 
         private
