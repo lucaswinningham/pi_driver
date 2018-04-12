@@ -22,4 +22,16 @@ class MCP23017ErrorTest < MCP23017Test
       @mcp23017.iodira.byte = -1
     end
   end
+
+  def test_error_write
+    assert_raises ArgumentError do
+      @mcp23017.write :invalid_register
+    end
+  end
+
+  def test_error_read
+    assert_raises ArgumentError do
+      @mcp23017.read :invalid_register
+    end
+  end
 end

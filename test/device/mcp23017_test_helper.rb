@@ -10,6 +10,4 @@ class MCP23017Test < TestCase
     @mcp23017.hardware_address.a1 = 1
     @mcp23017.hardware_address.a2 = 1
   end
-
-  private
 end
