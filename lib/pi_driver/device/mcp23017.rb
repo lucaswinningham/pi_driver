@@ -52,7 +52,7 @@ module PiDriver
         @intconb.update_address bank
 
         @iocon.update_address bank
-        
+
         @gppua.update_address bank
         @gppub.update_address bank
         @intfa.update_address bank
@@ -79,7 +79,7 @@ module PiDriver
         @intcona = Intcon.new port: :a
         @intconb = Intcon.new port: :b
 
-        @iocon = Iocon.new(self)
+        @iocon = Iocon.new observer: self
 
         @gppua = Gppu.new port: :a
         @gppub = Gppu.new port: :b

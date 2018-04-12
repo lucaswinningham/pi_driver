@@ -2,9 +2,8 @@ module PiDriver
   class Device
     class MCP23017
       class Iocon < Register
-        def initialize(observer)
-          @observer = observer
-          options = {}
+        def initialize(options)
+          @observer = options.delete :observer
           options[:register] = :iocon
           # IOCON is a single register with two addresses, go with PORT A
           options[:port] = :a
