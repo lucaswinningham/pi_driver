@@ -3,15 +3,9 @@ require 'test_helper'
 class PinTest < TestCase
   def setup
     @pin_number = 0
-    make_pin_dir
   end
 
   private
-
-  def make_pin_dir
-    @dir_pin = "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/gpio#{@pin_number}"
-    Dir.mkdir(@dir_pin) unless File.directory?(@dir_pin)
-  end
 
   def expect_read(path, content)
     File.expects(:read).with(path).returns(content)
