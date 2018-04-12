@@ -95,4 +95,24 @@ class MCP23017RegisterTest < MCP23017Test
     assert_equal 0b00000000, @mcp23017.olata.byte
     assert_equal 0b00000000, @mcp23017.olatb.byte
   end
+
+  def test_writing_byte_is_mirrored_on_bits
+    @mcp23017.iodira.byte = 0b00000000
+    assert_equal 0, @mcp23017.iodira.bit0
+    assert_equal 0, @mcp23017.iodira.bit1
+    assert_equal 0, @mcp23017.iodira.bit2
+    assert_equal 0, @mcp23017.iodira.bit3
+    assert_equal 0, @mcp23017.iodira.bit4
+    assert_equal 0, @mcp23017.iodira.bit5
+    assert_equal 0, @mcp23017.iodira.bit6
+    assert_equal 0, @mcp23017.iodira.bit7
+  end
+
+  def test_writing_bits_is_mirrored_on_byte
+    @mcp23017.iodira.bit1 = 0
+    @mcp23017.iodira.bit3 = 0
+    @mcp23017.iodira.bit5 = 0
+    @mcp23017.iodira.bit7 = 0
+    assert_equal 0b01010101, @mcp23017.iodira.byte
+  end
 end

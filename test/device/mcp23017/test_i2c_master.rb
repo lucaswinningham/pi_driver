@@ -8,8 +8,8 @@ class MCP23017I2CMasterTest < MCP23017Test
     PiDriver::Device::MCP23017.new i2c_master: @i2c_master
   end
 
-  # def test_single_update
-  #   seq = sequence('single update')
+  # def test_single_write
+  #   seq = sequence('single write')
 
   #   @i2c_master.expects(:start).with(nil).in_sequence(seq)
 
@@ -23,11 +23,11 @@ class MCP23017I2CMasterTest < MCP23017Test
   #   @i2c_master.expects(:stop).with(nil).in_sequence(seq)
 
   #   @mcp23017.olatb.byte = 0b10101010
-  #   @mcp23017.update :olatb
+  #   @mcp23017.write :olatb
   # end
 
-  # def test_multiple_update
-  #   seq = sequence('multiple update')
+  # def test_multiple_write
+  #   seq = sequence('multiple write')
 
   #   @i2c_master.expects(:start).with(nil).in_sequence(seq)
     
@@ -51,6 +51,6 @@ class MCP23017I2CMasterTest < MCP23017Test
 
   #   @mcp23017.olata.byte = 0b01010101
   #   @mcp23017.olatb.byte = 0b10101010
-  #   @mcp23017.update :olata, :olatb
+  #   @mcp23017.write :olata, :olatb
   # end
 end
