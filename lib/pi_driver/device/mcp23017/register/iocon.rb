@@ -12,7 +12,7 @@ module PiDriver
 
         def bit7=(value)
           super
-          @observer.update_registers(@bit7)
+          @observer.update_registers
         end
 
         alias_method :bank, :bit7
