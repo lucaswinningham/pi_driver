@@ -17,80 +17,71 @@ module PiDriver
   class Device
     class MCP23017
       attr_reader :hardware_address
-      attr_reader :iodira, :iodirb
-      attr_reader :ipola, :ipolb
-      attr_reader :gpintena, :gpintenb
-      attr_reader :defvala, :defvalb
-      attr_reader :intcona, :intconb
-      attr_reader :iocon
-      attr_reader :gppua, :gppub
-      attr_reader :intfa, :intfb
-      attr_reader :intcapa, :intcapb
-      attr_reader :gpioa, :gpiob
-      attr_reader :olata, :olatb
 
       # attr_reader :gpa0, :gpa1, :gpa2, :gpa3, :gpa4, :gpa5, :gpa6, :gpa7
       # attr_reader :gpb0, :gpb1, :gpb2, :gpb3, :gpb4, :gpb5, :gpb6, :gpb7
 
       def initialize(options = {})
         @i2c_master = options[:i2c_master]
+        # @hardware_address = HardwareAddress.new observer: self
         @hardware_address = HardwareAddress.new
+        opcode_base = 0b0100 << 3
+        opcode_base += @hardware_address.a0 << 2
+        opcode_base += @hardware_address.a1 << 1
+        opcode_base += @hardware_address.a2
+        @opcode_write = PiDriver::I2CMaster.prepare_address_for_write opcode_base
+        @opcode_read = PiDriver::I2CMaster.prepare_address_for_read opcode_base
         # initialize_pins
-        initialize_registers
       end
 
       def update_registers(bank)
-        @iodira.update_address bank
-        @iodirb.update_address bank
-        @ipola.update_address bank
-        @ipolb.update_address bank
-        @gpintena.update_address bank
-        @gpintenb.update_address bank
-        @defvala.update_address bank
-        @defvalb.update_address bank
-        @intcona.update_address bank
-        @intconb.update_address bank
-
-        @iocon.update_address bank
-
-        @gppua.update_address bank
-        @gppub.update_address bank
-        @intfa.update_address bank
-        @intfb.update_address bank
-        @intcapa.update_address bank
-        @intcapb.update_address bank
-        @gpioa.update_address bank
-        @gpiob.update_address bank
-        @olata.update_address bank
-        @olatb.update_address bank
+        registers.each do |_, register|
+          register.update_address bank
+        end
       end
 
       private
 
+      def self.register_reader(*register_array)
+        register_array.each do |register|
+          define_method register do
+            registers[register]
+          end
+        end
+      end
+
+      register_reader :iodira, :iodirb
+      register_reader :ipola, :ipolb
+      register_reader :gpintena, :gpintenb
+      register_reader :defvala, :defvalb
+      register_reader :intcona, :intconb
+      register_reader :iocon
+      register_reader :gppua, :gppub
+      register_reader :intfa, :intfb
+      register_reader :intcapa, :intcapb
+      register_reader :gpioa, :gpiob
+      register_reader :olata, :olatb
+
+      def registers
+        @registers ||= initialize_registers
+      end
+
       def initialize_registers
-        @iodira = Iodir.new port: :a
-        @iodirb = Iodir.new port: :b
-        @ipola = Ipol.new port: :a
-        @ipolb = Ipol.new port: :b
-        @gpintena = Gpinten.new port: :a
-        @gpintenb = Gpinten.new port: :b
-        @defvala = Defval.new port: :a
-        @defvalb = Defval.new port: :b
-        @intcona = Intcon.new port: :a
-        @intconb = Intcon.new port: :b
+        {
+          iodira: Iodir.new(port: :a),      iodirb: Iodir.new(port: :b),
+          ipola: Ipol.new(port: :a),        ipolb: Ipol.new(port: :b),
+          gpintena: Gpinten.new(port: :a),  gpintenb: Gpinten.new(port: :b),
+          defvala: Defval.new(port: :a),    defvalb: Defval.new(port: :b),
+          intcona: Intcon.new(port: :a),    intconb: Intcon.new(port: :b),
 
-        @iocon = Iocon.new observer: self
+          iocon: Iocon.new(observer: self),
 
-        @gppua = Gppu.new port: :a
-        @gppub = Gppu.new port: :b
-        @intfa = Intf.new port: :a
-        @intfb = Intf.new port: :b
-        @intcapa = Intcap.new port: :a
-        @intcapb = Intcap.new port: :b
-        @gpioa = Gpio.new port: :a
-        @gpiob = Gpio.new port: :b
-        @olata = Olat.new port: :a
-        @olatb = Olat.new port: :b
+          gppua: Gppu.new(port: :a),        gppub: Gppu.new(port: :b),
+          intfa: Intf.new(port: :a),        intfb: Intf.new(port: :b),
+          intcapa: Intcap.new(port: :a),    intcapb: Intcap.new(port: :b),
+          gpioa: Gpio.new(port: :a),        gpiob: Gpio.new(port: :b),
+          olata: Olat.new(port: :a),        olatb: Olat.new(port: :b)
+        }
       end
     end
   end
