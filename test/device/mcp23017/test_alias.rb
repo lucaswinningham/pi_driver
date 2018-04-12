@@ -14,6 +14,7 @@ class MCP23017AliasTest < MCP23017Test
     assert_equal @mcp23017.gpioa.method(:bit0), @mcp23017.gpioa.method(:gp0)
     assert_equal @mcp23017.olata.method(:bit0), @mcp23017.olata.method(:ol0)
   end
+
   def test_iocon_aliases
     assert_equal @mcp23017.iocon.method(:bit7), @mcp23017.iocon.method(:bank)
     assert_equal @mcp23017.iocon.method(:bit6), @mcp23017.iocon.method(:mirror)

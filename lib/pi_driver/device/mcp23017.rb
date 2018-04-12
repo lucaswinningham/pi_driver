@@ -22,6 +22,7 @@ module PiDriver
       # attr_reader :gpb0, :gpb1, :gpb2, :gpb3, :gpb4, :gpb5, :gpb6, :gpb7
 
       def initialize(options = {})
+        @argument_helper = Utils::ArgumentHelper.new prefix: "MCP23017"
         @i2c_master = options[:i2c_master]
         # @hardware_address = HardwareAddress.new observer: self
         @hardware_address = HardwareAddress.new
@@ -29,8 +30,8 @@ module PiDriver
         opcode_base += @hardware_address.a0 << 2
         opcode_base += @hardware_address.a1 << 1
         opcode_base += @hardware_address.a2
-        @opcode_write = PiDriver::I2CMaster.prepare_address_for_write opcode_base
-        @opcode_read = PiDriver::I2CMaster.prepare_address_for_read opcode_base
+        @opcode_for_write = PiDriver::I2CMaster.prepare_address_for_write opcode_base
+        @opcode_for_read = PiDriver::I2CMaster.prepare_address_for_read opcode_base
         # initialize_pins
       end
 
@@ -38,6 +39,43 @@ module PiDriver
         registers.each do |_, register|
           register.update_address bank
         end
+      end
+
+      def write(*register_array)
+        @i2c_master.start
+
+        register_array.each_with_index do |register, index|
+          @argument_helper.check(:register, register, registers.keys)
+
+          @i2c_master.write @opcode_for_write
+          @i2c_master.ack
+          @i2c_master.write registers[register].address
+          @i2c_master.ack
+          @i2c_master.write registers[register].byte
+          @i2c_master.ack
+
+          @i2c_master.restart unless index == register_array.length - 1
+        end
+
+        @i2c_master.stop
+      end
+
+      def read(*register_array)
+        @i2c_master.start
+
+        register_array.each_with_index do |register, index|
+          @argument_helper.check(:register, register, registers.keys)
+
+          @i2c_master.write @opcode_for_read
+          @i2c_master.ack
+          @i2c_master.write registers[register].address
+          @i2c_master.ack
+          registers[register].byte = @i2c_master.read
+
+          @i2c_master.restart unless index == register_array.length - 1
+        end
+
+        @i2c_master.stop
       end
 
       private
