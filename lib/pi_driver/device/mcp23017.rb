@@ -6,7 +6,7 @@ require_relative 'mcp23017/register/ipol'
 require_relative 'mcp23017/register/gpinten'
 require_relative 'mcp23017/register/defval'
 require_relative 'mcp23017/register/intcon'
-# require_relative 'mcp23017/register/iocon'
+require_relative 'mcp23017/register/iocon'
 require_relative 'mcp23017/register/gppu'
 require_relative 'mcp23017/register/intf'
 require_relative 'mcp23017/register/intcap'
@@ -22,7 +22,7 @@ module PiDriver
       attr_reader :gpintena, :gpintenb
       attr_reader :defvala, :defvalb
       attr_reader :intcona, :intconb
-      # attr_reader :iocona, :ioconb
+      attr_reader :iocon
       attr_reader :gppua, :gppub
       attr_reader :intfa, :intfb
       attr_reader :intcapa, :intcapb
@@ -52,8 +52,9 @@ module PiDriver
         @defvalb = Defval.new port: :b
         @intcona = Intcon.new port: :a
         @intconb = Intcon.new port: :b
-        # @iocona = Iocon.new port: :a
-        # @ioconb = Iocon.new port: :b
+
+        @iocon = Iocon.new
+
         @gppua = Gppu.new port: :a
         @gppub = Gppu.new port: :b
         @intfa = Intf.new port: :a
