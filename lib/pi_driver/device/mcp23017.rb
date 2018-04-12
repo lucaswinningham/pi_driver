@@ -68,9 +68,14 @@ module PiDriver
         register_array.each_with_index do |register, index|
           @argument_helper.check(:register, register, registers.keys)
 
-          @i2c_master.write @opcode_for_read
+          @i2c_master.write @opcode_for_write
           @i2c_master.ack
           @i2c_master.write registers[register].address
+          @i2c_master.ack
+
+          @i2c_master.restart
+
+          @i2c_master.write @opcode_for_read
           @i2c_master.ack
           registers[register].byte = @i2c_master.read
 
