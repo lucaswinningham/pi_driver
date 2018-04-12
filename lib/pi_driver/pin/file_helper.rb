@@ -5,7 +5,6 @@ module PiDriver
     class FileHelper
       def initialize(gpio_number)
         @gpio_number = gpio_number
-
         @directory_helper = DirectoryHelper.new @gpio_number
       end
 
