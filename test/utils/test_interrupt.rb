@@ -14,38 +14,45 @@ class UtilsInterruptTest < UtilsTest
     value_object = mock
     interrupt = PiDriver::Utils::Interrupt.new(:rising) { value_object.value_method }
 
-    rising = sequence('rising')
-    value_object.expects(:value_method).returns(0).in_sequence(rising)
-    value_object.expects(:value_method).returns(1).at_least_once.in_sequence(rising)
+    begin
+      rising = sequence('rising')
+      value_object.expects(:value_method).returns(0).in_sequence(rising)
+      value_object.expects(:value_method).returns(1).at_least_once.in_sequence(rising)
 
-    interrupted = false
-    interrupt.start do |edge|
-      assert :rising, edge
-      interrupted = true
+      interrupted = false
+      interrupt.start do |edge|
+        assert :rising, edge
+        interrupted = true
+        interrupt.clear
+      end
+
+      timeout { interrupted }
+      assert interrupted
+    ensure
       interrupt.clear
     end
-
-    timeout { interrupted }
-    assert interrupted
   end
 
   def test_falling
     value_object = mock
     interrupt = PiDriver::Utils::Interrupt.new(:falling) { value_object.value_method }
 
-    falling = sequence('falling')
-    value_object.expects(:value_method).returns(1).in_sequence(falling)
-    value_object.expects(:value_method).returns(0).at_least_once.in_sequence(falling)
+    begin
+      falling = sequence('falling')
+      value_object.expects(:value_method).returns(1).in_sequence(falling)
+      value_object.expects(:value_method).returns(0).at_least_once.in_sequence(falling)
 
-    interrupted = false
-    interrupt.start do |edge|
-      assert :falling, edge
-      interrupted = true
+      interrupted = false
+      interrupt.start do |edge|
+        assert :falling, edge
+        interrupted = true
+      end
+
+      timeout { interrupted }
+      assert interrupted
+    ensure
       interrupt.clear
     end
-
-    timeout { interrupted }
-    assert interrupted
   end
 
   # def test_interrupt_both
