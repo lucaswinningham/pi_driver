@@ -25,14 +25,23 @@ module PiDriver
       private
 
       def get_interrupt_edge(new_state, last_state)
-        rising_edge = new_state == Utils::State::HIGH && last_state == Utils::State::LOW
-        falling_edge = new_state == Utils::State::LOW && last_state == Utils::State::HIGH
+        rising_trigger = new_state == Utils::State::HIGH && last_state == Utils::State::LOW
+        falling_trigger = new_state == Utils::State::LOW && last_state == Utils::State::HIGH
 
-        if rising_edge && [Utils::Edge::RISING, Utils::Edge::BOTH].include?(@edge)
-          Utils::Edge::RISING
-        elsif falling_edge && [Utils::Edge::FALLING, Utils::Edge::BOTH].include?(@edge)
-          Utils::Edge::FALLING
-        end
+        return Utils::Edge::RISING if rising_trigger && (both? || rising?)
+        return Utils::Edge::FALLING if falling_trigger && (both? || falling?)
+      end
+
+      def both?
+        @edge == Utils::Edge::BOTH
+      end
+
+      def rising?
+        @edge == Utils::Edge::RISING
+      end
+
+      def falling?
+        @edge == Utils::Edge::FALLING
       end
     end
   end
