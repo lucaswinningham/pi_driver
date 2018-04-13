@@ -22,8 +22,7 @@ module PiDriver
           end
         end
 # p !!@thread
-        @thread.abort_on_exception = true
-        @thread
+        @thread.tap { |me| me.abort_on_exception = true }
       end
 
       def clear

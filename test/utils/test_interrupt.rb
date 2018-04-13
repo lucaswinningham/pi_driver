@@ -1,6 +1,10 @@
 require_relative '../utils_test_helper'
 
 class UtilsInterruptTest < UtilsTest
+  def setup
+    super
+  end
+
   def test_new_default
     interrupt = PiDriver::Utils::Interrupt.new(:some_edge) { [0, 1].sample }
     thread = mock
@@ -23,7 +27,6 @@ class UtilsInterruptTest < UtilsTest
       interrupt.start do |edge|
         assert :rising, edge
         interrupted = true
-        interrupt.clear
       end
 
       timeout { interrupted }
@@ -55,51 +58,52 @@ class UtilsInterruptTest < UtilsTest
     end
   end
 
-  # def test_interrupt_both
-  #   pin = PiDriver::Pin.new @pin_number
+  def test_both
+    value_object = mock
+    interrupt = PiDriver::Utils::Interrupt.new(:both) { value_object.value_method }
 
-  #   interrupted = false
-  #   both = sequence('both')
-  #   expect_value_read('0').in_sequence(both)
-  #   expect_value_read('1').at_least_once.in_sequence(both)
-  #   pin.interrupt(:both) do
-  #     interrupted = true
-  #     pin.clear_interrupt
-  #   end
-  #   timeout { interrupted }
-  #   assert interrupted
+    begin
+      both = sequence('both')
+      value_object.expects(:value_method).returns(0).in_sequence(both)
+      value_object.expects(:value_method).returns(1).in_sequence(both)
+      value_object.expects(:value_method).returns(0).at_least_once.in_sequence(both)
 
-  #   interrupted = false
-  #   both = sequence('both')
-  #   expect_value_read('1').in_sequence(both)
-  #   expect_value_read('0').at_least_once.in_sequence(both)
-  #   pin.interrupt(:both) do
-  #     interrupted = true
-  #     pin.clear_interrupt
-  #   end
-  #   timeout { interrupted }
-  #   assert interrupted
-  # end
+      rising_detected = false
+      falling_detected = false
+      interrupt.start do |edge|
+        if !rising_detected
+          rising_detected = true
+          assert :rising, edge
+        elsif !falling_detected
+          falling_detected = true
+          assert :falling, edge
+        end
+      end
 
-  # def test_interrupt_none
-  #   pin = PiDriver::Pin.new @pin_number
+      timeout { rising_detected && falling_detected }
+      assert rising_detected && falling_detected
+    ensure
+      interrupt.clear
+    end
+  end
 
-  #   interrupted = false
-  #   none = sequence('none')
-  #   expect_value_read('0').in_sequence(none)
-  #   expect_value_read('1').at_least_once.in_sequence(none)
-  #   pin.interrupt(:none) { interrupted = true }
-  #   timeout { interrupted }
-  #   refute interrupted
-  #   pin.clear_interrupt
+  def test_none
+    value_object = mock
+    interrupt = PiDriver::Utils::Interrupt.new(:none) { value_object.value_method }
 
-  #   interrupted = false
-  #   none = sequence('none')
-  #   expect_value_read('1').in_sequence(none)
-  #   expect_value_read('0').at_least_once.in_sequence(none)
-  #   pin.interrupt(:none) { interrupted = true }
-  #   timeout { interrupted }
-  #   refute interrupted
-  #   pin.clear_interrupt
-  # end
+    begin
+      both = sequence('both')
+      value_object.expects(:value_method).returns(0).in_sequence(both)
+      value_object.expects(:value_method).returns(1).in_sequence(both)
+      value_object.expects(:value_method).returns(0).at_least_once.in_sequence(both)
+
+      interrupted = false
+      interrupt.start { interrupted = true }
+
+      timeout { }
+      refute interrupted
+    ensure
+      interrupt.clear
+    end
+  end
 end
