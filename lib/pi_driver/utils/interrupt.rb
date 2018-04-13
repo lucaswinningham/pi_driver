@@ -2,20 +2,28 @@ module PiDriver
   module Utils
     class Interrupt
       def initialize(edge, &block)
+        @argument_helper = Utils::ArgumentHelper.new prefix: "Utils::Interrupt"
         @edge = edge
+
+        @argument_helper.check(:block, block_given?, [true])
         @check = block
       end
 
       def start
+        @argument_helper.check(:block, block_given?, [true])
+
         @thread = Thread.new do
-          last_state = @check.call
+          last_state = check
           loop do
-            new_state = @check.call
+            new_state = check
             edge = get_interrupt_edge(new_state, last_state)
-            yield(edge) if edge && block_given?
+            yield(edge) if edge
             last_state = new_state
           end
         end
+# p !!@thread
+        @thread.abort_on_exception = true
+        @thread
       end
 
       def clear
@@ -23,6 +31,12 @@ module PiDriver
       end
 
       private
+
+      def check
+        state = @check.call
+        @argument_helper.check(:state, state, Utils::State::VALID_STATES)
+        state
+      end
 
       def get_interrupt_edge(new_state, last_state)
         rising_trigger = new_state == Utils::State::HIGH && last_state == Utils::State::LOW
