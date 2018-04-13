@@ -1,6 +1,5 @@
 require_relative 'pin/board'
 require_relative 'pin/direction'
-require_relative 'pin/edge'
 require_relative 'pin/file_helper'
 
 module PiDriver
@@ -82,38 +81,15 @@ module PiDriver
       input? ? @file_helper.read_value : @state
     end
 
-    def interrupt(edge = Edge::RISING)
-      @argument_helper.check(:edge, edge, Edge::VALID_EDGES)
+    def interrupt(edge = Utils::Edge::RISING)
+      @argument_helper.check(:edge, edge, Utils::Edge::VALID_EDGES)
       @edge = edge
-
-      @interrupt_thread = Thread.new do
-        last_state = @file_helper.read_value
-        loop do
-          new_state = @file_helper.read_value
-          yield if block_given? && interrupted?(new_state, last_state)
-          last_state = new_state
-        end
-      end
+      @interrupt = Utils::Interrupt.new(@edge) { @file_helper.read_value }
+      @interrupt.start { yield }
     end
 
     def clear_interrupt
-      @interrupt_thread.kill if @interrupt_thread
-    end
-
-    private
-
-    def interrupted?(new_state, last_state)
-      rising_edge = new_state == Utils::State::HIGH && last_state == Utils::State::LOW
-      falling_edge = new_state == Utils::State::LOW && last_state == Utils::State::HIGH
-
-      case @edge
-      when :rising
-        rising_edge
-      when :falling
-        falling_edge
-      when :both
-        rising_edge || falling_edge
-      end
+      @interrupt.clear if @interrupt
     end
   end
 end

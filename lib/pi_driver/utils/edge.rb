@@ -1,5 +1,5 @@
 module PiDriver
-  class Pin
+  module Utils
     class Edge
       RISING = :rising
       FALLING = :falling
