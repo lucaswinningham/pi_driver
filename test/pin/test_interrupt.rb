@@ -11,29 +11,41 @@ class PinInterruptTest < PinTest
     end
   end
 
-  # def test_interrupt_both
-  #   pin = PiDriver::Pin.new @pin_number
+  def test_interrupt_default
+    pin = PiDriver::Pin.new @pin_number
 
-  #   interrupted = false
-  #   both = sequence('both')
-  #   expect_value_read('0').in_sequence(both)
-  #   expect_value_read('1').at_least_once.in_sequence(both)
-  #   pin.interrupt(:both) do
-  #     interrupted = true
-  #     pin.clear_interrupt
-  #   end
-  #   timeout { interrupted }
-  #   assert interrupted
+    interrupt = sequence('interrupt default')
+    expect_value_read(0).in_sequence(interrupt)
+    expect_value_read(1).at_least_once.in_sequence(interrupt)
 
-  #   interrupted = false
-  #   both = sequence('both')
-  #   expect_value_read('1').in_sequence(both)
-  #   expect_value_read('0').at_least_once.in_sequence(both)
-  #   pin.interrupt(:both) do
-  #     interrupted = true
-  #     pin.clear_interrupt
-  #   end
-  #   timeout { interrupted }
-  #   assert interrupted
-  # end
+    interrupted = false
+
+    pin.interrupt do |edge|
+      assert :rising, edge
+      interrupted = true
+      pin.clear_interrupt
+    end
+
+    timeout { interrupted }
+    assert interrupted
+  end
+
+  def test_interrupt_argument
+    pin = PiDriver::Pin.new @pin_number
+
+    interrupt = sequence('interrupt argument')
+    expect_value_read(1).in_sequence(interrupt)
+    expect_value_read(0).at_least_once.in_sequence(interrupt)
+
+    interrupted = false
+
+    pin.interrupt(:falling) do |edge|
+      assert :falling, edge
+      interrupted = true
+      pin.clear_interrupt
+    end
+
+    timeout { interrupted }
+    assert interrupted
+  end
 end
