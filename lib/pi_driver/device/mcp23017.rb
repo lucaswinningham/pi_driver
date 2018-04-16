@@ -18,15 +18,11 @@ module PiDriver
     class MCP23017
       attr_reader :hardware_address
 
-      # attr_reader :gpa0, :gpa1, :gpa2, :gpa3, :gpa4, :gpa5, :gpa6, :gpa7
-      # attr_reader :gpb0, :gpb1, :gpb2, :gpb3, :gpb4, :gpb5, :gpb6, :gpb7
-
       def initialize(options = {})
         @argument_helper = Utils::ArgumentHelper.new prefix: "MCP23017"
         @i2c_master = options[:i2c_master]
         @hardware_address = HardwareAddress.new observer: self
         update_opcodes
-        # initialize_pins
       end
 
       def update_registers
