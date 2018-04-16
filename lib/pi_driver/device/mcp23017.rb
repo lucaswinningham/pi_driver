@@ -85,10 +85,6 @@ module PiDriver
         @i2c_master.stop
       end
 
-      def safe_configure
-        
-      end
-
       private
 
       def self.register_reader(*register_array)
