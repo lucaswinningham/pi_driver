@@ -1,6 +1,6 @@
 require_relative '../mcp23017_test_helper'
 
-class MCP23017I2CMasterTest < MCP23017Test
+class MCP23017ReadTest < MCP23017Test
   def test_single
     seq = sequence('single')
 
