@@ -17,7 +17,7 @@ module PiDriver
           loop do
             new_state = check
             edge = get_current_edge(new_state, last_state)
-            yield(edge) if valid_edge? edge
+            yield edge if valid_edge? edge
             last_state = new_state
           end
         end
