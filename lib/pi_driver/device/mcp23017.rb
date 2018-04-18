@@ -39,6 +39,7 @@ module PiDriver
         @opcode_for_read = PiDriver::I2CMaster.prepare_address_for_read base
       end
 
+      # TODO: read and write look similar. consider consolidation
       def read(*register_array)
         check_registers register_array
 

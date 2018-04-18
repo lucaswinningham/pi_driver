@@ -90,7 +90,6 @@ module PiDriver
 
     def clear_interrupt
       @interrupt&.clear
-      # @interrupt.clear
     end
   end
 end

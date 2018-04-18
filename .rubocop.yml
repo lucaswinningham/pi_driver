@@ -1,7 +1,5 @@
 AllCops:
   TargetRubyVersion: 2.4.1
-  Exclude:
-    - 'path/to/some/directory/*'
 Documentation:
   Enabled: false
 Metrics/AbcSize:
