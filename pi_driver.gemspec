@@ -13,4 +13,5 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'mocha',   '~> 1.4',    '>= 1.4.0'
   s.add_runtime_dependency 'rubocop', '~> 0.51.0', '>= 0.51.0'
+  s.add_runtime_dependency 'simplecov', '~> 0.15.1', '>= 0.15.1'
 end

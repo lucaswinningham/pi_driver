@@ -8,10 +8,6 @@ module PiDriver
         @directory_helper = DirectoryHelper.new @gpio_number
       end
 
-      def read_direction
-        File.read(@directory_helper.direction).to_sym
-      end
-
       def read_value
         File.read(@directory_helper.value).to_i
       end

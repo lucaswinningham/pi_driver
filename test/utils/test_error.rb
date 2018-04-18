@@ -4,7 +4,6 @@ class UtilsErrorTest < UtilsTest
   def test_error_interrupt_new_block
     assert_raises ArgumentError do
       PiDriver::Utils::Interrupt.new(:rising)
-      timeout { false }
     end
   end
 
@@ -12,7 +11,6 @@ class UtilsErrorTest < UtilsTest
     assert_raises ArgumentError do
       interrupt = PiDriver::Utils::Interrupt.new(:rising) { [0, 1].sample }
       interrupt.start
-      timeout { false }
     end
   end
 
