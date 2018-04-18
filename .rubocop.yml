@@ -1,0 +1,17 @@
+AllCops:
+  TargetRubyVersion: 2.4.1
+  Exclude:
+    - 'path/to/some/directory/*'
+Documentation:
+  Enabled: false
+Metrics/AbcSize:
+  Exclude:
+    - 'test/**/*'
+Metrics/LineLength:
+  Max: 100
+Metrics/MethodLength:
+  Max: 15
+  Exclude:
+    - 'test/**/*'
+Style/FrozenStringLiteralComment:
+  Enabled: false

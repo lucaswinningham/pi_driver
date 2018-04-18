@@ -8,7 +8,7 @@ module PiDriver
         VALID_PORTS = [
           A,
           B
-        ]
+        ].freeze
 
         def self.default(options)
           if options[:register] == MCP23017::Register::RegisterHelper::IODIR

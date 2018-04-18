@@ -5,7 +5,7 @@ module PiDriver
         attr_reader :a0, :a1, :a2
 
         def initialize(options)
-          @argument_helper = Utils::ArgumentHelper.new prefix: "MCP23017::HardwareAddress"
+          @argument_helper = Utils::ArgumentHelper.new prefix: 'MCP23017::HardwareAddress'
 
           @observer = options.delete :observer
 
@@ -13,8 +13,6 @@ module PiDriver
           @a1 = Utils::State::LOW
           @a2 = Utils::State::LOW
         end
-
-        private
 
         def self.address_writer(*addresses)
           addresses.each do |address|

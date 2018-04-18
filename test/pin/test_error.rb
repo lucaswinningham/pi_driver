@@ -29,7 +29,7 @@ class PinErrorTest < PinTest
   def test_error_edge
     pin = PiDriver::Pin.new @pin_number
     assert_raises ArgumentError do
-      pin.interrupt(:invalid_edge) { }
+      pin.interrupt(:invalid_edge) {}
     end
   end
 end

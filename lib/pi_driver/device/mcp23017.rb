@@ -19,7 +19,7 @@ module PiDriver
       attr_reader :hardware_address
 
       def initialize(options = {})
-        @argument_helper = Utils::ArgumentHelper.new prefix: "MCP23017"
+        @argument_helper = Utils::ArgumentHelper.new prefix: 'MCP23017'
         @i2c_master = options[:i2c_master]
         @hardware_address = HardwareAddress.new observer: self
         update_opcodes
@@ -27,7 +27,7 @@ module PiDriver
 
       def update_registers
         bank = registers[:iocon].bank
-        registers.each do |_, register|
+        registers.each_value do |register|
           register.update_address bank
         end
       end
@@ -39,49 +39,31 @@ module PiDriver
         @opcode_for_read = PiDriver::I2CMaster.prepare_address_for_read base
       end
 
-      def write(*register_array)
-        @i2c_master.start
-
-        register_array.each_with_index do |register, index|
-          @argument_helper.check(:register, register, registers.keys)
-
-          @i2c_master.write @opcode_for_write
-          @i2c_master.ack
-          @i2c_master.write registers[register].address
-          @i2c_master.ack
-          @i2c_master.write registers[register].byte
-          @i2c_master.ack
-
-          @i2c_master.restart unless index == register_array.length - 1
-        end
-
-        @i2c_master.stop
-      end
-
       def read(*register_array)
+        check_registers register_array
+
         @i2c_master.start
 
-        register_array.each_with_index do |register, index|
-          @argument_helper.check(:register, register, registers.keys)
-
-          @i2c_master.write @opcode_for_write
-          @i2c_master.ack
-          @i2c_master.write registers[register].address
-          @i2c_master.ack
-
-          @i2c_master.restart
-
-          @i2c_master.write @opcode_for_read
-          @i2c_master.ack
-          registers[register].byte = @i2c_master.read
-
-          @i2c_master.restart unless index == register_array.length - 1
+        register_array.each_with_index do |register, sequence_index|
+          @i2c_master.restart unless sequence_index.zero?
+          read_register register
         end
 
         @i2c_master.stop
       end
 
-      private
+      def write(*register_array)
+        check_registers register_array
+
+        @i2c_master.start
+
+        register_array.each_with_index do |register, sequence_index|
+          @i2c_master.restart unless sequence_index.zero?
+          write_register register
+        end
+
+        @i2c_master.stop
+      end
 
       def self.register_reader(*register_array)
         register_array.each do |register|
@@ -91,6 +73,7 @@ module PiDriver
         end
       end
 
+      private_class_method :register_reader
       register_reader :iodira, :iodirb
       register_reader :ipola, :ipolb
       register_reader :gpintena, :gpintenb
@@ -103,10 +86,13 @@ module PiDriver
       register_reader :gpioa, :gpiob
       register_reader :olata, :olatb
 
+      private
+
       def registers
         @registers ||= initialize_registers
       end
 
+      # rubocop:disable Metrics/AbcSize
       def initialize_registers
         {
           iodira: Iodir.new(port: :a),      iodirb: Iodir.new(port: :b),
@@ -123,6 +109,35 @@ module PiDriver
           gpioa: Gpio.new(port: :a),        gpiob: Gpio.new(port: :b),
           olata: Olat.new(port: :a),        olatb: Olat.new(port: :b)
         }
+      end
+      # rubocop:enable Metrics/AbcSize
+
+      def check_registers(register_array)
+        register_array.each do |register|
+          @argument_helper.check(:register, register, registers.keys)
+        end
+      end
+
+      def read_register(register)
+        @i2c_master.write @opcode_for_write
+        @i2c_master.ack
+        @i2c_master.write registers[register].address
+        @i2c_master.ack
+
+        @i2c_master.restart
+
+        @i2c_master.write @opcode_for_read
+        @i2c_master.ack
+        registers[register].byte = @i2c_master.read
+      end
+
+      def write_register(register)
+        @i2c_master.write @opcode_for_write
+        @i2c_master.ack
+        @i2c_master.write registers[register].address
+        @i2c_master.ack
+        @i2c_master.write registers[register].byte
+        @i2c_master.ack
       end
     end
   end

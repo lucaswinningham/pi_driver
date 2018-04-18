@@ -59,7 +59,7 @@ module PiDriver
         PIN40,
         PIN27,
         PIN28
-      ]
+      ].freeze
     end
   end
 end

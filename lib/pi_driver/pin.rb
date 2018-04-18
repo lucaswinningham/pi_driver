@@ -7,7 +7,7 @@ module PiDriver
     attr_reader :gpio_number
 
     def initialize(gpio_number, options = {})
-      @argument_helper = Utils::ArgumentHelper.new prefix: "PiDriver::Pin"
+      @argument_helper = Utils::ArgumentHelper.new prefix: 'PiDriver::Pin'
 
       @gpio_number = gpio_number
       @argument_helper.check(:gpio_number, @gpio_number, Board::VALID_NUMBERS)
@@ -54,13 +54,13 @@ module PiDriver
       @state
     end
 
-    alias_method :off, :clear
+    alias off clear
 
     def clear?
       state == Utils::State::LOW
     end
 
-    alias_method :off?, :clear?
+    alias off? clear?
 
     def set
       return unless output?
@@ -69,13 +69,13 @@ module PiDriver
       @state
     end
 
-    alias_method :on, :set
+    alias on set
 
     def set?
       state == Utils::State::HIGH
     end
 
-    alias_method :on?, :set?
+    alias on? set?
 
     def state
       input? ? @file_helper.read_value : @state
@@ -89,7 +89,8 @@ module PiDriver
     end
 
     def clear_interrupt
-      @interrupt.clear if @interrupt
+      @interrupt&.clear
+      # @interrupt.clear
     end
   end
 end

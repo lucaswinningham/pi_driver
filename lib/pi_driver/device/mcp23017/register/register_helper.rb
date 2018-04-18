@@ -27,7 +27,7 @@ module PiDriver
             INTCAP,
             GPIO,
             OLAT
-          ]
+          ].freeze
 
           def self.address(options)
             bank = options[:bank]

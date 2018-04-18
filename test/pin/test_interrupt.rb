@@ -5,7 +5,7 @@ class PinInterruptTest < PinTest
     pin = PiDriver::Pin.new @pin_number
     interrupt = mock
 
-    [:rising, :falling, :both, :none].each do |edge|
+    %i[rising falling both none].each do |edge|
       begin
         PiDriver::Utils::Interrupt.expects(:new).with(edge).returns(interrupt)
         interrupt.expects(:start)

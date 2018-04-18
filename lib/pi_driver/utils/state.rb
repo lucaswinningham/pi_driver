@@ -7,7 +7,7 @@ module PiDriver
       VALID_STATES = [
         LOW,
         HIGH
-      ]
+      ].freeze
     end
   end
 end

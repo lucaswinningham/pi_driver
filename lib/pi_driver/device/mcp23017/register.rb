@@ -10,7 +10,7 @@ module PiDriver
         attr_reader :address, :byte
 
         def initialize(options)
-          @argument_helper = Utils::ArgumentHelper.new prefix: "MCP23017::Register"
+          @argument_helper = Utils::ArgumentHelper.new prefix: 'MCP23017::Register'
 
           @register = options[:register]
           @port = options[:port]
@@ -26,15 +26,12 @@ module PiDriver
           @argument_helper.check(:register_byte, value, Utils::Byte::VALID_BYTES)
           @byte = value
           mirror_bits_from_byte
-          @byte
         end
 
         def update_address(bank)
           options = { register: @register, port: @port, bank: bank }
           @address = RegisterHelper.address options
         end
-
-        private
 
         def self.bit_accessors
           Utils::Byte::NUM_BITS_PER_BYTE.times do |bit_number|
@@ -58,6 +55,7 @@ module PiDriver
           end
         end
 
+        private_class_method :bit_accessors
         bit_accessors
 
         def self.mirror_bit_accessors(prefix_symbol)
@@ -76,8 +74,10 @@ module PiDriver
           end
         end
 
+        private_class_method :mirror_bit_accessors
+
         def mirror_bits_from_byte
-          byte_bits = Utils::Byte::byte_to_bits(@byte)
+          byte_bits = Utils::Byte.byte_to_bits(@byte)
 
           @bit0 = byte_bits.pop
           @bit1 = byte_bits.pop
@@ -90,7 +90,7 @@ module PiDriver
         end
 
         def mirror_byte_from_bits
-          @byte = Utils::Byte::bits_to_byte [@bit7, @bit6, @bit5, @bit4, @bit3, @bit2, @bit1, @bit0]
+          @byte = Utils::Byte.bits_to_byte [@bit7, @bit6, @bit5, @bit4, @bit3, @bit2, @bit1, @bit0]
         end
       end
     end

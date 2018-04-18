@@ -15,26 +15,26 @@ module PiDriver
           @observer.update_registers
         end
 
-        alias_method :bank, :bit7
-        alias_method :bank=, :bit7=
+        alias bank bit7
+        alias bank= bit7=
 
-        alias_method :mirror, :bit6
-        alias_method :mirror=, :bit6=
+        alias mirror bit6
+        alias mirror= bit6=
 
-        alias_method :seqop, :bit5
-        alias_method :seqop=, :bit5=
+        alias seqop bit5
+        alias seqop= bit5=
 
-        alias_method :disslw, :bit4
-        alias_method :disslw=, :bit4=
+        alias disslw bit4
+        alias disslw= bit4=
 
-        alias_method :haen, :bit3
-        alias_method :haen=, :bit3=
+        alias haen bit3
+        alias haen= bit3=
 
-        alias_method :odr, :bit2
-        alias_method :odr=, :bit2=
+        alias odr bit2
+        alias odr= bit2=
 
-        alias_method :intpol, :bit1
-        alias_method :intpol=, :bit1=
+        alias intpol bit1
+        alias intpol= bit1=
       end
     end
   end

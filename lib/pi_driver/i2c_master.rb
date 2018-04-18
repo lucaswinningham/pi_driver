@@ -2,7 +2,7 @@ module PiDriver
   class I2CMaster
     def initialize(options = {})
       @frequency = 100_000
-      @delta_time = @frequency ** -1.0
+      @delta_time = @frequency**-1.0
       @clock_pin = options[:clock_pin]
       @data_pin = options[:data_pin]
       stop
@@ -18,7 +18,7 @@ module PiDriver
       drive_clock_pin
     end
 
-    alias_method :restart, :start
+    alias restart start
 
     def write(byte)
       send_data byte

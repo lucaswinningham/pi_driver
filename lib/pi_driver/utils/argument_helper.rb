@@ -9,8 +9,9 @@ module PiDriver
       end
 
       def check(type, arg, valid_options)
-        valid_options_for_message = valid_options.map { |value| "#{value.inspect}"}.join(', ')
-        middle = "invalid argument #{arg.inspect} for #{type.inspect} expected to be one of #{valid_options_for_message}"
+        options = valid_options.map(&:to_s).join(', ')
+        middle = "invalid argument for #{type.inspect}, "
+        middle += "#{arg.inspect} was given but expected to be one of #{options}"
         message = "#{@prefix if @prefix} #{middle} #{@suffix if @suffix}"
         raise ArgumentError, message unless valid_options.include?(arg)
       end

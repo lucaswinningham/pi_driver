@@ -10,7 +10,7 @@ class UtilsInterruptTest < UtilsTest
     thread = mock
     thread.stubs(:abort_on_exception=)
     Thread.expects(:new).returns(thread)
-    interrupt.start { }
+    interrupt.start {}
     timeout 0.1 { false }
   end
 
@@ -100,7 +100,7 @@ class UtilsInterruptTest < UtilsTest
       interrupted = false
       interrupt.start { interrupted = true }
 
-      timeout { }
+      timeout {}
       refute interrupted
     ensure
       interrupt.clear

@@ -7,7 +7,7 @@ module PiDriver
       VALID_DIRECTIONS = [
         INPUT,
         OUTPUT
-      ]
+      ].freeze
     end
   end
 end

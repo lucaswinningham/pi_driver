@@ -23,7 +23,7 @@ class MCP23017WriteTest < MCP23017Test
     seq = sequence('multiple')
 
     @i2c_master.expects(:start).with(nil).in_sequence(seq)
-    
+
     @i2c_master.expects(:write).with(0b01001110).in_sequence(seq)
     @i2c_master.expects(:ack).with(nil).in_sequence(seq)
     @i2c_master.expects(:write).with(0x14).in_sequence(seq)

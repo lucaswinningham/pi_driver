@@ -1,6 +1,5 @@
 require 'test_helper'
 
 class UtilsTest < TestCase
-  def setup
-  end
+  def setup; end
 end

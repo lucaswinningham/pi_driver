@@ -4,9 +4,8 @@ require 'mocha/minitest'
 
 class TestCase < Minitest::Test
   def timeout(seconds = 0.5)
-    success = false
     started_at = Time.now
-    while !(success = yield) do
+    until (success = yield)
       break if Time.now - started_at > seconds
     end
     success

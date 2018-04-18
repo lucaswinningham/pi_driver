@@ -11,7 +11,7 @@ module PiDriver
         FALLING,
         BOTH,
         NONE
-      ]
+      ].freeze
     end
   end
 end

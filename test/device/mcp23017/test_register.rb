@@ -36,7 +36,7 @@ class MCP23017RegisterTest < MCP23017Test
   end
 
   def test_addresses_bank_high
-  	@mcp23017.iocon.bank = 1
+    @mcp23017.iocon.bank = 1
     assert_equal 0x05, @mcp23017.iocon.address
 
     assert_equal 0x00, @mcp23017.iodira.address
