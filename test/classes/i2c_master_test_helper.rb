@@ -1,6 +1,6 @@
-require 'test_helper'
+require_relative '../classes_test_helper'
 
-class I2CMasterTest < TestCase
+class I2CMasterTest < ClassesTest
   def setup
     @clock_pin = PiDriver::Pin.new 1
     @data_pin = PiDriver::Pin.new 2

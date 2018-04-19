@@ -1,6 +1,6 @@
-require_relative '../test_helper'
+require_relative '../device_test_helper'
 
-class MCP23017Test < TestCase
+class MCP23017Test < DeviceTest
   def setup
     @clock_pin = PiDriver::Pin.new 1
     @data_pin = PiDriver::Pin.new 2

@@ -1,6 +1,6 @@
-require 'test_helper'
+require_relative '../classes_test_helper'
 
-class PinTest < TestCase
+class PinTest < ClassesTest
   def setup
     @pin_number = 0
   end
