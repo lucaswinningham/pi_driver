@@ -1,5 +1,4 @@
 require_relative '../classes_test_helper'
-require 'fileutils'
 
 class PinTest < ClassesTest
   def setup

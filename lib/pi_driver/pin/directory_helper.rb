@@ -1,15 +1,9 @@
 module PiDriver
   class Pin
     class DirectoryHelper
-      # TODO: figure out environment variables for test
-      # DIR_BASE = '/sys/class'
-      # DIR_BASE = File.expand_path '~/pi/gpio/sys/class'
-      # DIR_GPIO = "#{DIR_BASE}/gpio".freeze
-
-      def initialize(gpio_number, dir_base = '/sys/class')
+      def initialize(gpio_number, dir_gpio)
         @gpio_number = gpio_number
-        @dir_base = dir_base
-        @dir_gpio = "#{@dir_base}/gpio"
+        @dir_gpio = dir_gpio
       end
 
       def dir_pin
