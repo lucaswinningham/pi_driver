@@ -1,0 +1,22 @@
+# install rvm and upgrade ruby
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+\curl -sSL https://get.rvm.io | bash -s stable
+sudo apt-get install ruby-full
+
+# ignore docs
+cd
+touch .gemrc
+leafpad .gemrc
+```
+gem: --no-rdoc --no-ri
+```
+sudo gem install bundler --no-rdoc --no-ri
+
+# clone repo
+git clone https://github.com/lucaswinningham/pi_driver.git
+cd pi_driver/
+# had to remove simplecov
+bundle
+
+# run tests
+rake test integration
