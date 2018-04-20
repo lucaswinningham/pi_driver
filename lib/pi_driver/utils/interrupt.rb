@@ -10,7 +10,7 @@ module PiDriver
       end
 
       def start
-        @argument_helper.check(:block, block_given?, [true])
+        @argument_helper.check_bool(:start_block_given?, block_given?)
 
         @thread = Thread.new do
           last_state = check

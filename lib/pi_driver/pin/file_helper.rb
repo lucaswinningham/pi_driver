@@ -12,6 +12,10 @@ module PiDriver
         File.read(@directory_helper.value).to_i
       end
 
+      def unexported?
+        !File.directory?(@directory_helper.dir_pin)
+      end
+
       def write_direction(direction)
         File.write(@directory_helper.direction, direction)
       end

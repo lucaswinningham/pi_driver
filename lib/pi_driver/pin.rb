@@ -21,6 +21,7 @@ module PiDriver
       @argument_helper.check(:state, @state, Utils::State::VALID_STATES)
 
       @file_helper = FileHelper.new @gpio_number
+      @argument_helper.check_bool(:unexported?, @file_helper.unexported?)
       @file_helper.write_export
       @file_helper.write_direction(@direction)
       input? ? @file_helper.read_value : @file_helper.write_value(@state)

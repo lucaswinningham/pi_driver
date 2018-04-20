@@ -16,6 +16,14 @@ module PiDriver
         message = "#{@prefix if @prefix} #{middle} #{@suffix if @suffix}"
         raise ArgumentError, message
       end
+
+      def check_bool(type, arg, expected_bool=true)
+        return if !!arg == expected_bool
+        middle = "invalid argument for #{type.inspect}, "
+        middle += "#{arg.inspect} was given but expected to be #{expected_bool}"
+        message = "#{@prefix if @prefix} #{middle} #{@suffix if @suffix}"
+        raise ArgumentError, message
+      end
     end
   end
 end

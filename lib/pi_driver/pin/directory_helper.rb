@@ -22,8 +22,6 @@ module PiDriver
         "#{dir_pin}/value"
       end
 
-      private
-
       def dir_pin
         "#{DIR_GPIO}/gpio#{@gpio_number}"
       end

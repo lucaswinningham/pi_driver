@@ -32,4 +32,21 @@ class PinErrorTest < PinTest
       pin.interrupt(:invalid_edge) {}
     end
   end
+
+  # def test_error_unexport
+  #   pin = PiDriver::Pin.new @pin_number
+  #   pin.unexport
+  #   # TODO: figure out a good error type
+  #   assert_raises ArgumentError do
+  #     pin.unexport
+  #   end
+  # end
+
+  # def test_error_new_not_unexported
+  #   pin = PiDriver::Pin.new @pin_number
+  #   # TODO: figure out a good error type
+  #   assert_raises ArgumentError do
+  #     PiDriver::Pin.new @pin_number
+  #   end
+  # end
 end
