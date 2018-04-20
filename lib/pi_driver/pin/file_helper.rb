@@ -3,6 +3,9 @@ require 'fileutils'
 
 module PiDriver
   class Pin
+    class FileHelperError < StandardError
+    end
+
     class FileHelper
       attr :directory_helper
 
@@ -19,10 +22,10 @@ module PiDriver
       end
 
       def read_value
-        unless File.exist?(@directory_helper.value)
-          p File.exist?(@directory_helper.value)
-          byebug
-        end
+        # unless File.exist?(@directory_helper.value)
+        #   p File.exist?(@directory_helper.value)
+        #   byebug
+        # end
         File.read(@directory_helper.value).to_i
       end
 
@@ -40,6 +43,7 @@ module PiDriver
       end
 
       def write_unexport
+        raise FileHelperError unless Dir.exist? @directory_helper.dir_pin
         File.write(@directory_helper.unexport, @gpio_number)
         FileUtils.rm_r @directory_helper.dir_pin if mac?
       end
