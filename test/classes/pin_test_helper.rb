@@ -2,7 +2,7 @@ require_relative '../classes_test_helper'
 
 class PinTest < ClassesTest
   def setup
-    @pin_number = 0
+    @pin_number = 2
   end
 
   private
