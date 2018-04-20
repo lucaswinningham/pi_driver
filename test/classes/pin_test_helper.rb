@@ -18,43 +18,18 @@ class PinTest < ClassesTest
   end
 
   def expect_export_write
-    expect_write(path_export, @pin_number)
+    expect_write(@directory_helper.export, @pin_number)
   end
 
   def expect_direction_write(direction)
-    expect_write(path_pin_direction, direction)
+    expect_write(@directory_helper.direction, direction)
   end
 
   def expect_value_read(value)
-    expect_read(path_pin_value, value)
+    expect_read(@directory_helper.value, value)
   end
 
   def expect_value_write(value)
-    expect_write(path_pin_value, value)
-  end
-
-  def path_export
-    @directory_helper.export
-    # "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/export"
-  end
-
-  def dir_pin
-    @directory_helper.dir_pin
-    # "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/gpio#{@pin_number}"
-  end
-
-  def path_pin_direction
-    @directory_helper.direction
-    # "#{dir_pin}/direction"
-  end
-
-  def path_pin_value
-    @directory_helper.value
-    # "#{dir_pin}/value"
-  end
-
-  def path_unexport
-    @directory_helper.unexport
-    # "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/unexport"
+    expect_write(@directory_helper.value, value)
   end
 end
