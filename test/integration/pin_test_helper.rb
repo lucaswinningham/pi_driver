@@ -1,9 +1,9 @@
 require_relative '../integration_test_helper'
 
-# for all integration pin tests, connect pins 3 and 5 together
+# for all integration pin tests, connect pins 16 and 18 together
 class IntegrationPinTest < IntegrationTest
   def setup
-    @setter = PiDriver::Pin.new 2, direction: :out
-    @getter = PiDriver::Pin.new 3
+    @setter = PiDriver::Pin.new 23, direction: :out
+    @getter = PiDriver::Pin.new 24
   end
 end
