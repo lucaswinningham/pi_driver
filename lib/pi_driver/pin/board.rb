@@ -54,7 +54,7 @@ module PiDriver
         PIN36,
         PIN37,
         PIN38,
-        PIN40,
+        PIN40
       ].freeze
     end
   end
