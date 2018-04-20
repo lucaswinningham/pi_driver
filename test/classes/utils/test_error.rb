@@ -16,14 +16,15 @@ class UtilsErrorTest < UtilsTest
 
   def test_error_interrupt_yield_state
     assert_raises ArgumentError do
-      begin
-        interrupt = PiDriver::Utils::Interrupt.new(:rising) { 2 }
-        interrupted = false
-        thread = interrupt.start { interrupted = true }
-        timeout { interrupted }
-      ensure
-        thread.kill
-      end
+      interrupt = PiDriver::Utils::Interrupt.new(:rising) { 2 }
+      interrupted = false
+      thread = interrupt.start { interrupted = true }
+      timeout { interrupted }
+      thread.kill
+      # begin
+      # ensure
+      #   thread.kill
+      # end
     end
   end
 end

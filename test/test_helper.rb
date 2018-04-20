@@ -1,6 +1,9 @@
-require 'simplecov'
-SimpleCov.start
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start
+end
 
+require 'byebug'
 require 'minitest/autorun'
 require 'pi_driver'
 require 'mocha/minitest'
