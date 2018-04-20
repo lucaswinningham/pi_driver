@@ -21,10 +21,6 @@ class UtilsErrorTest < UtilsTest
       thread = interrupt.start { interrupted = true }
       timeout { interrupted }
       thread.kill
-      # begin
-      # ensure
-      #   thread.kill
-      # end
     end
   end
 end
