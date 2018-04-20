@@ -3,6 +3,8 @@ require_relative '../classes_test_helper'
 class PinTest < ClassesTest
   def setup
     @pin_number = 2
+    file_helper = PiDriver::Pin::FileHelper.new @pin_number
+    @directory_helper = file_helper.directory_helper
   end
 
   private
@@ -32,22 +34,27 @@ class PinTest < ClassesTest
   end
 
   def path_export
-    "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/export"
+    @directory_helper.export
+    # "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/export"
   end
 
   def dir_pin
-    "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/gpio#{@pin_number}"
+    @directory_helper.dir_pin
+    # "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/gpio#{@pin_number}"
   end
 
   def path_pin_direction
-    "#{dir_pin}/direction"
+    @directory_helper.direction
+    # "#{dir_pin}/direction"
   end
 
   def path_pin_value
-    "#{dir_pin}/value"
+    @directory_helper.value
+    # "#{dir_pin}/value"
   end
 
   def path_unexport
-    "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/unexport"
+    @directory_helper.unexport
+    # "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/unexport"
   end
 end

@@ -4,6 +4,8 @@ require 'fileutils'
 module PiDriver
   class Pin
     class FileHelper
+      attr :directory_helper
+
       def initialize(gpio_number)
         @gpio_number = gpio_number
         @base_path = '/sys/class/gpio'
