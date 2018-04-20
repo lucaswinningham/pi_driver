@@ -19,6 +19,10 @@ module PiDriver
       end
 
       def read_value
+        unless File.exist?(@directory_helper.value)
+          p File.exist?(@directory_helper.value)
+          byebug
+        end
         File.read(@directory_helper.value).to_i
       end
 
