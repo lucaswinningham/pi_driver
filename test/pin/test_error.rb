@@ -3,7 +3,7 @@ require_relative '../pin_test_helper'
 class PinErrorTest < PinTest
   def test_error_gpio_number
     assert_raises ArgumentError do
-      PiDriver::Pin.new 17
+      PiDriver::Pin.new 1
     end
   end
 

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class PinTest < TestCase
   def setup
-    @pin_number = 0
+    @pin_number = 2
   end
 
   private
