@@ -1,4 +1,5 @@
 require_relative '../classes_test_helper'
+require 'fileutils'
 
 class PinTest < ClassesTest
   def setup
@@ -35,11 +36,19 @@ class PinTest < ClassesTest
     "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/export"
   end
 
+  def dir_pin
+    "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/gpio#{@pin_number}"
+  end
+
   def path_pin_direction
-    "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/gpio#{@pin_number}/direction"
+    "#{dir_pin}/direction"
   end
 
   def path_pin_value
-    "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/gpio#{@pin_number}/value"
+    "#{dir_pin}/value"
+  end
+
+  def path_unexport
+    "#{PiDriver::Pin::DirectoryHelper::DIR_GPIO}/unexport"
   end
 end

@@ -20,8 +20,8 @@ module PiDriver
       @state = options[:state] || Utils::State::LOW
       @argument_helper.check(:state, @state, Utils::State::VALID_STATES)
 
-      @file_helper = FileHelper.new @gpio_number
-      @argument_helper.check_bool(:unexported?, @file_helper.unexported?)
+      @file_helper = env_file_helper @gpio_number
+      # @argument_helper.check_bool(:unexported?, @file_helper.unexported?)
       @file_helper.write_export
       @file_helper.write_direction(@direction)
       input? ? @file_helper.read_value : @file_helper.write_value(@state)
@@ -91,6 +91,29 @@ module PiDriver
 
     def clear_interrupt
       @interrupt&.clear
+    end
+
+    def unexport
+      @file_helper.write_unexport
+    end
+
+    def self.unexport gpio_number
+      file_helper = env_file_helper gpio_number
+      file_helper.write_unexport if !file_helper.unexported?
+    end
+
+    # def self.unexport_all
+    #   Board::VALID_NUMBERS.each { |gpio_number| unexport gpio_number}
+    # end
+
+    private
+
+    def env_file_helper gpio_number
+      if ENV['OS'] == 'pi'
+        FileHelper.new gpio_number
+      else
+        DevelopmentFileHelper.new gpio_number
+      end
     end
   end
 end

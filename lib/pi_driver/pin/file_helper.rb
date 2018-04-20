@@ -24,6 +24,10 @@ module PiDriver
         File.write(@directory_helper.export, @gpio_number)
       end
 
+      def write_unexport
+        File.write(@directory_helper.unexport, @gpio_number)
+      end
+
       def write_value(value)
         File.write(@directory_helper.value, value)
       end
