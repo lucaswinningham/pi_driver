@@ -3,9 +3,6 @@ require 'fileutils'
 
 module PiDriver
   class Pin
-    class FileHelperError < StandardError
-    end
-
     class FileHelper
       attr :directory_helper
 
@@ -13,7 +10,7 @@ module PiDriver
         @gpio_number = gpio_number
         @base_path = '/sys/class/gpio'
 
-        if mac?
+        unless pi?
           @base_path = "#{Dir.pwd}/development#{@base_path}"
           try_to_setup_dirs
         end
@@ -22,10 +19,6 @@ module PiDriver
       end
 
       def read_value
-        # unless File.exist?(@directory_helper.value)
-        #   p File.exist?(@directory_helper.value)
-        #   byebug
-        # end
         File.read(@directory_helper.value).to_i
       end
 
@@ -38,14 +31,13 @@ module PiDriver
       end
 
       def write_export
-        touch_development_files if mac?
+        touch_development_files unless pi?
         File.write(@directory_helper.export, @gpio_number)
       end
 
       def write_unexport
-        raise FileHelperError unless Dir.exist? @directory_helper.dir_pin
-        File.write(@directory_helper.unexport, @gpio_number)
-        FileUtils.rm_r @directory_helper.dir_pin if mac?
+        File.write(@directory_helper.unexport, @gpio_number) if Dir.exist? @directory_helper.dir_pin
+        FileUtils.rm_r @directory_helper.dir_pin unless pi?
       end
 
       def write_value(value)
@@ -54,8 +46,8 @@ module PiDriver
 
       private
 
-      def mac?
-        ENV['OS'] == 'mac'
+      def pi?
+        ENV['OS'] == 'pi'
       end
 
       def try_to_setup_dirs

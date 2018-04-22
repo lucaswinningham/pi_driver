@@ -21,8 +21,7 @@ module PiDriver
       @argument_helper.check(:state, @state, Utils::State::VALID_STATES)
 
       @file_helper = FileHelper.new @gpio_number
-      # @argument_helper.check_bool(:unexported?, @file_helper.unexported?)
-      @file_helper.write_export
+      @file_helper.write_export if @file_helper.unexported?
       @file_helper.write_direction(@direction)
       input? ? @file_helper.read_value : @file_helper.write_value(@state)
     end
@@ -94,16 +93,14 @@ module PiDriver
     end
 
     def unexport
-      @file_helper.write_unexport
+      @file_helper.write_unexport if !@file_helper.unexported?
     end
 
-    def self.unexport gpio_number
-      file_helper = FileHelper.new gpio_number
-      file_helper.write_unexport if !file_helper.unexported?
+    def self.unexport_all
+      Board::VALID_NUMBERS.each do |gpio_number|
+        file_helper = FileHelper.new gpio_number
+        file_helper.write_unexport if !file_helper.unexported?
+      end
     end
-
-    # def self.unexport_all
-    #   Board::VALID_NUMBERS.each { |gpio_number| unexport gpio_number}
-    # end
   end
 end

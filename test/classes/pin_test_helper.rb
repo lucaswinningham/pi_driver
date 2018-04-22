@@ -21,6 +21,10 @@ class PinTest < ClassesTest
     expect_write(@directory_helper.export, @pin_number)
   end
 
+  def expect_unexport_write
+    expect_write(@directory_helper.unexport, @pin_number)
+  end
+
   def expect_direction_write(direction)
     expect_write(@directory_helper.direction, direction)
   end
