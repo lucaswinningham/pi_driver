@@ -89,7 +89,7 @@ module PiDriver
     end
 
     def clear_interrupt
-      @interrupt&.clear
+      @interrupt.clear
     end
 
     def unexport
