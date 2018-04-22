@@ -7,7 +7,6 @@ class UtilsInterruptTest < UtilsTest
     thread.stubs(:abort_on_exception=)
     Thread.expects(:new).returns(thread)
     interrupt.start {}
-    timeout 0.1 { false }
   end
 
   def test_rising

@@ -3,10 +3,8 @@ require_relative '../classes_test_helper'
 class PinTest < ClassesTest
   def setup
     @pin_number = 2
-    # call to make sure export is not written on new pin
-    # PiDriver::Pin.new @pin_number
-    file_helper = PiDriver::Pin::FileHelper.new @pin_number
-    @directory_helper = file_helper.directory_helper
+    @file_helper = PiDriver::Pin::FileHelper.new @pin_number
+    @directory_helper = @file_helper.directory_helper
   end
 
   private

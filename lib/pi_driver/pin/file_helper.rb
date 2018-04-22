@@ -23,17 +23,16 @@ module PiDriver
         File.read(@directory_helper.value).to_i
       end
 
-      def unexported?
-        !File.directory?(@directory_helper.dir_pin)
-      end
-
       def write_direction(direction)
         File.write(@directory_helper.direction, direction)
       end
 
       def write_export
+        return if exported?
+
         touch_development_files unless pi?
         File.write(@directory_helper.export, @gpio_number)
+        wait_for { exported? }
       end
 
       def write_unexport
@@ -41,14 +40,19 @@ module PiDriver
 
         File.write(@directory_helper.unexport, @gpio_number)
         FileUtils.rm_r @directory_helper.dir_pin unless pi?
-
-        loop do
-          break if unexported?
-        end
+        wait_for { unexported? }
       end
 
       def write_value(value)
         File.write(@directory_helper.value, value)
+      end
+
+      def exported?
+        files_and_directories_check_array.select { |does_exist| !does_exist }.empty?
+      end
+
+      def unexported?
+        files_and_directories_check_array.select { |does_exist| does_exist }.empty?
       end
 
       private
@@ -58,22 +62,49 @@ module PiDriver
       end
 
       def try_to_setup_dirs working_directory
-        try_to_mkdir "#{working_directory}/development"
-        try_to_mkdir "#{working_directory}/development/sys"
-        try_to_mkdir "#{working_directory}/development/sys/class"
-        try_to_mkdir "#{working_directory}/development/sys/class/gpio"
-      end
-
-      def try_to_mkdir dir
-        FileUtils.mkdir dir unless Dir.exist? dir
+        mkdir "#{working_directory}/development"
+        mkdir "#{working_directory}/development/sys"
+        mkdir "#{working_directory}/development/sys/class"
+        mkdir "#{working_directory}/development/sys/class/gpio"
       end
 
       def touch_development_files
-        FileUtils.touch @directory_helper.export
-        FileUtils.touch @directory_helper.unexport
-        FileUtils.mkdir @directory_helper.dir_pin unless Dir.exist? @directory_helper.dir_pin
-        FileUtils.touch @directory_helper.direction
-        FileUtils.touch @directory_helper.value
+        touch @directory_helper.export
+        touch @directory_helper.unexport
+        mkdir @directory_helper.dir_pin
+        touch @directory_helper.direction
+        touch @directory_helper.value
+      end
+
+      def files_and_directories_check_array
+        dir_pinpin_dir_exists = Dir.exist?(@directory_helper.dir_pin)
+        direction_exists = File.file? @directory_helper.direction
+        value_exists = File.file? @directory_helper.value
+
+        [dir_pinpin_dir_exists, direction_exists, value_exists]
+      end
+
+      # def race_safe
+      #   begin
+      #     yield
+      #   end
+      # end
+
+      def wait_for
+        loop do
+          break if yield
+        end
+      end
+
+      def touch(filepath)
+        FileUtils.touch filepath unless File.file? filepath
+        wait_for { File.file? filepath }
+      end
+
+      def mkdir dir
+        FileUtils.mkdir dir unless Dir.exist? dir
+        # race_safe { FileUtils.mkdir dir } unless Dir.exist? dir
+        wait_for { Dir.exist? dir }
       end
     end
   end

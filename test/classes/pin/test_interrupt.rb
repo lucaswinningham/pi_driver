@@ -6,46 +6,39 @@ class PinInterruptTest < PinTest
     interrupt = mock
 
     %i[rising falling both none].each do |edge|
-      begin
-        PiDriver::Utils::Interrupt.expects(:new).with(edge).returns(interrupt)
-        interrupt.expects(:start)
-        pin.interrupt(edge)
-      ensure
-        interrupt.expects(:clear)
-        pin.clear_interrupt
-      end
+      PiDriver::Utils::Interrupt.expects(:new).with(edge).returns(interrupt)
+      interrupt.expects(:start)
+      pin.interrupt(edge)
     end
   end
 
   def test_interrupt_default
     pin = PiDriver::Pin.new @pin_number
+    interrupt_default = sequence('interrupt default')
+    expect_value_read(0).in_sequence(interrupt_default)
+    expect_value_read(1).at_least_once.in_sequence(interrupt_default)
 
-    begin
-      interrupt_default = sequence('interrupt default')
-      expect_value_read(0).in_sequence(interrupt_default)
-      expect_value_read(1).at_least_once.in_sequence(interrupt_default)
+    interrupted = false
+    pin.interrupt { interrupted = true }
 
-      interrupted = false
-      pin.interrupt { interrupted = true }
-      timeout { interrupted }
-    ensure
-      pin.clear_interrupt
-    end
+    timeout { interrupted }
+    assert interrupted
+
+    pin.clear_interrupt
   end
 
   def test_interrupt_argument
     pin = PiDriver::Pin.new @pin_number
+    interrupt_argument = sequence('interrupt argument')
+    expect_value_read(1).in_sequence(interrupt_argument)
+    expect_value_read(0).at_least_once.in_sequence(interrupt_argument)
 
-    begin
-      interrupt_argument = sequence('interrupt argument')
-      expect_value_read(1).in_sequence(interrupt_argument)
-      expect_value_read(0).at_least_once.in_sequence(interrupt_argument)
+    interrupted = false
+    pin.interrupt(:falling) { interrupted = true }
 
-      interrupted = false
-      pin.interrupt(:falling) { interrupted = true }
-      timeout { interrupted }
-    ensure
-      pin.clear_interrupt
-    end
+    timeout { interrupted }
+    assert interrupted
+
+    pin.clear_interrupt
   end
 end
