@@ -5,7 +5,7 @@ module PiDriver
         def initialize(options)
           @observer = options.delete :observer
           options[:register] = :iocon
-          # IOCON is a single register with two addresses, go with PORT A
+          # NOTE: IOCON is a single register with two addresses, use PORT A only
           options[:port] = :a
           super(options)
         end

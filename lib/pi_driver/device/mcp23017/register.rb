@@ -1,6 +1,6 @@
 require_relative 'register/register_helper'
 
-# for class level methods
+# NOTE: necessary for class methods
 require_relative '../../utils'
 
 module PiDriver
