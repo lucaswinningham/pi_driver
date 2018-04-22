@@ -11,8 +11,9 @@ module PiDriver
         @base_path = '/sys/class/gpio'
 
         unless pi?
-          @base_path = "#{Dir.pwd}/development#{@base_path}"
-          try_to_setup_dirs
+          working_directory = Dir.pwd
+          @base_path = "#{working_directory}/development#{@base_path}"
+          try_to_setup_dirs working_directory
         end
 
         @directory_helper = DirectoryHelper.new @gpio_number, @base_path
@@ -36,8 +37,14 @@ module PiDriver
       end
 
       def write_unexport
-        File.write(@directory_helper.unexport, @gpio_number) if Dir.exist? @directory_helper.dir_pin
+        return if unexported?
+
+        File.write(@directory_helper.unexport, @gpio_number)
         FileUtils.rm_r @directory_helper.dir_pin unless pi?
+
+        loop do
+          break if unexported?
+        end
       end
 
       def write_value(value)
@@ -50,8 +57,7 @@ module PiDriver
         ENV['OS'] == 'pi'
       end
 
-      def try_to_setup_dirs
-        working_directory = Dir.pwd
+      def try_to_setup_dirs working_directory
         try_to_mkdir "#{working_directory}/development"
         try_to_mkdir "#{working_directory}/development/sys"
         try_to_mkdir "#{working_directory}/development/sys/class"
