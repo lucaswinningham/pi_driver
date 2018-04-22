@@ -10,7 +10,7 @@ module PiDriver
         @gpio_number = gpio_number
         @base_path = '/sys/class/gpio'
 
-        unless pi?
+        if test?
           working_directory = Dir.pwd
           @base_path = "#{working_directory}/development#{@base_path}"
           try_to_setup_dirs working_directory
@@ -30,17 +30,15 @@ module PiDriver
       def write_export
         return if exported?
 
-        touch_development_files unless pi?
+        touch_development_files if test?
         File.write(@directory_helper.export, @gpio_number)
-        wait_for { exported? }
       end
 
       def write_unexport
         return if unexported?
 
         File.write(@directory_helper.unexport, @gpio_number)
-        FileUtils.rm_r @directory_helper.dir_pin unless pi?
-        wait_for { unexported? }
+        FileUtils.rm_r @directory_helper.dir_pin if test?
       end
 
       def write_value(value)
@@ -48,17 +46,17 @@ module PiDriver
       end
 
       def exported?
-        files_and_directories_check_array.select { |does_exist| !does_exist }.empty?
+        pin_directory_exists? && direction_file_exists? && value_file_exists?
       end
 
       def unexported?
-        files_and_directories_check_array.select { |does_exist| does_exist }.empty?
+        !pin_directory_exists? && !direction_file_exists? && !value_file_exists?
       end
 
       private
 
-      def pi?
-        ENV['OS'] == 'pi'
+      def test?
+        ENV['PI_ENV'] == 'TEST'
       end
 
       def try_to_setup_dirs working_directory
@@ -76,35 +74,24 @@ module PiDriver
         touch @directory_helper.value
       end
 
-      def files_and_directories_check_array
-        dir_pinpin_dir_exists = Dir.exist?(@directory_helper.dir_pin)
-        direction_exists = File.file? @directory_helper.direction
-        value_exists = File.file? @directory_helper.value
-
-        [dir_pinpin_dir_exists, direction_exists, value_exists]
+      def pin_directory_exists?
+        Dir.exist?(@directory_helper.dir_pin)
       end
 
-      # def race_safe
-      #   begin
-      #     yield
-      #   end
-      # end
+      def direction_file_exists?
+        File.file? @directory_helper.direction
+      end
 
-      def wait_for
-        loop do
-          break if yield
-        end
+      def value_file_exists?
+        File.file? @directory_helper.value
       end
 
       def touch(filepath)
-        FileUtils.touch filepath unless File.file? filepath
-        wait_for { File.file? filepath }
+        FileUtils.touch filepath
       end
 
-      def mkdir dir
+      def mkdir(dir)
         FileUtils.mkdir dir unless Dir.exist? dir
-        # race_safe { FileUtils.mkdir dir } unless Dir.exist? dir
-        wait_for { Dir.exist? dir }
       end
     end
   end

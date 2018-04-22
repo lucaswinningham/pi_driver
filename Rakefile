@@ -1,6 +1,8 @@
 require 'rake/testtask'
+require "awesome_print"
 
 Rake::TestTask.new do |t|
+  ENV['PI_ENV'] = 'TEST'
   t.libs << 'test'
   test_directory = 'classes'
 

@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     pi_driver (0.0.4)
+      awesome_print (~> 1.8.0, >= 1.8.0)
       byebug (~> 10.0.0, >= 10.0.0)
       minitest (~> 5.11.3, >= 5.11.3)
       mocha (~> 1.4, >= 1.4.0)
@@ -12,6 +13,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.0)
+    awesome_print (1.8.0)
     byebug (10.0.2)
     docile (1.1.5)
     json (2.1.0)
