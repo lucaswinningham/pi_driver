@@ -18,9 +18,8 @@ class UtilsErrorTest < UtilsTest
     assert_raises ArgumentError do
       interrupt = PiDriver::Utils::Interrupt.new(:rising) { 2 }
       interrupted = false
-      thread = interrupt.start { interrupted = true }
+      interrupt.start { interrupted = true }
       timeout { interrupted }
-      thread.kill
     end
   end
 end
