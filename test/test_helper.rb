@@ -7,7 +7,6 @@ require 'byebug'
 require 'minitest/autorun'
 require 'pi_driver'
 require 'mocha/minitest'
-require "awesome_print"
 
 class TestCase < Minitest::Test
   def timeout(seconds = 0.5)

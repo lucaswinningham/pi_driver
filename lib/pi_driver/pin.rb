@@ -99,7 +99,7 @@ module PiDriver
     def self.unexport_all
       Board::VALID_NUMBERS.each do |gpio_number|
         file_helper = FileHelper.new gpio_number
-        file_helper.write_unexport if !file_helper.unexported?
+        file_helper.write_unexport unless file_helper.unexported?
       end
     end
   end

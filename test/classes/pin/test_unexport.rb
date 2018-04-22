@@ -15,6 +15,6 @@ class PinUnexportTest < PinTest
   end
 
   def test_class_unexport_all
-    # TODO: 
+    # TODO: implement
   end
 end

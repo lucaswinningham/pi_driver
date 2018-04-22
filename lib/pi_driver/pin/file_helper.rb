@@ -4,7 +4,7 @@ require 'fileutils'
 module PiDriver
   class Pin
     class FileHelper
-      attr :directory_helper
+      attr_reader :directory_helper
 
       def initialize(gpio_number)
         @gpio_number = gpio_number
@@ -13,7 +13,7 @@ module PiDriver
         if test?
           working_directory = Dir.pwd
           @base_path = "#{working_directory}/development#{@base_path}"
-          try_to_setup_dirs working_directory
+          setup_dirs working_directory
         end
 
         @directory_helper = DirectoryHelper.new @gpio_number, @base_path
@@ -30,7 +30,7 @@ module PiDriver
       def write_export
         return if exported?
 
-        touch_development_files if test?
+        setup_development_files if test?
         File.write(@directory_helper.export, @gpio_number)
       end
 
@@ -59,14 +59,14 @@ module PiDriver
         ENV['PI_ENV'] == 'TEST'
       end
 
-      def try_to_setup_dirs working_directory
+      def setup_dirs(working_directory)
         mkdir "#{working_directory}/development"
         mkdir "#{working_directory}/development/sys"
         mkdir "#{working_directory}/development/sys/class"
         mkdir "#{working_directory}/development/sys/class/gpio"
       end
 
-      def touch_development_files
+      def setup_development_files
         touch @directory_helper.export
         touch @directory_helper.unexport
         mkdir @directory_helper.dir_pin
