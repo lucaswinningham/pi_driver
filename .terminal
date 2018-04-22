@@ -15,7 +15,7 @@ sudo gem install bundler --no-rdoc --no-ri
 # clone repo
 git clone https://github.com/lucaswinningham/pi_driver.git
 cd pi_driver/
-# had to remove simplecov
+# had to remove simplecov, test not removing simplecov after fully updated ruby download
 bundle
 
 # run tests
