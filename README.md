@@ -17,11 +17,7 @@ Pins are inputs by default. Set a pin as an output during or after instantiation
 ```ruby
 my_pin = PiDriver::Pin.new 2
 my_pin.output
-```
-
-or
-
-```ruby
+# or
 my_pin = PiDriver::Pin.new 2, direction: :out
 ```
 
@@ -31,18 +27,13 @@ Output pin states are low by default. Set an output pin's state during or after 
 my_pin = PiDriver::Pin.new 2
 my_pin.output
 my_pin.set
-```
-
-or
-
-```ruby
+# or
+my_pin = PiDriver::Pin.new 2, direction: :out
+my_pin.set
+# or
 my_pin = PiDriver::Pin.new 2
 my_pin.output 1
-```
-
-or
-
-```ruby
+# or
 my_pin = PiDriver::Pin.new 2, direction: :out, state: 1
 ```
 
@@ -71,11 +62,7 @@ Clean up a pin when finished.
 
 ```ruby
 my_pin.unexport
-```
-
-or
-
-```ruby
+# or
 PiDriver::Pin.unexport_all
 ```
 
