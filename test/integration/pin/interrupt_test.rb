@@ -4,7 +4,7 @@ class IntegrationPinInterruptTest < IntegrationPinTest
   def test_interrupt
     interrupted = false
     @getter.interrupt { interrupted = true }
-    @setter.set
+    @setter.input
     timeout { interrupted }
     assert interrupted
     @getter.clear_interrupt

@@ -11,5 +11,5 @@ Rake::TestTask.new do |t|
     test_directory = (specific_tests == 'all' ? '**' : specific_tests)
   end
 
-  t.pattern = "test/#{test_directory}/**/test_*.rb"
+  t.pattern = "test/#{test_directory}/**/*_test.rb"
 end
