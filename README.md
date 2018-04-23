@@ -133,7 +133,7 @@ my_mcp23017.iodirb.byte.to_s(2)
  => "11111110"
 ```
 
-Read or write single or multiple registers
+Read or write single or multiple registers.
 
 ```ruby
 my_mcp23017.gpioa.byte.to_s(2)
@@ -152,8 +152,6 @@ my_mcp23017.olata.byte = 0b11111111
 
 my_mcp23017.write :olata
 ```
-
-Information here.
 
 ## Raspberry Pi Setup
 
