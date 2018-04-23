@@ -56,7 +56,7 @@ module PiDriver
       private
 
       def imitate_pi_kernel?
-        ['test', 'development'].include? ENV['PI_ENV']
+        %w[test development].include? ENV['PI_ENV']
       end
 
       def setup_dirs(working_directory)
