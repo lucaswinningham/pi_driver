@@ -5,23 +5,30 @@ module PiDriver
       @delta_time = @frequency**-1.0
       @clock_pin = options[:clock_pin]
       @data_pin = options[:data_pin]
-      stop
-    end
-
-    def stop
-      release_clock_pin
-      release_data_pin
+      # release_data_pin
+      # release_clock_pin
+      stop # remove this
     end
 
     def start
+      # release_data_pin
+      # release_clock_pin
+      # raise arbitration error if @data_pin.clear?
       drive_data_pin
       drive_clock_pin
+    end
+
+    def stop
+      # drive_data_pin
+      release_clock_pin
+      release_data_pin
+      # raise arbitration error if @data_pin.clear?
     end
 
     alias restart start
 
     def write(byte)
-      send_byte byte
+      write_byte byte
       byte
     end
 
@@ -48,14 +55,15 @@ module PiDriver
 
     private
 
-    def send_byte(byte)
+    def write_byte(byte)
       bits = Utils::Byte.byte_to_bits(byte)
-      bits.each { |bit| send_bit bit }
+      bits.each { |bit| write_bit bit }
     end
 
-    def send_bit(bit)
+    def write_bit(bit)
       bit == Utils::State::HIGH ? release_data_pin : drive_data_pin
       release_clock_pin
+      # raise arbitration error if @data_pin.clear? && bit == Utils::State::HIGH
       drive_clock_pin
     end
 
