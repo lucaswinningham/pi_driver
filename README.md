@@ -13,6 +13,9 @@ NOTE: These commands may take a while
 $ command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 $ curl -L https://get.rvm.io | bash -s stable --ruby
 $ source ~/.rvm/scripts/rvm
+$ type rvm | head -n 1
+rvm is a function
+$ rvm install 2.4.1
 ```
 
 ### Ignore docs when using bundler
