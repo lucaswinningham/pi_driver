@@ -18,11 +18,7 @@ class I2CWriteTest < I2CMasterTest
   private
 
   def expect_bit_write(value)
-    if value.zero?
-      expect_data_pin_to_be_driven
-    elsif value == 1
-      expect_data_pin_to_be_released
-    end
+    value.zero? ? expect_data_pin_to_be_driven : expect_data_pin_to_be_released
     expect_clock_pin_to_be_released
     expect_data_pin_is_clear_to_return false
     expect_clock_pin_to_be_driven

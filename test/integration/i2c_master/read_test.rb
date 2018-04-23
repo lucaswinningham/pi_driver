@@ -1,0 +1,31 @@
+require_relative '../i2c_master_test_helper'
+
+class IntegrationI2CReadTest < IntegrationI2CMasterTest
+  def setup
+    super
+    @i2c_master.start
+  end
+
+  def test_read
+    @bits = [1, 0, 0, 0, 1, 1, 0, 1]
+    @bit_index = 0
+    set_slave_data_pin
+
+    @slave_scl.interrupt(:falling) do
+      @bit_index += 1
+      set_slave_data_pin
+    end
+
+    byte = @i2c_master.read
+    assert @bit_index >= @bits.length
+    assert_equal 0b10001101, byte
+
+    @slave_scl.clear_interrupt
+  end
+
+  private
+
+  def set_slave_data_pin(value)
+    @bits[@bit_index].zero? ? @slave_sda.output : @slave_sda.input
+  end
+end

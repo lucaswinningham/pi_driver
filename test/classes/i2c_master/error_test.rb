@@ -27,7 +27,6 @@ class I2CErrorTest < I2CMasterTest
   def test_error_arbitration_write_bit
     assert_raises PiDriver::I2CMaster::ArbitrationError do
       @sequence = sequence('error write bit')
-
       expect_data_pin_to_be_released
       expect_clock_pin_to_be_released
       expect_data_pin_is_clear_to_return true
