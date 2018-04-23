@@ -1,7 +1,7 @@
 require 'rake/testtask'
 
 Rake::TestTask.new do |t|
-  ENV['PI_ENV'] = 'TEST'
+  ENV['PI_ENV'] = 'test'
   t.libs << 'test'
   test_directory = 'classes'
 

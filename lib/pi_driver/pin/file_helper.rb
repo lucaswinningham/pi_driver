@@ -10,7 +10,7 @@ module PiDriver
         @gpio_number = gpio_number
         @base_path = '/sys/class/gpio'
 
-        if test?
+        if imitate_pi_kernel?
           working_directory = Dir.pwd
           @base_path = "#{working_directory}/development#{@base_path}"
           setup_dirs working_directory
@@ -30,7 +30,7 @@ module PiDriver
       def write_export
         return if exported?
 
-        setup_development_files if test?
+        setup_development_files if imitate_pi_kernel?
         File.write(@directory_helper.export, @gpio_number)
       end
 
@@ -38,7 +38,7 @@ module PiDriver
         return if unexported?
 
         File.write(@directory_helper.unexport, @gpio_number)
-        FileUtils.rm_r @directory_helper.dir_pin if test?
+        FileUtils.rm_r @directory_helper.dir_pin if imitate_pi_kernel?
       end
 
       def write_value(value)
@@ -55,8 +55,8 @@ module PiDriver
 
       private
 
-      def test?
-        ENV['PI_ENV'] == 'TEST'
+      def imitate_pi_kernel?
+        ['test', 'development'].include? ENV['PI_ENV']
       end
 
       def setup_dirs(working_directory)

@@ -1,19 +1,29 @@
-# pi_driver
+# Pi Driver
 
-###### install rvm and upgrade ruby
+Ruby driver for Raspberry Pi
+
+## Raspberry Pi Setup
+
+Follow these steps when first getting your Raspberry Pi.
+
+### Install RVM and Ruby
+
+NOTE: These commands may take a while
 ```bash
 $ command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 $ curl -L https://get.rvm.io | bash -s stable --ruby
 $ source ~/.rvm/scripts/rvm
 ```
 
-###### ignore docs
+### Ignore docs when using bundler
+
 ```bash
 $ cd
 $ touch .gemrc
 $ leafpad .gemrc
 ```
 
+`~/.gemrc`
 ```ruby
 gem: --no-rdoc --no-ri
 ```
@@ -22,19 +32,45 @@ gem: --no-rdoc --no-ri
 $ sudo gem install bundler --no-rdoc --no-ri
 ```
 
-###### clone repo
+### Clone the repository
+
 ```bash
 $ git clone https://github.com/lucaswinningham/pi_driver.git
 $ cd pi_driver/
 ```
-###### had to remove simplecov, test not removing simplecov after fully updated ruby download
-bundle
 
-###### run tests
-setup schematic
+### Play with it
+
 ```bash
-$ rake test integration
+$ irb
+2.4.1 :001 > require_relative 'lib/pi_driver'
+ => true 
+2.4.1 :002 > pin = PiDriver::Pin.new 2
+ => #<PiDriver::Pin:hex_value ...> 
+2.4.1 :003 > 
 ```
+
+or if you're not on the pi
+
+```bash
+$ PI_ENV=development irb
+2.4.1 :001 > require_relative 'lib/pi_driver'
+ => true 
+2.4.1 :002 > pin = PiDriver::Pin.new 2
+ => #<PiDriver::Pin:hex_value ...> 
+2.4.1 :003 > 
+```
+
+NOTE: I had to remove simplecov, but not after upgrading to latest ruby. Test
+
+### Run tests
+
+```bash
+$ rake test
+$ PI_ENV=pi rake test
+```
+
+Setup the integration test circuits
 
 ```
 button active high
@@ -58,4 +94,8 @@ button active low
 |          | 1K      GPIO    |
 |          +-/\/\----->      |
 |                            |
+```
+
+```bash
+$ PI_ENV=pi rake test integration
 ```
