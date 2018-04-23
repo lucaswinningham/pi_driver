@@ -21,13 +21,13 @@ module PiDriver
     alias restart start
 
     def write(byte)
-      send_data byte
+      send_byte byte
       byte
     end
 
     def read
       release_data_pin
-      read_data
+      read_byte
     end
 
     def ack
@@ -48,23 +48,28 @@ module PiDriver
 
     private
 
-    def send_data(byte)
+    def send_byte(byte)
       bits = Utils::Byte.byte_to_bits(byte)
-      bits.each do |bit|
-        bit == Utils::State::HIGH ? release_data_pin : drive_data_pin
-        release_clock_pin
-        drive_clock_pin
-      end
+      bits.each { |bit| send_bit bit }
     end
 
-    def read_data
+    def send_bit(bit)
+      bit == Utils::State::HIGH ? release_data_pin : drive_data_pin
+      release_clock_pin
+      drive_clock_pin
+    end
+
+    def read_byte
       bits = []
-      Utils::Byte::NUM_BITS_PER_BYTE.times do
-        release_clock_pin
-        bits << @data_pin.value
-        drive_clock_pin
-      end
+      Utils::Byte::NUM_BITS_PER_BYTE.times { bits << read_bit }
       Utils::Byte.bits_to_byte(bits)
+    end
+
+    def read_bit
+      release_clock_pin
+      bit = @data_pin.value
+      drive_clock_pin
+      bit
     end
 
     def release_data_pin
