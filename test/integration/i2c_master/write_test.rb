@@ -1,12 +1,9 @@
 require_relative '../i2c_master_test_helper'
 
 class IntegrationI2CWriteTest < IntegrationI2CMasterTest
-  def setup
-    super
-    @i2c_master.start
-  end
-
   def test_write
+    @i2c_master.start
+
     byte = 0b10110001
     bits = [1, 0, 1, 1, 0, 0, 0, 1]
     bit_index = 0

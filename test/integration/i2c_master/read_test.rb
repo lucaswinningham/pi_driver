@@ -1,12 +1,9 @@
 require_relative '../i2c_master_test_helper'
 
 class IntegrationI2CReadTest < IntegrationI2CMasterTest
-  def setup
-    super
-    @i2c_master.start
-  end
-
   def test_read
+    @i2c_master.start
+
     @bits = [1, 0, 0, 0, 1, 1, 0, 1]
     @bit_index = 0
     set_slave_data_pin
