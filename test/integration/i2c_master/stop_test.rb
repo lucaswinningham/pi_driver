@@ -6,12 +6,12 @@ class IntegrationI2CStopTest < IntegrationI2CMasterTest
     clock_pin_released = false
     clock_pin_released_first = false
 
-    @slave_scl.interrupt(:rising) do |edge|
+    @slave_scl.interrupt(:rising) do
       clock_pin_released = true
       clock_pin_released_first = !data_pin_released
     end
 
-    @slave_sda.interrupt(:rising) { |edge| data_pin_released = true }
+    @slave_sda.interrupt(:rising) { data_pin_released = true }
 
     @i2c_master.stop
     timeout { clock_pin_released && data_pin_released && clock_pin_released_first }

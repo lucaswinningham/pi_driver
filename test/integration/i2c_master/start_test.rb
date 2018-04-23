@@ -6,12 +6,12 @@ class IntegrationI2CStartTest < IntegrationI2CMasterTest
     clock_pin_driven = false
     data_pin_driven_first = false
 
-    @slave_sda.interrupt(:falling) do |edge|
+    @slave_sda.interrupt(:falling) do
       data_pin_driven = true
       data_pin_driven_first = !clock_pin_driven
     end
 
-    @slave_scl.interrupt(:falling) { |edge| clock_pin_driven = true }
+    @slave_scl.interrupt(:falling) { clock_pin_driven = true }
 
     @i2c_master.start
     timeout { data_pin_driven && clock_pin_driven && data_pin_driven_first }
