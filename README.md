@@ -113,7 +113,7 @@ my_i2c_master = PiDriver::I2CMaster.new clock_pin: my_clock_pin, data_pin: my_da
 my_mcp23017 = PiDriver::Device::MCP23017.new i2c_master: my_i2c_master
 ```
 
-Modify hardware address bits to suit you circuit.
+Modify hardware address bits to suit your circuit.
 
 ```ruby
 my_mcp23017.hardware_address.a0 = 1
