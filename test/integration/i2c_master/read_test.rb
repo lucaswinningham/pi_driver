@@ -25,7 +25,7 @@ class IntegrationI2CReadTest < IntegrationI2CMasterTest
 
   private
 
-  def set_slave_data_pin(value)
+  def set_slave_data_pin
     @bits[@bit_index].zero? ? @slave_sda.output : @slave_sda.input
   end
 end
