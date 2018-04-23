@@ -71,38 +71,87 @@ PiDriver::Pin.unexport_all
 Instantiate an I2C Master driver with two pins.
 
 ```ruby
-clock_pin = PiDriver::Pin.new 2
-data_pin = PiDriver::Pin.new 3
-i2c_master = PiDriver::I2CMaster.new clock_pin: clock_pin, data_pin: data_pin
+my_clock_pin = PiDriver::Pin.new 2
+my_data_pin = PiDriver::Pin.new 3
+my_i2c_master = PiDriver::I2CMaster.new clock_pin: my_clock_pin, data_pin: my_data_pin
 ```
 
 Utilize address preparation.
 
 ```ruby
-slave_base_address = 0b0100000
-slave_write_address = PiDriver::I2CMaster.prepare_address_for_write slave_base_address
-slave_read_address = PiDriver::I2CMaster.prepare_address_for_read slave_base_address
+my_slave_base_address = 0b0100000
+my_slave_write_address = PiDriver::I2CMaster.prepare_address_for_write my_slave_base_address
+my_slave_read_address = PiDriver::I2CMaster.prepare_address_for_read my_slave_base_address
 ```
 
 Communicate with a slave device
 
 ```
-register_address = 0x0A
-register_data = 0b01010101
+my_register_address = 0x0A
+my_register_data = 0b01010101
 
-i2c_master.start
-i2c_master.write slave_write_address
-i2c_master.ack
-i2c_master.write register_address
-i2c_master.ack
-i2c_master.write register_data
-i2c_master.ack
-i2c_master.stop
+my_i2c_master.start
+my_i2c_master.write my_slave_write_address
+my_i2c_master.ack
+my_i2c_master.write my_register_address
+my_i2c_master.ack
+my_i2c_master.write my_register_data
+my_i2c_master.ack
+my_i2c_master.stop
 ```
 
 ### Devices
 
 #### MCP23017
+
+Instantiate an MCP23017 driver with an I2C Master driver.
+
+```ruby
+my_clock_pin = PiDriver::Pin.new 2
+my_data_pin = PiDriver::Pin.new 3
+my_i2c_master = PiDriver::I2CMaster.new clock_pin: my_clock_pin, data_pin: my_data_pin
+my_mcp23017 = PiDriver::Device::MCP23017.new i2c_master: my_i2c_master
+```
+
+Modify hardware address bits to suit you circuit.
+
+```ruby
+my_mcp23017.hardware_address.a0 = 1
+my_mcp23017.hardware_address.a1 = 1
+my_mcp23017.hardware_address.a2 = 1
+```
+
+Get or set register data by byte or bit.
+
+```ruby
+my_mcp23017.iodira.byte = 0b01111111
+my_mcp23017.iodira.bit7
+ => 0
+# or
+my_mcp23017.iodirb.bit0 = 0
+my_mcp23017.iodirb.byte.to_s(2)
+ => "11111110"
+```
+
+Read or write single or multiple registers
+
+```ruby
+my_mcp23017.gpioa.byte.to_s(2)
+ => "11111111"
+my_mcp23017.gpiob.byte.to_s(2)
+ => "11111111"
+
+my_mcp23017.read :gpioa, :gpiob
+
+my_mcp23017.gpioa.byte.to_s(2)
+ => "00000000"
+my_mcp23017.gpiob.byte.to_s(2)
+ => "00000000"
+
+my_mcp23017.olata.byte = 0b11111111
+
+my_mcp23017.write :olata
+```
 
 Information here.
 
