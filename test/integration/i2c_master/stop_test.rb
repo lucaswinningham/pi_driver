@@ -14,7 +14,6 @@ class IntegrationI2CStopTest < IntegrationI2CMasterTest
     @slave_sda.interrupt(:rising) { data_pin_released = true }
 
     @i2c_master.stop
-    timeout { clock_pin_released && data_pin_released && clock_pin_released_first }
     assert clock_pin_released && data_pin_released && clock_pin_released_first
 
     @slave_scl.clear_interrupt
