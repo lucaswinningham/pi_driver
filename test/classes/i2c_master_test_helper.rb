@@ -10,8 +10,8 @@ class I2CMasterTest < ClassesTest
   private
 
   def expect_clock_pin_to_be_released
-    @clock_pin.expects(:input).with(nil).in_sequence(@sequence)
-    @clock_pin.expects(:set?).with(nil).returns(true).in_sequence(@sequence)
+    @clock_pin.expects(:input).in_sequence(@sequence)
+    @clock_pin.expects(:set?).returns(true).in_sequence(@sequence)
   end
 
   def expect_clock_pin_to_be_driven
@@ -19,10 +19,14 @@ class I2CMasterTest < ClassesTest
   end
 
   def expect_data_pin_to_be_released
-    @data_pin.expects(:input).with(nil).in_sequence(@sequence)
+    @data_pin.expects(:input).in_sequence(@sequence)
   end
 
   def expect_data_pin_to_be_driven
     @data_pin.expects(:output).with(0).in_sequence(@sequence)
+  end
+
+  def expect_data_pin_is_clear_to_return(value)
+    @data_pin.expects(:clear?).returns(value).in_sequence(@sequence)
   end
 end

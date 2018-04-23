@@ -3,6 +3,7 @@ module PiDriver
     def initialize(options = {})
       @frequency = 100_000
       @delta_time = @frequency**-1.0
+      # TODO: add argument helper type check here
       @clock_pin = options[:clock_pin]
       @data_pin = options[:data_pin]
       release_data_pin
@@ -12,7 +13,7 @@ module PiDriver
     def start
       release_data_pin
       release_clock_pin
-      # raise arbitration error if @data_pin.clear?
+      raise_arbitration_error 'start' if @data_pin.clear?
       drive_data_pin
       drive_clock_pin
     end
@@ -21,7 +22,7 @@ module PiDriver
       drive_data_pin
       release_clock_pin
       release_data_pin
-      # raise arbitration error if @data_pin.clear?
+      raise_arbitration_error 'stop' if @data_pin.clear?
     end
 
     alias restart start
@@ -62,7 +63,7 @@ module PiDriver
     def write_bit(bit)
       bit == Utils::State::HIGH ? release_data_pin : drive_data_pin
       release_clock_pin
-      # raise arbitration error if @data_pin.clear? && bit == Utils::State::HIGH
+      raise_arbitration_error 'bit write' if @data_pin.clear? && bit == Utils::State::HIGH
       drive_clock_pin
     end
 
@@ -113,6 +114,11 @@ module PiDriver
     def observe_speed_requirement
       start = Time.now
       loop { break if (Time.now - start) > @delta_time }
+    end
+
+    class ArbitrationError < StandardError; end
+    def raise_arbitration_error(action)
+      raise ArbitrationError, "Arbitration was lost for I2C Master driver during #{action}."
     end
   end
 end

@@ -20,6 +20,7 @@ module PiDriver
 
       def initialize(options = {})
         @argument_helper = Utils::ArgumentHelper.new prefix: 'MCP23017'
+        # TODO: add argument helper type check here
         @i2c_master = options[:i2c_master]
         @hardware_address = HardwareAddress.new observer: self
         update_opcodes

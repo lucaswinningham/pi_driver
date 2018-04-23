@@ -5,6 +5,7 @@ class I2CStartTest < I2CMasterTest
     @sequence = sequence('start')
     expect_data_pin_to_be_released
     expect_clock_pin_to_be_released
+    expect_data_pin_is_clear_to_return false
     expect_data_pin_to_be_driven
     expect_clock_pin_to_be_driven
 

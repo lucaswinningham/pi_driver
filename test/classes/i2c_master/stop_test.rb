@@ -1,6 +1,7 @@
 require_relative '../i2c_master_test_helper'
 
 class I2CStopTest < I2CMasterTest
+  # TODO: move this test elsewhere as it is not encapsulated by #stop anymore
   def test_new_i2c_stop
     @sequence = sequence('stop')
     expect_data_pin_to_be_released
@@ -14,6 +15,7 @@ class I2CStopTest < I2CMasterTest
     expect_data_pin_to_be_driven
     expect_clock_pin_to_be_released
     expect_data_pin_to_be_released
+    expect_data_pin_is_clear_to_return false
 
     @i2c_master.stop
   end
