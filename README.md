@@ -157,6 +157,13 @@ my_mcp23017.write :olata
 
 Follow these steps when first getting your Raspberry Pi.
 
+Update Raspbian.
+
+```bash
+$ sudo apt-get update
+$ sudo apt-get upgrade
+```
+
 Install RVM and Ruby.
 NOTE: These commands may take a while.
 
@@ -169,7 +176,7 @@ rvm is a function
 $ rvm install 2.4.1
 ```
 
-Ignore docs when using bundler.
+Install bundler and ignore docs when using it.
 
 ```bash
 $ sudo gem install bundler --no-rdoc --no-ri
