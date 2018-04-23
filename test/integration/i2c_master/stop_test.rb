@@ -2,8 +2,8 @@ require_relative '../i2c_master_test_helper'
 
 class IntegrationI2CStopTest < IntegrationI2CMasterTest
   def test_stop
-    data_pin_released = false
     clock_pin_released = false
+    data_pin_released = false
     clock_pin_released_first = false
 
     @slave_scl.interrupt(:rising) do

@@ -5,21 +5,20 @@ module PiDriver
       @delta_time = @frequency**-1.0
       @clock_pin = options[:clock_pin]
       @data_pin = options[:data_pin]
-      # release_data_pin
-      # release_clock_pin
-      stop # remove this
+      release_data_pin
+      release_clock_pin
     end
 
     def start
-      # release_data_pin
-      # release_clock_pin
+      release_data_pin
+      release_clock_pin
       # raise arbitration error if @data_pin.clear?
       drive_data_pin
       drive_clock_pin
     end
 
     def stop
-      # drive_data_pin
+      drive_data_pin
       release_clock_pin
       release_data_pin
       # raise arbitration error if @data_pin.clear?
