@@ -26,7 +26,7 @@ $ touch .gemrc
 $ leafpad .gemrc
 ```
 
-`~/.gemrc`
+~/.gemrc
 ```ruby
 gem: --no-rdoc --no-ri
 ```
