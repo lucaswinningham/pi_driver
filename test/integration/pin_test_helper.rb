@@ -3,7 +3,10 @@ require_relative '../integration_test_helper'
 # TODO: figure out test circuit that enables testing of output high
 class IntegrationPinTest < IntegrationTest
   def setup
-    @setter = PiDriver::Pin.new 5, direction: :out
-    @getter = PiDriver::Pin.new 6
+    @active_low_writer = PiDriver::Pin.new 5
+    @active_low_reader = PiDriver::Pin.new 6
+
+    @active_high_writer = PiDriver::Pin.new 13
+    @active_high_reader = PiDriver::Pin.new 19
   end
 end
