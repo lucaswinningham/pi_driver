@@ -155,7 +155,7 @@ my_mcp23017.write :olata
 
 ## Raspberry Pi Setup
 
-Follow these steps when first getting your Raspberry Pi.
+Follow these steps when first getting the Raspberry Pi.
 
 Update Raspbian.
 
@@ -195,6 +195,12 @@ Clone the repository.
 ```bash
 $ git clone https://github.com/lucaswinningham/pi_driver.git
 $ cd pi_driver/
+```
+
+Install dependencies.
+
+```bash
+$ bundle
 ```
 
 Play with it.
@@ -261,7 +267,7 @@ I2C Master test
 |                    +-/\/\------->    |
 |                    |                 |
 |                    |                 |
-|                    -                 |
+|                    - Cc              |
 |                    -                 |
 |                    |                 |
 |    Rp              | Cp              |
