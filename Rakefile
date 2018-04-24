@@ -3,13 +3,20 @@ require 'rake/testtask'
 Rake::TestTask.new do |t|
   ENV['PI_ENV'] ||= 'test'
   t.libs << 'test'
-  test_directory = 'classes'
 
-  specific_tests = ARGV[1]
-  if specific_tests
-    task(specific_tests.to_sym {})
-    test_directory = (specific_tests == 'all' ? '**' : specific_tests)
+  directory = ARGV[1]
+  test_file = ARGV[2]
+
+  if directory
+    task(directory.to_sym {})
+    directory = '**' if directory == 'all'
+
+    test_file = ARGV[2]
+    task(test_file.to_sym {}) if test_file
   end
 
-  t.pattern = "test/#{test_directory}/**/*_test.rb"
+  directory ||= 'classes'
+  test_file ||= '*'
+
+  t.pattern = "test/#{directory}/**/#{test_file}_test.rb"
 end
