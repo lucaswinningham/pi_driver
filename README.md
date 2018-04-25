@@ -21,7 +21,7 @@ my_pin.output
 my_pin = PiDriver::Pin.new 2, direction: :out
 ```
 
-Output pin states are low by default. Set an output pin's state during or after instantiation, or with #output.
+Output pin states are low by default. Set an output pin's state during or after instantiation, or with `#output`.
 
 ```ruby
 my_pin = PiDriver::Pin.new 2
