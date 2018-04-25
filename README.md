@@ -153,7 +153,25 @@ my_mcp23017.olata.byte = 0b11111111
 my_mcp23017.write :olata
 ```
 
-## Raspberry Pi Setup
+## Raspberry Pi Setup (Automatic)
+
+Clone the repository and source Pi Driver's commands.
+
+```bash
+$ cd
+$ git clone https://github.com/lucaswinningham/pi_driver.git
+$ cd pi_driver/
+$ echo -e "\n# PiDriver commands\nsource ~/pi_driver/.pi_commands.sh" >> ~/.bashrc
+```
+
+Open a new terminal window.
+
+```bash
+$ cd ~/pi_driver/
+$ pi install
+```
+
+## Raspberry Pi Setup (Manual)
 
 Follow these steps when first getting the Raspberry Pi.
 
@@ -203,26 +221,36 @@ Install dependencies.
 $ bundle
 ```
 
+Source Pi Driver's commands.
+
+```bash
+$ echo -e "\n# PiDriver commands\nsource ~/pi_driver/.pi_commands.sh" >> ~/.bashrc
+```
+
+Open a new terminal window.
+
+```bash
+$ cd ~/pi_driver/
+```
+
+## Test
+
 Play with it.
 
 ```bash
-$ irb
-2.4.1 :001 > require_relative 'lib/pi_driver'
- => true 
-2.4.1 :002 > pin = PiDriver::Pin.new 2
+$ pi console
+2.4.1 :001 > pin = PiDriver::Pin.new 2
  => #<PiDriver::Pin:hex_value ...> 
-2.4.1 :003 > 
+2.4.1 :002 > 
 ```
 
-or if you're not on the pi
+or if you're on the pi
 
 ```bash
-$ PI_ENV=development irb
-2.4.1 :001 > require_relative 'lib/pi_driver'
- => true 
-2.4.1 :002 > pin = PiDriver::Pin.new 2
+$ PI_ENV=pi pi console
+2.4.1 :001 > pin = PiDriver::Pin.new 2
  => #<PiDriver::Pin:hex_value ...> 
-2.4.1 :003 > 
+2.4.1 :002 > 
 ```
 
 NOTE: I had to remove simplecov, but not after upgrading to latest ruby. Test.

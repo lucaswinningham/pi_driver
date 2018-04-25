@@ -18,5 +18,7 @@ Rake::TestTask.new do |t|
   directory ||= 'classes'
   test_file ||= '*'
 
+  directory.chomp('/').reverse.chomp('/').reverse
+
   t.pattern = "test/#{directory}/**/#{test_file}_test.rb"
 end
