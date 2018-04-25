@@ -161,7 +161,7 @@ Clone the repository and source Pi Driver's commands.
 $ cd
 $ git clone https://github.com/lucaswinningham/pi_driver.git
 $ cd pi_driver/
-$ echo -e "\n# PiDriver commands\nsource ~/pi_driver/.pi_commands.sh" >> ~/.bashrc
+$ echo -e "\n# PiDriver commands\nsource ~/pi_driver/bin/.pi_commands.sh" >> ~/.bashrc
 ```
 
 Open a new terminal window.
