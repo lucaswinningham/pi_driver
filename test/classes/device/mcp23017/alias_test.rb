@@ -2,6 +2,7 @@ require_relative '../mcp23017_test_helper'
 
 class MCP23017AliasTest < MCP23017Test
   def test_register_aliases
+    # TODO: flesh out all tests for each bit for each register
     assert_equal @mcp23017.iodira.method(:bit0), @mcp23017.iodira.method(:io0)
     assert_equal @mcp23017.ipola.method(:bit0), @mcp23017.ipola.method(:ip0)
     assert_equal @mcp23017.gpintena.method(:bit0), @mcp23017.gpintena.method(:gpint0)
