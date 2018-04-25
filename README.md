@@ -53,7 +53,7 @@ my_pin.off?
 Handle interrupts with a pin.
 
 ```ruby
-my_pin.interrupt(:falling) do |edge|
+my_pin.interrupt(:falling) do
   puts 'my_pin went low'
 end
 ```
@@ -189,8 +189,6 @@ NOTE: These commands may take a while.
 $ command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 $ curl -L https://get.rvm.io | bash -s stable --ruby
 $ source ~/.rvm/scripts/rvm
-$ type rvm | head -n 1
-rvm is a function
 $ rvm install 2.4.1
 ```
 
@@ -253,14 +251,19 @@ $ PI_ENV=pi pi console
 2.4.1 :002 > 
 ```
 
-NOTE: I had to remove simplecov, but not after upgrading to latest ruby. Test.
-
 Run tests.
 
 ```bash
-$ rake test
-$ PI_ENV=pi rake test
+$ pi test
 ```
+
+or if you're on the pi
+
+```
+$ PI_ENV=pi pi test
+```
+
+### WIP
 
 Setup the integration test circuits.
 
@@ -340,5 +343,5 @@ button active low
 ```
 
 ```bash
-$ PI_ENV=pi rake test integration
+$ PI_ENV=pi pi test integration
 ```
