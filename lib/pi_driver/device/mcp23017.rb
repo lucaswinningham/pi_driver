@@ -27,6 +27,7 @@ module PiDriver
       end
 
       def update_registers
+        # TODO: move this callback to when iocon is actually written to device
         bank = registers[:iocon].bank
         registers.each_value do |register|
           register.update_address bank
