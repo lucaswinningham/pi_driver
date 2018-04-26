@@ -2,8 +2,6 @@ require_relative '../mcp23017_test_helper'
 
 class IntegrationMCP23017DefaultTest < IntegrationMCP23017Test
   def test_register_defaults
-    @mcp23017.read PiDriver::Device::MCP23017::REGISTERS
-
     assert_equal 0b11111111, @mcp23017.iodira.byte
     assert_equal 0b11111111, @mcp23017.iodirb.byte
 
