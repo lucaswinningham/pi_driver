@@ -2,9 +2,9 @@ require_relative '../classes_test_helper'
 
 class PinTest < ClassesTest
   def setup
-    @pin_number = 2
-    @file_helper = PiDriver::Pin::FileHelper.new @pin_number
-    @directory_helper = @file_helper.directory_helper
+    @gpio_number = 2
+    # file_helper = PiDriver::Pin::FileHelper.new(@gpio_number)
+    @directory_helper = PiDriver::Pin::FileHelper.new(@gpio_number).directory_helper
   end
 
   private
@@ -18,11 +18,11 @@ class PinTest < ClassesTest
   end
 
   def expect_export_write
-    expect_write(@directory_helper.export, @pin_number)
+    expect_write(@directory_helper.export, @gpio_number)
   end
 
   def expect_unexport_write
-    expect_write(@directory_helper.unexport, @pin_number)
+    expect_write(@directory_helper.unexport, @gpio_number)
   end
 
   def expect_direction_write(direction)

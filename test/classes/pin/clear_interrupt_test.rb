@@ -5,7 +5,7 @@ class PinClearInterruptTest < PinTest
     thread = mock
     thread.stubs(:abort_on_exception=)
     Thread.expects(:new).returns(thread)
-    pin = PiDriver::Pin.new @pin_number
+    pin = PiDriver::Pin.new @gpio_number
     pin.interrupt {}
     thread.expects(:kill)
     pin.clear_interrupt

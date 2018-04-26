@@ -2,7 +2,7 @@ require_relative '../pin_test_helper'
 
 class PinInterruptTest < PinTest
   def test_interrupt
-    pin = PiDriver::Pin.new @pin_number
+    pin = PiDriver::Pin.new @gpio_number
     interrupt = mock
 
     %i[rising falling both none].each do |edge|
@@ -13,7 +13,7 @@ class PinInterruptTest < PinTest
   end
 
   def test_interrupt_default
-    pin = PiDriver::Pin.new @pin_number
+    pin = PiDriver::Pin.new @gpio_number
     interrupt_default = sequence('interrupt default')
     expect_value_read(0).in_sequence(interrupt_default)
     expect_value_read(1).at_least_once.in_sequence(interrupt_default)
@@ -28,7 +28,7 @@ class PinInterruptTest < PinTest
   end
 
   def test_interrupt_argument
-    pin = PiDriver::Pin.new @pin_number
+    pin = PiDriver::Pin.new @gpio_number
     interrupt_argument = sequence('interrupt argument')
     expect_value_read(1).in_sequence(interrupt_argument)
     expect_value_read(0).at_least_once.in_sequence(interrupt_argument)

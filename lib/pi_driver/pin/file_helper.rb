@@ -45,6 +45,8 @@ module PiDriver
         File.write(@directory_helper.value, value)
       end
 
+      private
+
       def exported?
         pin_directory_exists? && direction_file_exists? && value_file_exists?
       end
@@ -52,8 +54,6 @@ module PiDriver
       def unexported?
         !pin_directory_exists? && !direction_file_exists? && !value_file_exists?
       end
-
-      private
 
       def imitate_pi_kernel?
         %w[test development].include? ENV['PI_ENV']

@@ -20,14 +20,14 @@ class PinErrorTest < PinTest
   end
 
   def test_error_value
-    pin = PiDriver::Pin.new @pin_number
+    pin = PiDriver::Pin.new @gpio_number
     assert_raises ArgumentError do
       pin.output 2
     end
   end
 
   def test_error_edge
-    pin = PiDriver::Pin.new @pin_number
+    pin = PiDriver::Pin.new @gpio_number
     assert_raises ArgumentError do
       pin.interrupt(:invalid_edge) {}
     end
