@@ -16,30 +16,6 @@ require_relative 'mcp23017/register/olat'
 module PiDriver
   class Device
     class MCP23017
-      REGISTERS = [
-        :iodira,
-        :iodirb,
-        :ipola,
-        :ipolb,
-        :gpintena,
-        :gpintenb,
-        :defvala,
-        :defvalb,
-        :intcona,
-        :intconb,
-        :iocon,
-        :gppua,
-        :gppub,
-        :intfa,
-        :intfb,
-        :intcapa,
-        :intcapb,
-        :gpioa,
-        :gpiob,
-        :olata,
-        :olatb
-      ]
-
       attr_reader :hardware_address
 
       def initialize(options = {})
@@ -100,7 +76,7 @@ module PiDriver
       end
 
       private_class_method :register_reader
-      register_reader(*REGISTERS)
+      register_reader(*Register::RegisterHelper::PORT_REGISTERS)
 
       private
 
@@ -130,7 +106,7 @@ module PiDriver
 
       def check_registers(register_array)
         register_array.each do |register|
-          @argument_helper.check(:register, register, REGISTERS)
+          @argument_helper.check(:register, register, Register::RegisterHelper::PORT_REGISTERS)
         end
       end
 

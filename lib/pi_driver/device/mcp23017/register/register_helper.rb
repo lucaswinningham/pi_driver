@@ -29,6 +29,51 @@ module PiDriver
             OLAT
           ].freeze
 
+          IODIRA = :iodira
+          IODIRB = :iodirb
+          IPOLA = :ipola
+          IPOLB = :ipolb
+          GPINTENA = :gpintena
+          GPINTENB = :gpintenb
+          DEFVALA = :defvala
+          DEFVALB = :defvalb
+          INTCONA = :intcona
+          INTCONB = :intconb
+          GPPUA = :gppua
+          GPPUB = :gppub
+          INTFA = :intfa
+          INTFB = :intfb
+          INTCAPA = :intcapa
+          INTCAPB = :intcapb
+          GPIOA = :gpioa
+          GPIOB = :gpiob
+          OLATA = :olata
+          OLATB = :olatb
+
+          PORT_REGISTERS = [
+            IODIRA,
+            IODIRB,
+            IPOLA,
+            IPOLB,
+            GPINTENA,
+            GPINTENB,
+            DEFVALA,
+            DEFVALB,
+            INTCONA,
+            INTCONB,
+            IOCON,
+            GPPUA,
+            GPPUB,
+            INTFA,
+            INTFB,
+            INTCAPA,
+            INTCAPB,
+            GPIOA,
+            GPIOB,
+            OLATA,
+            OLATB
+          ].freeze
+
           def self.address(options)
             bank = options[:bank]
             port = options[:port]

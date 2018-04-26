@@ -3,7 +3,6 @@ require_relative '../classes_test_helper'
 class PinTest < ClassesTest
   def setup
     @gpio_number = 2
-    # file_helper = PiDriver::Pin::FileHelper.new(@gpio_number)
     @directory_helper = PiDriver::Pin::FileHelper.new(@gpio_number).directory_helper
   end
 
