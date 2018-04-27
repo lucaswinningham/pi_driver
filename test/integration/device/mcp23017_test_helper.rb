@@ -10,8 +10,41 @@ class IntegrationMCP23017Test < IntegrationDeviceTest
     @mcp23017.hardware_address.a1 = 1
     @mcp23017.hardware_address.a2 = 1
 
+    try_to_set_genesis_register_values
+  end
+
+  def teardown
+    @mcp23017.iodira.byte = @genesis_register_values[:iodira]
+    @mcp23017.iodirb.byte = @genesis_register_values[:iodirb]
+    @mcp23017.ipola.byte = @genesis_register_values[:ipola]
+    @mcp23017.ipolb.byte = @genesis_register_values[:ipolb]
+    @mcp23017.gpintena.byte = @genesis_register_values[:gpintena]
+    @mcp23017.gpintenb.byte = @genesis_register_values[:gpintenb]
+    @mcp23017.defvala.byte = @genesis_register_values[:defvala]
+    @mcp23017.defvalb.byte = @genesis_register_values[:defvalb]
+    @mcp23017.intcona.byte = @genesis_register_values[:intcona]
+    @mcp23017.intconb.byte = @genesis_register_values[:intconb]
+    @mcp23017.iocon.byte = @genesis_register_values[:iocon]
+    @mcp23017.gppua.byte = @genesis_register_values[:gppua]
+    @mcp23017.gppub.byte = @genesis_register_values[:gppub]
+    @mcp23017.intfa.byte = @genesis_register_values[:intfa]
+    @mcp23017.intfb.byte = @genesis_register_values[:intfb]
+    @mcp23017.intcapa.byte = @genesis_register_values[:intcapa]
+    @mcp23017.intcapb.byte = @genesis_register_values[:intcapb]
+    @mcp23017.gpioa.byte = @genesis_register_values[:gpioa]
+    @mcp23017.gpiob.byte = @genesis_register_values[:gpiob]
+    @mcp23017.olata.byte = @genesis_register_values[:olata]
+    @mcp23017.olatb.byte = @genesis_register_values[:olatb]
+    @mcp23017.write(*PiDriver::Device::MCP23017::Register::RegisterHelper::PORT_REGISTERS)
+  end
+
+  private
+
+  def try_to_set_genesis_register_values
+    return @genesis_register_values if @genesis_register_values
+
     @mcp23017.read(*PiDriver::Device::MCP23017::Register::RegisterHelper::PORT_REGISTERS)
-    @registers_at_setup = {
+    @genesis_register_values = {
       iodira: @mcp23017.iodira.byte,
       iodirb: @mcp23017.iodirb.byte,
       ipola: @mcp23017.ipola.byte,
@@ -34,30 +67,5 @@ class IntegrationMCP23017Test < IntegrationDeviceTest
       olata: @mcp23017.olata.byte,
       olatb: @mcp23017.olatb.byte
     }
-  end
-
-  def teardown
-    @mcp23017.iodira.byte = @registers_at_setup[:iodira]
-    @mcp23017.iodirb.byte = @registers_at_setup[:iodirb]
-    @mcp23017.ipola.byte = @registers_at_setup[:ipola]
-    @mcp23017.ipolb.byte = @registers_at_setup[:ipolb]
-    @mcp23017.gpintena.byte = @registers_at_setup[:gpintena]
-    @mcp23017.gpintenb.byte = @registers_at_setup[:gpintenb]
-    @mcp23017.defvala.byte = @registers_at_setup[:defvala]
-    @mcp23017.defvalb.byte = @registers_at_setup[:defvalb]
-    @mcp23017.intcona.byte = @registers_at_setup[:intcona]
-    @mcp23017.intconb.byte = @registers_at_setup[:intconb]
-    @mcp23017.iocon.byte = @registers_at_setup[:iocon]
-    @mcp23017.gppua.byte = @registers_at_setup[:gppua]
-    @mcp23017.gppub.byte = @registers_at_setup[:gppub]
-    @mcp23017.intfa.byte = @registers_at_setup[:intfa]
-    @mcp23017.intfb.byte = @registers_at_setup[:intfb]
-    @mcp23017.intcapa.byte = @registers_at_setup[:intcapa]
-    @mcp23017.intcapb.byte = @registers_at_setup[:intcapb]
-    @mcp23017.gpioa.byte = @registers_at_setup[:gpioa]
-    @mcp23017.gpiob.byte = @registers_at_setup[:gpiob]
-    @mcp23017.olata.byte = @registers_at_setup[:olata]
-    @mcp23017.olatb.byte = @registers_at_setup[:olatb]
-    @mcp23017.write(*PiDriver::Device::MCP23017::Register::RegisterHelper::PORT_REGISTERS)
   end
 end
