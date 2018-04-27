@@ -10,7 +10,7 @@ class PinIsClearTest < PinTest
 
   def test_is_clear_output
     pin = PiDriver::Pin.new @gpio_number, direction: :out
-    expect_value_read('0').never
+    expect_value_read('0').twice
     assert pin.clear?
     refute pin.set?
   end

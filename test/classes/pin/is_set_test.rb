@@ -10,7 +10,7 @@ class PinIsSetTest < PinTest
 
   def test_is_set_output
     pin = PiDriver::Pin.new @gpio_number, direction: :out, state: 1
-    expect_value_read('1').never
+    expect_value_read('1').twice
     refute pin.clear?
     assert pin.set?
   end

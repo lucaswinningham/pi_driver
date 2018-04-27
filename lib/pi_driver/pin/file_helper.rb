@@ -19,8 +19,8 @@ module PiDriver
         @directory_helper = DirectoryHelper.new @gpio_number, @base_path
       end
 
-      def read_value
-        File.read(@directory_helper.value).to_i
+      def read_direction
+        File.read(@directory_helper.direction).to_sym
       end
 
       def write_direction(direction)
@@ -39,6 +39,10 @@ module PiDriver
 
         File.write(@directory_helper.unexport, @gpio_number)
         FileUtils.rm_r @directory_helper.dir_pin if imitate_pi_kernel?
+      end
+
+      def read_value
+        File.read(@directory_helper.value).to_i
       end
 
       def write_value(value)
