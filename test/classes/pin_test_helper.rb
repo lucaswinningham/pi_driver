@@ -24,6 +24,10 @@ class PinTest < ClassesTest
     expect_write(@directory_helper.unexport, @gpio_number)
   end
 
+  def expect_direction_read(direction)
+    expect_read(@directory_helper.direction, direction)
+  end
+
   def expect_direction_write(direction)
     expect_write(@directory_helper.direction, direction)
   end
