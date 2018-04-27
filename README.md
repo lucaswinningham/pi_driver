@@ -186,8 +186,10 @@ Install RVM and Ruby.
 NOTE: These commands may take a while.
 
 ```bash
-$ command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-$ curl -L https://get.rvm.io | bash -s stable --ruby
+# $ sudo apt-get install gnupg2 -y
+$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+# $ command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+$ \curl -sSL https://get.rvm.io | bash -s stable --ruby
 $ source ~/.rvm/scripts/rvm
 $ rvm install 2.4.1
 ```
