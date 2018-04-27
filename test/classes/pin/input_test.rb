@@ -3,13 +3,13 @@ require_relative '../pin_test_helper'
 class PinInputTest < PinTest
   def test_input_new_default
     expect_direction_write :in
-    expect_value_read '0'
     PiDriver::Pin.new @gpio_number
   end
 
   def test_input_new_ignore_value
     expect_direction_write :in
-    expect_value_read '0'
+    expect_value_read('1').never
+    expect_value_write('1').never
     PiDriver::Pin.new @gpio_number, state: 1
   end
 
