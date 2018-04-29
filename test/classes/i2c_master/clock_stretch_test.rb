@@ -4,7 +4,7 @@ class I2CClockStretchTest < I2CMasterTest
   def test_clock_stretch
     @sequence = sequence('clock stretch')
     @clock_pin.expects(:input).in_sequence(@sequence)
-    @clock_pin.expects(:set?).returns(false).times(3).in_sequence(@sequence)
+    @clock_pin.expects(:set?).returns(false).in_sequence(@sequence)
     @clock_pin.expects(:set?).returns(true).in_sequence(@sequence)
 
     @i2c_master.send(:release_clock_pin)

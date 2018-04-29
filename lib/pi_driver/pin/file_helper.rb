@@ -46,7 +46,7 @@ module PiDriver
       end
 
       def write_value(value)
-        File.write(@directory_helper.value, value)
+        File.write @directory_helper.value, value
       end
 
       private
