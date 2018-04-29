@@ -187,26 +187,20 @@ NOTE: These commands may take a while.
 
 ```bash
 # $ sudo apt-get install gnupg2 -y
-$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-# $ command curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+$ \curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+$ echo progress-bar >> ~/.curlrc
 $ \curl -sSL https://get.rvm.io | bash -s stable --ruby
-# $ echo progress-bar >> ~/.curlrc
-$ source ~/.rvm/scripts/rvm
+$ source /home/pi/.rvm/scripts/rvm
 $ rvm install 2.4.1
 ```
 
 Install bundler and ignore docs when using it.
 
 ```bash
-$ sudo gem install bundler --no-rdoc --no-ri
+$ gem install bundler --no-rdoc --no-ri
 $ cd
 $ touch .gemrc
-$ leafpad .gemrc
-```
-
-~/.gemrc
-```ruby
-gem: --no-rdoc --no-ri
+$ echo -e "\n# Do not install documentation with gems\ngem: --no-rdoc --no-ri" >> ~/.gemrc
 ```
 
 Clone the repository.
@@ -219,13 +213,15 @@ $ cd pi_driver/
 Install dependencies.
 
 ```bash
+# $ sudo apt-get install ruby-dev
 $ bundle
 ```
 
 Source Pi Driver's commands.
 
 ```bash
-$ echo -e "\n# PiDriver commands\nsource ~/pi_driver/.pi_commands.sh" >> ~/.bashrc
+$ echo -e "\n# PiDriver commands\nsource ~/pi_driver/bin/.pi_commands.sh" >> ~/.bashrc
+$ source ~/pi_driver/bin/.pi_commands.sh
 ```
 
 Open a new terminal window.
@@ -260,10 +256,12 @@ Run tests.
 $ pi test
 ```
 
-or if you're on the pi
+or if you're on the pi (make sure nothing is wired to GPIO pins)
 
 ```
-$ PI_ENV=pi pi test
+# $ PI_ENV=pi pi test
+# $ PI_ENV=pi sudo pi test
+$ PI_ENV=pi sudo rake test
 ```
 
 ### WIP

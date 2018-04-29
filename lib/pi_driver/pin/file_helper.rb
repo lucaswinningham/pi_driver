@@ -20,24 +20,24 @@ module PiDriver
       end
 
       def read_direction
-        File.read(@directory_helper.direction).to_sym
+        File.read(@directory_helper.direction).chomp.to_sym
       end
 
       def write_direction(direction)
-        File.write(@directory_helper.direction, direction)
+        File.write @directory_helper.direction, direction
       end
 
       def write_export
         return if exported?
 
         setup_development_files if imitate_pi_kernel?
-        File.write(@directory_helper.export, @gpio_number)
+        File.write @directory_helper.export, @gpio_number
       end
 
       def write_unexport
         return if unexported?
 
-        File.write(@directory_helper.unexport, @gpio_number)
+        File.write @directory_helper.unexport, @gpio_number
         FileUtils.rm_r @directory_helper.dir_pin if imitate_pi_kernel?
       end
 
@@ -79,7 +79,7 @@ module PiDriver
       end
 
       def pin_directory_exists?
-        Dir.exist?(@directory_helper.dir_pin)
+        Dir.exist? @directory_helper.dir_pin
       end
 
       def direction_file_exists?

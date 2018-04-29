@@ -1,4 +1,5 @@
 require 'awesome_print'
+require 'byebug'
 
 require_relative 'pi_driver/device'
 require_relative 'pi_driver/i2c_master'

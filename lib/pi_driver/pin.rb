@@ -23,7 +23,6 @@ module PiDriver
       @file_helper = FileHelper.new @gpio_number
       @file_helper.write_export
       @file_helper.write_direction direction
-      # direction == Direction::INPUT ? @file_helper.read_value : @file_helper.write_value(state)
       @file_helper.write_value(state) if direction == Direction::OUTPUT
     end
 

@@ -3,7 +3,6 @@ if ENV['COV']
   SimpleCov.start
 end
 
-require 'byebug'
 require 'minitest/autorun'
 require 'pi_driver'
 require 'mocha/minitest'
