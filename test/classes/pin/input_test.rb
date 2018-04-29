@@ -8,8 +8,6 @@ class PinInputTest < PinTest
 
   def test_input_new_ignore_value
     expect_direction_write :in
-    expect_value_read('1').never
-    expect_value_write('1').never
     PiDriver::Pin.new @gpio_number, state: 1
   end
 
