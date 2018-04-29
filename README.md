@@ -153,25 +153,7 @@ my_mcp23017.olata.byte = 0b11111111
 my_mcp23017.write :olata
 ```
 
-## Raspberry Pi Setup (Automatic)
-
-Clone the repository and source Pi Driver's commands.
-
-```bash
-$ cd
-$ git clone https://github.com/lucaswinningham/pi_driver.git
-$ cd pi_driver/
-$ echo -e "\n# PiDriver commands\nsource ~/pi_driver/bin/.pi_commands.sh" >> ~/.bashrc
-```
-
-Open a new terminal window.
-
-```bash
-$ cd ~/pi_driver/
-$ pi install
-```
-
-## Raspberry Pi Setup (Manual)
+## Raspberry Pi Setup
 
 Follow these steps when first getting the Raspberry Pi.
 
@@ -217,25 +199,12 @@ Install dependencies.
 $ bundle
 ```
 
-Source Pi Driver's commands.
-
-```bash
-$ echo -e "\n# PiDriver commands\nsource ~/pi_driver/bin/.pi_commands.sh" >> ~/.bashrc
-$ source ~/pi_driver/bin/.pi_commands.sh
-```
-
-Open a new terminal window.
-
-```bash
-$ cd ~/pi_driver/
-```
-
 ## Test
 
 Play with it.
 
 ```bash
-$ pi console
+$ irb -r ./lib/pi_driver
 2.4.1 :001 > pin = PiDriver::Pin.new 2
  => #<PiDriver::Pin:hex_value ...> 
 2.4.1 :002 > 
@@ -244,7 +213,7 @@ $ pi console
 or if you're on the pi
 
 ```bash
-$ PI_ENV=pi pi console
+$ PI_ENV=pi sudo irb -r ./lib/pi_driver
 2.4.1 :001 > pin = PiDriver::Pin.new 2
  => #<PiDriver::Pin:hex_value ...> 
 2.4.1 :002 > 
@@ -253,14 +222,12 @@ $ PI_ENV=pi pi console
 Run tests.
 
 ```bash
-$ pi test
+$ rake test
 ```
 
 or if you're on the pi (make sure nothing is wired to GPIO pins)
 
 ```
-# $ PI_ENV=pi pi test
-# $ PI_ENV=pi sudo pi test
 $ PI_ENV=pi sudo rake test
 ```
 
