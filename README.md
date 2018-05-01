@@ -193,7 +193,6 @@ $ cd pi_driver/
 Install dependencies.
 
 ```bash
-# $ sudo apt-get install ruby-dev
 $ bundle
 ```
 
