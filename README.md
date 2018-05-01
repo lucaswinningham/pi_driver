@@ -213,7 +213,7 @@ $ irb -r ./lib/pi_driver
 or if you're on the pi
 
 ```bash
-$ sudo PI_ENV=pi irb -r ./lib/pi_driver
+$ PI_ENV=pi irb -r ./lib/pi_driver
 2.4.1 :001 > pin = PiDriver::Pin.new 2
  => #<PiDriver::Pin:hex_value ...> 
 2.4.1 :002 > 
@@ -228,7 +228,7 @@ $ rake test
 or if you're on the pi (make sure nothing is wired to GPIO pins)
 
 ```
-$ sudo PI_ENV=pi rake test
+$ PI_ENV=pi rake test
 ```
 
 ### WIP
