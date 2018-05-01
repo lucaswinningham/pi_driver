@@ -330,5 +330,5 @@ button active low
 ```
 
 ```bash
-$ PI_ENV=pi pi test integration
+$ PI_ENV=pi rake test integration
 ```
