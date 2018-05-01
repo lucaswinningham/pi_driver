@@ -29,9 +29,11 @@ module PiDriver
 
       def write_export
         return if exported?
-        # TODO: add waiting for export as it's async
+
         setup_development_files if imitate_pi_kernel?
         File.write @directory_helper.export, @gpio_number
+
+        until exported?; end
       end
 
       def write_unexport
@@ -39,6 +41,8 @@ module PiDriver
 
         File.write @directory_helper.unexport, @gpio_number
         FileUtils.rm_r @directory_helper.dir_pin if imitate_pi_kernel?
+
+        until unexported?; end
       end
 
       def read_value
