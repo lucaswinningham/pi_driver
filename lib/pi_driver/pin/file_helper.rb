@@ -91,10 +91,14 @@ module PiDriver
       end
 
       def accessible?
-        yield
-        false
-      rescue Errno::EACCES
-        true
+        begin
+          yield
+        rescue Errno::EACCES
+          puts 'cant access file'
+          false
+        else
+          true
+        end
       end
 
       def imitate_pi_kernel?
