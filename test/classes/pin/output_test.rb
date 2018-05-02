@@ -2,8 +2,9 @@ require_relative '../pin_test_helper'
 
 class PinOutputTest < PinTest
   def test_output_new
-    expect_direction_write :out
-    expect_value_write 0
+    sequence = sequence 'output new'
+    expect_direction_write(:out).in_sequence sequence
+    expect_value_write(0).in_sequence sequence
     PiDriver::Pin.new @gpio_number, direction: :out
   end
 

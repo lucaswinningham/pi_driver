@@ -37,11 +37,12 @@ module PiDriver
     end
 
     def output(state = Utils::State::LOW)
+      direction = Direction::OUTPUT
+      @file_helper.write_direction direction
+      
       @argument_helper.check(:state, state, Utils::State::VALID_STATES)
       @file_helper.write_value state
 
-      direction = Direction::OUTPUT
-      @file_helper.write_direction direction
       direction
     end
 

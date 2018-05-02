@@ -8,7 +8,7 @@ class PinUnexportTest < PinTest
   end
 
   def test_unexport_waits_for_system
-    PiDriver::Pin.new @gpio_number
+    pin = PiDriver::Pin.new @gpio_number
     # TODO: implement
     pin.unexport
   end
