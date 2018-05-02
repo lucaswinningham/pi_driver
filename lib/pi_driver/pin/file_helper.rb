@@ -58,11 +58,7 @@ module PiDriver
       def exported?
         all_exist = pin_directory_exists? && direction_file_exists? && value_file_exists?
         all_writable = direction_file_writable? && value_file_writable?
-        if imitate_pi_kernel?
-          all_exist
-        else
-          all_exist && all_writable
-        end
+        all_exist && all_writable
       end
 
       def unexported?
