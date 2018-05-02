@@ -8,6 +8,12 @@ class PinExportTest < PinTest
     PiDriver::Pin.new @gpio_number
   end
 
+  def test_export_waits_for_system
+    PiDriver::Pin.unexport_all
+    # TODO: implement
+    PiDriver::Pin.new @gpio_number
+  end
+
   def test_no_export_if_previously_exported_new
     PiDriver::Pin.new @gpio_number
     expect_export_write.never
