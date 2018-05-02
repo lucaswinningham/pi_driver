@@ -1,5 +1,4 @@
 *.gem
-.buildgem
 .byebug_history
 .DS_Store
 coverage
