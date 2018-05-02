@@ -101,6 +101,7 @@ module PiDriver
       observe_speed_requirement
     end
 
+    # TODO: add attempt counting as well for slow processor of pi - count to at least two attempts
     def observe_clock_stretch
       clock_stretch_began_at = Time.now
       one_millisecond = 0.001
