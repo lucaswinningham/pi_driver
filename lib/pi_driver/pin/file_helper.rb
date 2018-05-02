@@ -56,11 +56,45 @@ module PiDriver
       private
 
       def exported?
-        pin_directory_exists? && direction_file_exists? && value_file_exists?
+        all_exist = pin_directory_exists? && direction_file_exists? && value_file_exists?
+        if imitate_pi_kernel?
+          all_exist
+        else
+          all_exist && !(direction_file_busy? || value_file_busy?)
+        end
       end
 
       def unexported?
         !pin_directory_exists? && !direction_file_exists? && !value_file_exists?
+      end
+
+      def pin_directory_exists?
+        Dir.exist? @directory_helper.dir_pin
+      end
+
+      def direction_file_exists?
+        File.file? @directory_helper.direction
+      end
+
+      def value_file_exists?
+        File.file? @directory_helper.value
+      end
+
+      def direction_file_busy?
+        original_content = read_direction
+        accessible? { write_direction original_content }
+      end
+
+      def value_file_busy?
+        original_content = read_value
+        accessible? { write_value original_content }
+      end
+
+      def accessible?
+        yield
+        false
+      rescue Errno::EACCES
+        true
       end
 
       def imitate_pi_kernel?
@@ -80,18 +114,6 @@ module PiDriver
         mkdir @directory_helper.dir_pin
         touch @directory_helper.direction
         touch @directory_helper.value
-      end
-
-      def pin_directory_exists?
-        Dir.exist? @directory_helper.dir_pin
-      end
-
-      def direction_file_exists?
-        File.file? @directory_helper.direction
-      end
-
-      def value_file_exists?
-        File.file? @directory_helper.value
       end
 
       def touch(filepath)
