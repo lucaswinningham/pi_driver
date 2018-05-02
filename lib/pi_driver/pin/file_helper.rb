@@ -57,10 +57,11 @@ module PiDriver
 
       def exported?
         all_exist = pin_directory_exists? && direction_file_exists? && value_file_exists?
+        all_writable = direction_file_writable? && value_file_writable?
         if imitate_pi_kernel?
           all_exist
         else
-          all_exist && !(direction_file_busy? || value_file_busy?)
+          all_exist && all_writable
         end
       end
 
@@ -80,21 +81,12 @@ module PiDriver
         File.file? @directory_helper.value
       end
 
-      def direction_file_busy?
-        original_content = read_direction
-        !accessible? { write_direction original_content }
+      def direction_file_writable?
+        File.writable? @directory_helper.direction
       end
 
-      def value_file_busy?
-        original_content = read_value
-        !accessible? { write_value original_content }
-      end
-
-      def accessible?
-        yield
-        false
-      rescue Errno::EACCES
-        true
+      def value_file_writable?
+        File.writable? @directory_helper.value
       end
 
       def imitate_pi_kernel?
