@@ -20,7 +20,7 @@ module PiDriver
             getter_instance = "@#{address}"
 
             define_method setter_symbol do |value|
-              @argument_helper.check(:hardware_address, value, Utils::State::VALID_STATES)
+              @argument_helper.check_options :hardware_address, value, Utils::State::VALID_STATES
               instance_variable_set(getter_instance, value)
               @observer.update_opcodes
               instance_variable_get getter_instance

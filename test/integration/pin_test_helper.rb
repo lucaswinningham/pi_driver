@@ -1,6 +1,5 @@
 require_relative '../integration_test_helper'
 
-# TODO: figure out test circuit that enables testing of output high
 class IntegrationPinTest < IntegrationTest
   def setup
     @active_low_writer = PiDriver::Pin.new 5

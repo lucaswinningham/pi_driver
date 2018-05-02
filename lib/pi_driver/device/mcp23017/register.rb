@@ -1,4 +1,4 @@
-require_relative 'register/register_helper'
+require_relative 'register/registers'
 
 # NOTE: necessary for class methods
 require_relative '../../utils'
@@ -16,21 +16,21 @@ module PiDriver
           @port = options[:port]
           options[:bank] = Utils::State::LOW
 
-          @address = RegisterHelper.address options
+          @address = calculate_address options
           @byte = Port.default options
 
           mirror_bits_from_byte
         end
 
         def byte=(value)
-          @argument_helper.check(:register_byte, value, Utils::Byte::VALID_BYTES)
+          @argument_helper.check_options :register_byte, value, Utils::Byte::VALID_BYTES
           @byte = value
           mirror_bits_from_byte
         end
 
         def update_address(bank)
           options = { register: @register, port: @port, bank: bank }
-          @address = RegisterHelper.address options
+          @address = calculate_address options
         end
 
         def self.bit_accessors
@@ -47,7 +47,7 @@ module PiDriver
             end
 
             define_method setter_symbol do |value|
-              @argument_helper.check(:register_bit, value, Utils::State::VALID_STATES)
+              @argument_helper.check_options :register_bit, value, Utils::State::VALID_STATES
               instance_variable_set(getter_instance, value)
               mirror_byte_from_bits
               instance_variable_get getter_instance
@@ -91,6 +91,23 @@ module PiDriver
 
         def mirror_byte_from_bits
           @byte = Utils::Byte.bits_to_byte [@bit7, @bit6, @bit5, @bit4, @bit3, @bit2, @bit1, @bit0]
+        end
+
+        private
+
+        def calculate_address(options)
+          bank = options[:bank]
+          port = options[:port]
+          register = options[:register]
+
+          port_index = Port::VALID_PORTS.index(port)
+          register_index = VALID_REGISTERS.index(register)
+
+          if bank == Utils::State::LOW
+            port_index + register_index * 0x02
+          else
+            port_index * 0x10 + register_index
+          end
         end
       end
     end

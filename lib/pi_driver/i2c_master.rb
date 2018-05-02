@@ -1,11 +1,19 @@
 module PiDriver
   class I2CMaster
+    ONE_MILLISECOND = 0.001
+
     def initialize(options = {})
+      @argument_helper = Utils::ArgumentHelper.new prefix: 'I2CMaster'
+
       @frequency = 100_000
       @delta_time = @frequency**-1.0
-      # TODO: add argument helper type check here
+
       @clock_pin = options[:clock_pin]
+      @argument_helper.check_type :clock_pin, @clock_pin, PiDriver::Pin
+
       @data_pin = options[:data_pin]
+      @argument_helper.check_type :data_pin, @data_pin, PiDriver::Pin
+
       release_data_pin
       release_clock_pin
     end
@@ -101,14 +109,16 @@ module PiDriver
       observe_speed_requirement
     end
 
-    # TODO: add attempt counting as well for slow processor of pi - count to at least two attempts
     def observe_clock_stretch
+      attempts = 0
       clock_stretch_began_at = Time.now
-      one_millisecond = 0.001
+
       loop do
+        attempts += 1
         elapsed_time = Time.now - clock_stretch_began_at
-        timed_out = elapsed_time > one_millisecond
-        break if @clock_pin.set? || timed_out
+        timed_out = elapsed_time > ONE_MILLISECOND
+        stop_stretch = @clock_pin.set? || (attempts >= 3 && timed_out)
+        break if stop_stretch
       end
     end
 

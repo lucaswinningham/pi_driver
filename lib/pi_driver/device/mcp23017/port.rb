@@ -11,7 +11,7 @@ module PiDriver
         ].freeze
 
         def self.default(options)
-          if options[:register] == MCP23017::Register::RegisterHelper::IODIR
+          if options[:register] == MCP23017::Register::IODIR
             Utils::Byte::ALL_BITS_HIGH
           else
             Utils::Byte::ALL_BITS_LOW

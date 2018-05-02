@@ -37,6 +37,15 @@ class MCP23017RegisterTest < MCP23017Test
 
   def test_addresses_bank_high
     @mcp23017.iocon.bank = 1
+    assert_equal 0x0a, @mcp23017.iocon.address
+
+    @i2c_master.expects(:start)
+    @i2c_master.expects(:write).at_least_once
+    @i2c_master.expects(:ack).at_least_once
+    @i2c_master.expects(:stop)
+
+    @mcp23017.write :iocon
+
     assert_equal 0x05, @mcp23017.iocon.address
 
     assert_equal 0x00, @mcp23017.iodira.address

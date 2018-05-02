@@ -10,15 +10,15 @@ module PiDriver
       @argument_helper = Utils::ArgumentHelper.new prefix: 'PiDriver::Pin'
 
       @gpio_number = gpio_number
-      @argument_helper.check(:gpio_number, @gpio_number, Board::VALID_NUMBERS)
+      @argument_helper.check_options :gpio_number, @gpio_number, Board::VALID_NUMBERS
 
       @argument_helper.prefix = "PiDriver::Pin ##{gpio_number}"
 
       direction = options[:direction] || Direction::INPUT
-      @argument_helper.check(:direction, direction, Direction::VALID_DIRECTIONS)
+      @argument_helper.check_options :direction, direction, Direction::VALID_DIRECTIONS
 
       state = options[:state] || Utils::State::LOW
-      @argument_helper.check(:state, state, Utils::State::VALID_STATES)
+      @argument_helper.check_options :state, state, Utils::State::VALID_STATES
 
       @file_helper = FileHelper.new @gpio_number
       @file_helper.write_export
@@ -28,7 +28,7 @@ module PiDriver
 
     def input
       direction = Direction::INPUT
-      @file_helper.write_direction(direction)
+      @file_helper.write_direction direction
       direction
     end
 
@@ -40,7 +40,7 @@ module PiDriver
       direction = Direction::OUTPUT
       @file_helper.write_direction direction
 
-      @argument_helper.check(:state, state, Utils::State::VALID_STATES)
+      @argument_helper.check_options :state, state, Utils::State::VALID_STATES
       @file_helper.write_value state
 
       direction
@@ -81,7 +81,7 @@ module PiDriver
     alias on? set?
 
     def interrupt(edge = Utils::Edge::RISING)
-      @argument_helper.check(:edge, edge, Utils::Edge::VALID_EDGES)
+      @argument_helper.check_options :edge, edge, Utils::Edge::VALID_EDGES
       @interrupt = Utils::Interrupt.new(edge) { @file_helper.read_value }
       @interrupt.start { yield }
     end

@@ -8,22 +8,25 @@ module PiDriver
         @suffix = options[:suffix]
       end
 
-      def check(type, arg, valid_options)
+      def check_options(type, arg, valid_options)
         return if valid_options.include?(arg)
-        options = valid_options.map(&:to_s).join(', ')
-        middle = "invalid argument for #{type.inspect}, "
-        middle += "#{arg.inspect} was given but expected to be one of #{options}"
-        message = "#{@prefix if @prefix} #{middle} #{@suffix if @suffix}"
-        raise ArgumentError, message
+        @type = type
+        @arg = arg
+        raise_message "one of #{valid_options.map(&:to_s).join(', ')}"
       end
 
-      def check_bool(type, arg, expected_bool = true)
-        same_value = !arg == !expected_bool
-        return if same_value
-        middle = "invalid argument for #{type.inspect}, "
-        middle += "#{arg.inspect} was given but expected to be #{expected_bool}"
-        message = "#{@prefix if @prefix} #{middle} #{@suffix if @suffix}"
-        raise ArgumentError, message
+      def check_type(type, arg, klass)
+        return if arg.is_a? klass
+        @type = type
+        @arg = arg
+        raise_message "of class #{klass}"
+      end
+
+      private
+
+      def raise_message(message)
+        str = "invalid argument for #{@type.inspect}, #{@arg.inspect} was given but expected to be"
+        raise ArgumentError, "#{@prefix if @prefix} #{str} #{message} #{@suffix if @suffix}"
       end
     end
   end

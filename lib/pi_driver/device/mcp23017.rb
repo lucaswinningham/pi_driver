@@ -20,14 +20,15 @@ module PiDriver
 
       def initialize(options = {})
         @argument_helper = Utils::ArgumentHelper.new prefix: 'MCP23017'
-        # TODO: add argument helper type check here
+
         @i2c_master = options[:i2c_master]
+        @argument_helper.check_type :i2c_master, @i2c_master, PiDriver::I2CMaster
+
         @hardware_address = HardwareAddress.new observer: self
         update_opcodes
       end
 
       def update_registers
-        # TODO: move this callback to when iocon is actually written to device
         bank = registers[:iocon].bank
         registers.each_value do |register|
           register.update_address bank
@@ -41,31 +42,12 @@ module PiDriver
         @opcode_for_read = PiDriver::I2CMaster.prepare_address_for_read base
       end
 
-      # TODO: read and write look similar. consider consolidation
       def read(*register_array)
-        check_registers register_array
-
-        @i2c_master.start
-
-        register_array.each_with_index do |register, sequence_index|
-          @i2c_master.restart unless sequence_index.zero?
-          read_register register
-        end
-
-        @i2c_master.stop
+        each_register(register_array) { |register| read_register register }
       end
 
       def write(*register_array)
-        check_registers register_array
-
-        @i2c_master.start
-
-        register_array.each_with_index do |register, sequence_index|
-          @i2c_master.restart unless sequence_index.zero?
-          write_register register
-        end
-
-        @i2c_master.stop
+        each_register(register_array) { |register| write_register register }
       end
 
       def self.register_reader(*register_array)
@@ -77,7 +59,7 @@ module PiDriver
       end
 
       private_class_method :register_reader
-      register_reader(*Register::RegisterHelper::PORT_REGISTERS)
+      register_reader(*Register::PORT_REGISTERS)
 
       private
 
@@ -94,7 +76,7 @@ module PiDriver
           defvala: Defval.new(port: :a),    defvalb: Defval.new(port: :b),
           intcona: Intcon.new(port: :a),    intconb: Intcon.new(port: :b),
 
-          iocon: Iocon.new(observer: self),
+          iocon: Iocon.new,
 
           gppua: Gppu.new(port: :a),        gppub: Gppu.new(port: :b),
           intfa: Intf.new(port: :a),        intfb: Intf.new(port: :b),
@@ -105,9 +87,22 @@ module PiDriver
       end
       # rubocop:enable Metrics/AbcSize
 
+      def each_register(register_array)
+        check_registers register_array
+
+        @i2c_master.start
+
+        register_array.each_with_index do |register, sequence_index|
+          @i2c_master.restart unless sequence_index.zero?
+          yield register
+        end
+
+        @i2c_master.stop
+      end
+
       def check_registers(register_array)
         register_array.each do |register|
-          @argument_helper.check(:register, register, Register::RegisterHelper::PORT_REGISTERS)
+          @argument_helper.check_options :register, register, Register::PORT_REGISTERS
         end
       end
 
@@ -130,7 +125,9 @@ module PiDriver
         @i2c_master.write registers[register].address
         @i2c_master.ack
         @i2c_master.write registers[register].byte
-        @i2c_master.ack
+        ack = @i2c_master.ack
+        update_registers if register == :iocon
+        ack
       end
     end
   end

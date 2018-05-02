@@ -1,6 +1,20 @@
 require_relative '../i2c_master_test_helper'
 
 class I2CErrorTest < I2CMasterTest
+  def test_error_new_clock_pin
+    assert_raises ArgumentError do
+      @clock_pin = Object.new
+      PiDriver::I2CMaster.new clock_pin: @clock_pin, data_pin: @data_pin
+    end
+  end
+
+  def test_error_new_data_pin
+    assert_raises ArgumentError do
+      @data_pin = Object.new
+      PiDriver::I2CMaster.new clock_pin: @clock_pin, data_pin: @data_pin
+    end
+  end
+
   def test_error_arbitration_start
     assert_raises PiDriver::I2CMaster::ArbitrationError do
       @sequence = sequence('error start')

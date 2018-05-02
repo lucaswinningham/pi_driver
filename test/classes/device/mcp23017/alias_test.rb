@@ -2,18 +2,35 @@ require_relative '../mcp23017_test_helper'
 
 class MCP23017AliasTest < MCP23017Test
   def test_register_aliases
-    # TODO: flesh out all tests for each bit for each register
-    assert_equal @mcp23017.iodira.method(:bit0), @mcp23017.iodira.method(:io0)
-    assert_equal @mcp23017.ipola.method(:bit0), @mcp23017.ipola.method(:ip0)
-    assert_equal @mcp23017.gpintena.method(:bit0), @mcp23017.gpintena.method(:gpint0)
-    assert_equal @mcp23017.defvala.method(:bit0), @mcp23017.defvala.method(:def0)
-    assert_equal @mcp23017.intcona.method(:bit0), @mcp23017.intcona.method(:ioc0)
+    assert_each_bit_alias(@mcp23017.iodira, 'io')
+    assert_each_bit_alias(@mcp23017.iodirb, 'io')
 
-    assert_equal @mcp23017.gppua.method(:bit0), @mcp23017.gppua.method(:pu0)
-    assert_equal @mcp23017.intfa.method(:bit0), @mcp23017.intfa.method(:int0)
-    assert_equal @mcp23017.intcapa.method(:bit0), @mcp23017.intcapa.method(:icp0)
-    assert_equal @mcp23017.gpioa.method(:bit0), @mcp23017.gpioa.method(:gp0)
-    assert_equal @mcp23017.olata.method(:bit0), @mcp23017.olata.method(:ol0)
+    assert_each_bit_alias(@mcp23017.ipola, 'ip')
+    assert_each_bit_alias(@mcp23017.ipolb, 'ip')
+
+    assert_each_bit_alias(@mcp23017.gpintena, 'gpint')
+    assert_each_bit_alias(@mcp23017.gpintenb, 'gpint')
+
+    assert_each_bit_alias(@mcp23017.defvala, 'def')
+    assert_each_bit_alias(@mcp23017.defvalb, 'def')
+
+    assert_each_bit_alias(@mcp23017.intcona, 'ioc')
+    assert_each_bit_alias(@mcp23017.intconb, 'ioc')
+
+    assert_each_bit_alias(@mcp23017.gppua, 'pu')
+    assert_each_bit_alias(@mcp23017.gppub, 'pu')
+
+    assert_each_bit_alias(@mcp23017.intfa, 'int')
+    assert_each_bit_alias(@mcp23017.intfb, 'int')
+
+    assert_each_bit_alias(@mcp23017.intcapa, 'icp')
+    assert_each_bit_alias(@mcp23017.intcapb, 'icp')
+
+    assert_each_bit_alias(@mcp23017.gpioa, 'gp')
+    assert_each_bit_alias(@mcp23017.gpiob, 'gp')
+
+    assert_each_bit_alias(@mcp23017.olata, 'ol')
+    assert_each_bit_alias(@mcp23017.olatb, 'ol')
   end
 
   def test_iocon_aliases
@@ -24,5 +41,15 @@ class MCP23017AliasTest < MCP23017Test
     assert_equal @mcp23017.iocon.method(:bit3), @mcp23017.iocon.method(:haen)
     assert_equal @mcp23017.iocon.method(:bit2), @mcp23017.iocon.method(:odr)
     assert_equal @mcp23017.iocon.method(:bit1), @mcp23017.iocon.method(:intpol)
+  end
+
+  private
+
+  def assert_each_bit_alias(register, register_alias)
+    8.times do |bit_position|
+      bit_method = "bit#{bit_position}".to_sym
+      register_method = "#{register_alias}#{bit_position}".to_sym
+      assert_equal register.method(bit_method), register.method(register_method)
+    end
   end
 end

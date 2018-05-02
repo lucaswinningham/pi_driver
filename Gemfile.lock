@@ -2,12 +2,6 @@ PATH
   remote: .
   specs:
     pi_driver (0.0.4)
-      awesome_print (~> 1.8.0, >= 1.8.0)
-      byebug (~> 10.0.0, >= 10.0.0)
-      minitest (~> 5.11.3, >= 5.11.3)
-      mocha (~> 1.4, >= 1.4.0)
-      rubocop (~> 0.51.0, >= 0.51.0)
-      simplecov (~> 0.15.1, >= 0.15.1)
 
 GEM
   remote: https://rubygems.org/
@@ -47,7 +41,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print (~> 1.8.0, >= 1.8.0)
+  byebug (~> 10.0.0, >= 10.0.0)
+  minitest (~> 5.11.3, >= 5.11.3)
+  mocha (~> 1.4, >= 1.4.0)
   pi_driver!
+  rubocop (~> 0.51.0, >= 0.51.0)
+  simplecov (~> 0.15.1, >= 0.15.1)
 
 BUNDLED WITH
    1.16.1
