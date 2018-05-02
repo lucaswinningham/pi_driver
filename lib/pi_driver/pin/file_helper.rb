@@ -82,23 +82,19 @@ module PiDriver
 
       def direction_file_busy?
         original_content = read_direction
-        accessible? { write_direction original_content }
+        !accessible? { write_direction original_content }
       end
 
       def value_file_busy?
         original_content = read_value
-        accessible? { write_value original_content }
+        !accessible? { write_value original_content }
       end
 
       def accessible?
-        begin
-          yield
-        rescue Errno::EACCES
-          puts 'cant access file'
-          false
-        else
-          true
-        end
+        yield
+        false
+      rescue Errno::EACCES
+        true
       end
 
       def imitate_pi_kernel?
