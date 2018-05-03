@@ -4,6 +4,8 @@ require 'fileutils'
 module PiDriver
   class Pin
     class FileHelper
+      SYSFS_TIMEOUT = 2
+
       attr_reader :directory_helper
 
       def initialize(gpio_number)
@@ -30,19 +32,23 @@ module PiDriver
       def write_export
         return if exported?
 
+        started_at = Time.now
+
         setup_development_files if imitate_pi_kernel?
         File.write @directory_helper.export, @gpio_number
 
-        until exported?; end
+        (raise_sysfs_error 'export' if Time.now - started_at > SYSFS_TIMEOUT) until exported?
       end
 
       def write_unexport
         return if unexported?
 
+        started_at = Time.now
+
         File.write @directory_helper.unexport, @gpio_number
         FileUtils.rm_r @directory_helper.dir_pin if imitate_pi_kernel?
 
-        until unexported?; end
+        (raise_sysfs_error 'unexport' if Time.now - started_at > SYSFS_TIMEOUT) until unexported?
       end
 
       def read_value
@@ -110,6 +116,11 @@ module PiDriver
 
       def mkdir(dir)
         FileUtils.mkdir dir unless Dir.exist? dir
+      end
+
+      class SysfsError < StandardError; end
+      def raise_sysfs_error(action)
+        raise SysfsError, "Sysfs timed out during #{action}."
       end
     end
   end

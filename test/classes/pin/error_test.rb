@@ -32,4 +32,20 @@ class PinErrorTest < PinTest
       pin.interrupt(:invalid_edge) {}
     end
   end
+
+  def test_error_sysfs_export
+    PiDriver::Pin.unexport_all
+    File.expects(:file?).returns(false).at_least_once
+    assert_raises PiDriver::Pin::FileHelper::SysfsError do
+      PiDriver::Pin.new @gpio_number
+    end
+  end
+
+  def test_error_sysfs_unexport
+    pin = PiDriver::Pin.new @gpio_number
+    File.expects(:file?).returns(true).at_least_once
+    assert_raises PiDriver::Pin::FileHelper::SysfsError do
+      pin.unexport
+    end
+  end
 end

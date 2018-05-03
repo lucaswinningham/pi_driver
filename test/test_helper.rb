@@ -7,8 +7,10 @@ require 'minitest/autorun'
 require 'pi_driver'
 require 'mocha/minitest'
 
-require "minitest/reporters"
-Minitest::Reporters.use! [Minitest::Reporters::SpecReporter.new()]
+if ENV['VERBOSE']
+  require 'minitest/reporters'
+  Minitest::Reporters.use! [Minitest::Reporters::SpecReporter.new]
+end
 
 class TestCase < Minitest::Test
   def setup; end
