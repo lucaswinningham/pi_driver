@@ -7,6 +7,9 @@ require 'minitest/autorun'
 require 'pi_driver'
 require 'mocha/minitest'
 
+require "minitest/reporters"
+Minitest::Reporters.use! [Minitest::Reporters::SpecReporter.new()]
+
 class TestCase < Minitest::Test
   def setup; end
 
