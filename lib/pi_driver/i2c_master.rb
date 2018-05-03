@@ -37,20 +37,16 @@ module PiDriver
 
     def write(byte)
       write_byte byte
-      byte
     end
 
     def read
-      release_data_pin
       read_byte
     end
 
     def ack
       release_data_pin
       release_clock_pin
-      success = @data_pin.clear?
-      drive_clock_pin
-      success
+      @data_pin.clear?.tap { drive_clock_pin }
     end
 
     def self.prepare_address_for_write(address_byte)
@@ -66,6 +62,7 @@ module PiDriver
     def write_byte(byte)
       bits = Utils::Byte.byte_to_bits(byte)
       bits.each { |bit| write_bit bit }
+      byte
     end
 
     def write_bit(bit)
@@ -76,16 +73,14 @@ module PiDriver
     end
 
     def read_byte
-      bits = []
-      Utils::Byte::NUM_BITS_PER_BYTE.times { bits << read_bit }
+      release_data_pin
+      bits = Array.new(Utils::Byte::NUM_BITS_PER_BYTE) { read_bit }
       Utils::Byte.bits_to_byte(bits)
     end
 
     def read_bit
       release_clock_pin
-      bit = @data_pin.value
-      drive_clock_pin
-      bit
+      @data_pin.value.tap { drive_clock_pin }
     end
 
     def release_data_pin
