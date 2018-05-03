@@ -10,21 +10,22 @@ class I2CClockStretchTest < I2CMasterTest
     @i2c_master.send(:release_clock_pin)
   end
 
-  def test_clock_stretch_timeout
-    sequence = sequence('clock stretch timeout')
-    @clock_pin.expects(:input).in_sequence(sequence)
-    @clock_pin.expects(:set?).returns(false).at_least_once.in_sequence(sequence)
+  def test_clock_stretch_timeout_maximum
+    @clock_pin.expects(:set?).returns(false).at_least_once
 
-    test_began_at = Time.now
-    @i2c_master.send(:release_clock_pin)
-    test_ended_at = Time.now
-    time_delta = test_ended_at - test_began_at
+    now = Time.now
     one_millisecond = 0.001
-    two_milliseconds = 0.002
-    assert time_delta > one_millisecond && time_delta < two_milliseconds
+    one_microsecond = 0.000001
+
+    sequence = sequence('clock stretch timeout')
+    Time.expects(:now).returns(now).in_sequence sequence
+    Time.expects(:now).returns(now + one_millisecond).times(10).in_sequence sequence
+    Time.expects(:now).returns(now + one_millisecond + one_microsecond).in_sequence sequence
+
+    @i2c_master.send(:observe_clock_stretch)
   end
 
-  def test_clock_stretch_attempts
+  def test_clock_stretch_attempts_minimum
     @clock_pin.expects(:set?).returns(false).at_least_once
 
     now = Time.now
