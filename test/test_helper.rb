@@ -8,6 +8,8 @@ require 'pi_driver'
 require 'mocha/minitest'
 
 class TestCase < Minitest::Test
+  def setup; end
+
   def timeout(seconds = 0.5)
     started_at = Time.now
     until (success = yield)

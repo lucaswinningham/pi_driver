@@ -2,6 +2,7 @@ require_relative '../classes_test_helper'
 
 class PinTest < ClassesTest
   def setup
+    super
     @gpio_number = 2
     @directory_helper = PiDriver::Pin::FileHelper.new(@gpio_number).directory_helper
   end

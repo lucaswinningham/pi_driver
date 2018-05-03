@@ -2,6 +2,7 @@ require_relative '../integration_test_helper'
 
 class IntegrationI2CMasterTest < IntegrationTest
   def setup
+    super
     @master_scl = PiDriver::Pin.new 12
     @slave_scl = PiDriver::Pin.new 16
     @master_sda = PiDriver::Pin.new 20

@@ -2,6 +2,7 @@ require_relative '../integration_test_helper'
 
 class IntegrationPinTest < IntegrationTest
   def setup
+    super
     @active_low_writer = PiDriver::Pin.new 5
     @active_low_reader = PiDriver::Pin.new 6
 

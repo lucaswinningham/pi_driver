@@ -2,6 +2,7 @@ require_relative '../device_test_helper'
 
 class IntegrationMCP23017Test < IntegrationDeviceTest
   def setup
+    super
     @clock_pin = PiDriver::Pin.new 23
     @data_pin = PiDriver::Pin.new 24
     @i2c_master = PiDriver::I2CMaster.new clock_pin: @clock_pin, data_pin: @data_pin
