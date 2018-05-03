@@ -3,9 +3,11 @@ require_relative '../pin_test_helper'
 class PinExportTest < PinTest
   def test_export_new
     PiDriver::Pin.unexport_all
-    expect_export_write
-    expect_direction_write :in
-    PiDriver::Pin.new @gpio_number
+    pin = PiDriver::Pin.new @gpio_number
+
+    assert Dir.exist? pin.file_helper.directory_helper.dir_pin
+    assert File.file? pin.file_helper.directory_helper.direction
+    assert File.file? pin.file_helper.directory_helper.value
   end
 
   def test_export_waits_for_system

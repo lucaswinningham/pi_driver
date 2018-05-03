@@ -5,6 +5,7 @@ require_relative 'pin/file_helper'
 module PiDriver
   class Pin
     attr_reader :gpio_number
+    attr_reader :file_helper
 
     def initialize(gpio_number, options = {})
       @argument_helper = Utils::ArgumentHelper.new prefix: 'PiDriver::Pin'

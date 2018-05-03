@@ -4,7 +4,7 @@ require 'fileutils'
 module PiDriver
   class Pin
     class FileHelper
-      SYSFS_TIMEOUT = 2
+      SYSFS_TIMEOUT = 0.5
 
       attr_reader :directory_helper
 
