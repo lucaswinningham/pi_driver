@@ -14,38 +14,38 @@ module PiDriver
       @argument_helper.check_options :gpio_number, @gpio_number, Board::VALID_NUMBERS
 
       @argument_helper.prefix = "PiDriver::Pin ##{gpio_number}"
-
-      direction = options[:direction] || Direction::INPUT
-      @argument_helper.check_options :direction, direction, Direction::VALID_DIRECTIONS
-
-      state = options[:state] || Utils::State::LOW
-      @argument_helper.check_options :state, state, Utils::State::VALID_STATES
-
       @file_helper = FileHelper.new @gpio_number
+
+      direction = options[:direction]
+      state = options[:state]
+
+      @argument_helper.check_options :direction, direction, Direction::VALID_DIRECTIONS if direction
+      @argument_helper.check_options :state, state, Utils::State::VALID_STATES if state
+
       @file_helper.write_export
-      @file_helper.write_direction direction
-      # TODO: add writing high to direction if direction is out and state is 1
-      @file_helper.write_value(state) if direction == Direction::OUTPUT
+
+      @file_helper.write_direction direction if direction
+      @file_helper.write_value state if state && @file_helper.read_direction == Direction::OUTPUT
     end
 
     def input
       direction = Direction::INPUT
       @file_helper.write_direction direction
-      direction
+      @file_helper.read_value
     end
 
     def input?
       @file_helper.read_direction == Direction::INPUT
     end
 
-    def output(state = Utils::State::LOW)
+    def output(state = nil)
       direction = Direction::OUTPUT
       @file_helper.write_direction direction
 
-      @argument_helper.check_options :state, state, Utils::State::VALID_STATES
-      @file_helper.write_value state
+      @argument_helper.check_options :state, state, Utils::State::VALID_STATES if state
+      @file_helper.write_value state if state
 
-      direction
+      @file_helper.read_value
     end
 
     def output?
@@ -89,7 +89,9 @@ module PiDriver
     end
 
     def clear_interrupt
+      return unless defined? @interrupt
       @interrupt.clear
+      true
     end
 
     def unexport

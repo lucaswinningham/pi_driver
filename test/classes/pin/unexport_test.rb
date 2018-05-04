@@ -46,4 +46,10 @@ class PinUnexportTest < PinTest
 
     PiDriver::Pin.unexport_all
   end
+
+  private
+
+  def expect_unexport_write
+    expect_write(@directory_helper.unexport, @gpio_number)
+  end
 end

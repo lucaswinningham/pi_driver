@@ -17,14 +17,6 @@ class PinTest < ClassesTest
     File.expects(:write).with(path, content)
   end
 
-  def expect_export_write
-    expect_write(@directory_helper.export, @gpio_number)
-  end
-
-  def expect_unexport_write
-    expect_write(@directory_helper.unexport, @gpio_number)
-  end
-
   def expect_direction_read(direction)
     expect_read(@directory_helper.direction, direction)
   end

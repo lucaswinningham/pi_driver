@@ -24,7 +24,7 @@ class PinInterruptTest < PinTest
     timeout { interrupted }
     assert interrupted
 
-    pin.clear_interrupt
+    assert pin.clear_interrupt
   end
 
   def test_interrupt_argument
@@ -39,6 +39,6 @@ class PinInterruptTest < PinTest
     timeout { interrupted }
     assert interrupted
 
-    pin.clear_interrupt
+    assert pin.clear_interrupt
   end
 end

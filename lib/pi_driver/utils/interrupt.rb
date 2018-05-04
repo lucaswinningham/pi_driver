@@ -21,7 +21,8 @@ module PiDriver
             last_state = new_state
           end
         end
-        @thread.tap { |me| me.abort_on_exception = true }
+
+        @thread.tap { |this_thread| this_thread.abort_on_exception = true }
       end
 
       def clear
