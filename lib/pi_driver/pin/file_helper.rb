@@ -49,6 +49,8 @@ module PiDriver
         FileUtils.rm_r @directory_helper.dir_pin if imitate_pi_kernel?
 
         (raise_sysfs_error 'unexport' if Time.now - started_at > SYSFS_TIMEOUT) until unexported?
+
+        :success
       end
 
       def read_value

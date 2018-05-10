@@ -3,7 +3,7 @@ require_relative '../pin_test_helper'
 class PinUnexportTest < PinTest
   def test_unexport
     pin = PiDriver::Pin.new @gpio_number
-    pin.unexport
+    assert pin.unexport
 
     refute Dir.exist? pin.file_helper.directory_helper.dir_pin
     refute File.file? pin.file_helper.directory_helper.direction
@@ -20,7 +20,7 @@ class PinUnexportTest < PinTest
     pin = PiDriver::Pin.new @gpio_number
     pin.unexport
     expect_unexport_write.never
-    pin.unexport
+    assert_nil pin.unexport
   end
 
   def test_class_unexport_all_exported_pins
@@ -28,7 +28,7 @@ class PinUnexportTest < PinTest
       PiDriver::Pin.new gpio_number
     end
 
-    PiDriver::Pin.unexport_all
+    assert PiDriver::Pin.unexport_all
 
     all_pins.each do |pin|
       refute Dir.exist? pin.file_helper.directory_helper.dir_pin
@@ -44,7 +44,7 @@ class PinUnexportTest < PinTest
       expect_unexport_write.never
     end
 
-    PiDriver::Pin.unexport_all
+    assert PiDriver::Pin.unexport_all
   end
 
   private
