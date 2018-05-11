@@ -12,8 +12,8 @@ module PiDriver
       def start
         raise ArgumentError unless block_given?
 
+        last_state = check
         @thread = Thread.new do
-          last_state = check
           loop do
             new_state = check
             current_edge = get_current_edge new_state, last_state

@@ -95,6 +95,7 @@ module PiDriver
     end
 
     def unexport
+      # TODO: raise error on any method if this pin has been unexported
       @file_helper.write_unexport
     end
 
