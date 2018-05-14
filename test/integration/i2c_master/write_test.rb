@@ -9,7 +9,7 @@ class IntegrationI2CWriteTest < IntegrationI2CMasterTest
     bit_index = 0
 
     @slave_scl.interrupt(:rising) do
-      assert_equal bits[bit_index], @slave_sda.value
+      assert (bits[bit_index] == 1 ? @slave_sda.set? : @slave_sda.clear?)
       bit_index += 1
     end
 
