@@ -14,10 +14,10 @@ class IntegrationI2CReadTest < IntegrationI2CMasterTest
     end
 
     byte = @i2c_master.read
+    @slave_scl.clear_interrupt
+
     assert @bit_index >= @bits.length
     assert_equal 0b10001101, byte
-
-    @slave_scl.clear_interrupt
   end
 
   private

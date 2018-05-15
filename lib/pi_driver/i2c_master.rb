@@ -36,11 +36,15 @@ module PiDriver
     alias restart start
 
     def write(byte)
-      write_byte byte
+      bits = Utils::Byte.byte_to_bits(byte)
+      bits.each { |bit| write_bit bit }
+      byte
     end
 
     def read
-      read_byte
+      release_data_pin
+      bits = Array.new(Utils::Byte::NUM_BITS_PER_BYTE) { read_bit }
+      Utils::Byte.bits_to_byte(bits)
     end
 
     def ack
@@ -59,23 +63,11 @@ module PiDriver
 
     private
 
-    def write_byte(byte)
-      bits = Utils::Byte.byte_to_bits(byte)
-      bits.each { |bit| write_bit bit }
-      byte
-    end
-
     def write_bit(bit)
       bit == Utils::State::HIGH ? release_data_pin : drive_data_pin
       release_clock_pin
       raise_arbitration_error 'bit write' if @data_pin.clear? && bit == Utils::State::HIGH
       drive_clock_pin
-    end
-
-    def read_byte
-      release_data_pin
-      bits = Array.new(Utils::Byte::NUM_BITS_PER_BYTE) { read_bit }
-      Utils::Byte.bits_to_byte(bits)
     end
 
     def read_bit
@@ -110,9 +102,9 @@ module PiDriver
 
       loop do
         attempts += 1
-        elapsed_time = Time.now - clock_stretch_began_at
-        timed_out = elapsed_time > ONE_MILLISECOND
-        stop_stretch = @clock_pin.set? || (attempts >= 3 && timed_out)
+        timed_out = (Time.now - clock_stretch_began_at) > ONE_MILLISECOND
+        early_continue = attempts >= 3 && timed_out
+        stop_stretch = @clock_pin.set? || early_continue
         break if stop_stretch
       end
     end

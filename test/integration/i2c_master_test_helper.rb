@@ -10,7 +10,6 @@ class IntegrationI2CMasterTest < IntegrationTest
 
     @i2c_master = PiDriver::I2CMaster.new clock_pin: @master_scl, data_pin: @master_sda
 
-    timeout { @master_scl.set? && @slave_scl.set? && @master_sda.set? && @slave_sda.set? }
-    assert @master_scl.set? && @slave_scl.set? && @master_sda.set? && @slave_sda.set?
+    assert(timeout { @master_scl.set? && @slave_scl.set? && @master_sda.set? && @slave_sda.set? })
   end
 end

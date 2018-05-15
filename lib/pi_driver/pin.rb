@@ -29,9 +29,8 @@ module PiDriver
     end
 
     def input
-      direction = Direction::INPUT
-      @file_helper.write_direction direction
-      @file_helper.read_value
+      @file_helper.write_direction Direction::INPUT
+      value
     end
 
     def input?
@@ -39,13 +38,12 @@ module PiDriver
     end
 
     def output(state = nil)
-      direction = Direction::OUTPUT
-      @file_helper.write_direction direction
+      @file_helper.write_direction Direction::OUTPUT
 
       @argument_helper.check_options :state, state, Utils::State::VALID_STATES if state
       @file_helper.write_value state if state
 
-      @file_helper.read_value
+      value
     end
 
     def output?
@@ -56,13 +54,13 @@ module PiDriver
       return unless output?
       state = Utils::State::LOW
       @file_helper.write_value state
-      state
+      value
     end
 
     alias off clear
 
     def clear?
-      @file_helper.read_value == Utils::State::LOW
+      value == Utils::State::LOW
     end
 
     alias off? clear?
@@ -71,20 +69,20 @@ module PiDriver
       return unless output?
       state = Utils::State::HIGH
       @file_helper.write_value state
-      state
+      value
     end
 
     alias on set
 
     def set?
-      @file_helper.read_value == Utils::State::HIGH
+      value == Utils::State::HIGH
     end
 
     alias on? set?
 
     def interrupt(edge = Utils::Edge::RISING)
       @argument_helper.check_options :edge, edge, Utils::Edge::VALID_EDGES
-      @interrupt = Utils::Interrupt.new(edge) { @file_helper.read_value }
+      @interrupt = Utils::Interrupt.new(edge) { value }
       @interrupt.start { yield }
     end
 
@@ -97,6 +95,11 @@ module PiDriver
     def unexport
       # TODO: raise error on any method if this pin has been unexported
       @file_helper.write_unexport
+    end
+
+    # TODO: write test
+    def value
+      @file_helper.read_value
     end
 
     def self.unexport_all
