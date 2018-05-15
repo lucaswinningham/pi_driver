@@ -235,7 +235,7 @@ Setup the integration test circuits.
 ```
 Rp = 10KOhm
 Rs = 1KOhm
-Cp = 470uF
+Cp = 470pF
 ```
 
 Pin test
