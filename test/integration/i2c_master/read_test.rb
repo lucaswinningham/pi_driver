@@ -10,8 +10,7 @@ class IntegrationI2CReadTest < IntegrationI2CMasterTest
 
     @slave_scl.interrupt(:falling) do
       @bit_index += 1
-      set_slave_data_pin
-      @slave_scl.clear_interrupt if @bit_index >= @bits.length
+      @bit_index < @bits.length ? set_slave_data_pin : @slave_scl.clear_interrupt
     end
 
     byte = @i2c_master.read
