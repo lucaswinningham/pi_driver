@@ -11,7 +11,7 @@ class IntegrationI2CMasterTest < IntegrationTest
     @i2c_master = PiDriver::I2CMaster.new clock_pin: @master_scl, data_pin: @master_sda
 
     timeout_all_set
-    check_all_set
+    assert_all_set
   end
 
   private
