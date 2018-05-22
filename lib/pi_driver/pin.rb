@@ -80,6 +80,8 @@ module PiDriver
 
     alias on? set?
 
+    # TODO: #toggle and test
+
     def interrupt(edge = Utils::Edge::RISING)
       @argument_helper.check_options :edge, edge, Utils::Edge::VALID_EDGES
       @interrupt = Utils::Interrupt.new(edge) { value }
