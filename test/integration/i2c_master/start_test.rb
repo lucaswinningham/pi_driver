@@ -14,6 +14,8 @@ class IntegrationI2CStartTest < IntegrationI2CMasterTest
     @slave_scl.interrupt(:falling) { clock_pin_driven = true }
 
     @i2c_master.start
+
+    timeout { data_pin_driven && clock_pin_driven && data_pin_driven_first }
     assert data_pin_driven && clock_pin_driven && data_pin_driven_first
 
     @slave_sda.clear_interrupt
