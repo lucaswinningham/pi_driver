@@ -5,7 +5,8 @@ module PiDriver
     def initialize(options = {})
       @argument_helper = Utils::ArgumentHelper.new prefix: 'I2CMaster'
 
-      @frequency = 100_000
+      # @frequency = 100_000
+      @frequency = 100
       @delta_time = @frequency**-1.0
 
       @clock_pin = options[:clock_pin]

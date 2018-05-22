@@ -8,14 +8,13 @@ class IntegrationI2CReadTest < IntegrationI2CMasterTest
     @bit_index = 0
     set_slave_data_pin
 
-    clock_listener_thread = @slave_scl.interrupt(:falling) do
+    @slave_scl.interrupt(:falling) do
       @bit_index += 1
       set_slave_data_pin
       @slave_scl.clear_interrupt if @bit_index >= @bits.length
     end
 
     byte = @i2c_master.read
-    clock_listener_thread.join
 
     assert_equal 0b10001101, byte
   end
