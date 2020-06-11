@@ -12,7 +12,7 @@ require 'pi_driver/file_system'
 RSpec.describe PiDriver::GPIO::Mixins::Export do
   let(:klass) { Class.new { include PiDriver::GPIO::Mixins::Export } }
 
-  let(:random_gpio_number) { rand 100 } 
+  let(:random_gpio_number) { rand 100 }
 
   before { mock_file_system }
 

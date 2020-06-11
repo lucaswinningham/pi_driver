@@ -1,31 +1,24 @@
 # frozen_string_literal: true
 
+require 'pi_driver/pinout/pin/voltage_pin'
+require 'pi_driver/pinout/pin/ground_pin'
+require 'pi_driver/pinout/pin/gpio_pin'
+
 module PiDriver
   module Pinout
-    class Pin
-      attr_reader :pin_number
+    module Pin
+      class << self
+        def voltage(*args, **kwargs, &block)
+          VoltagePin.new(*args, **kwargs, &block)
+        end
 
-      def initialize(*args, **kwargs, &block)
-        @pin_number = kwargs.delete :pin_number
-        after_initialize(*args, **kwargs, &block)
-      end
+        def ground(*args, **kwargs, &block)
+          GroundPin.new(*args, **kwargs, &block)
+        end
 
-      def after_initialize; end
-
-      def voltage?
-        false
-      end
-
-      def ground?
-        false
-      end
-
-      def gpio?
-        false
-      end
-
-      def to_s
-        raise NotImplementedError
+        def gpio(*args, **kwargs, &block)
+          GPIOPin.new(*args, **kwargs, &block)
+        end
       end
     end
   end

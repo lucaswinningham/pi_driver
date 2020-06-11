@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'pi_driver/gpio/mixins'
-require 'support/matchers/mixin'
+
+require 'support/matchers/mix_in'
 
 RSpec.describe PiDriver::GPIO::Mixins do
   it { expect(subject).to mix_in('Export', 'Direction', 'Value') }
