@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'pi_driver'
+
+# You can add fixtures and/or initialization code here to make experimenting
+# with your gem easier. You can also use a different console, if you like.
+
+require 'byebug'
+
+mock_arg = ARGV.find { |arg| arg.include? 'mock=' }
+if mock_arg
+  ARGV.delete mock_arg
+
+  require 'pi_driver/mock_raspberry_pi'
+  hardware = mock_arg.sub('mock=', '')
+  raise 'hardware argument required for mocking' if hardware.empty?
+
+  puts "Mocking Raspberry Pi as #{hardware}"
+  PiDriver::MockRaspberryPi.call(hardware)
+end
+
+require 'irb'
+IRB.start(__FILE__)
